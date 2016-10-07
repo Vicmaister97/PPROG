@@ -2,6 +2,7 @@
 AQUI PONDRÉ LOS COMANDOS
 <<<<<<< HEAD
 Ya me funciona (ARTURO)
+A mí tmb (BLANCA)
 =======
 
 Para descargar la carpeta PPROG en el ordenador, donde se guardarán todos los ficheros y archivos, primero debéis ir al repositorio (donde están los commits y los archivos y demás) y arriba a la derecha aparece en verde una pestaña que pone CLONE OR DOWNLOAD. Copiais el link y en la terminal ponéis git clone LINK, y ya se os ha creado la carpeta en el ordenador.
