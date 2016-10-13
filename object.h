@@ -1,21 +1,19 @@
-
 #ifndef OBJECT_H
 #define OBJECT_H
 
 #include "types.h"
+#include <stdio.h>
 
 typedef struct _Object Object;
 
-Bool isInInventory (Object *o);
-Object * create_objet ();
-void delete_object (Object *o);
-Status pick_object (Object *o);
-Status drop_object (Object *o);
-Status isUsable_object (Object *o);
-char* getName_object (Object *o);
-Status setName_object (Object *o, char *name);
-char* desc_object (Object *o);
-Status setdesc_object (Object *o, char *desc);
-Status use_Object (Object *o);
+Object* create_objet ();
+void delete_object (Object *po);
+Bool isInInventory (Object *po);
+Status move_object (Object *po, int room);
+Status isUsable_object (Object *po);
+Status setName_object (Object *po, char *name);
+char* getName_object (Object *po);
+Status setdesc_object (Object *po, char *desc);
+char* desc_object (Object *po);
 
 #endif

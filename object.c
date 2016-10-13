@@ -2,11 +2,9 @@
 
 struct _Object{
 	int id;
-<<<<<<< HEAD
 	Status isPicked;
 	char *name;
 	char *desc;
-	int opens; //indica que abre
-	int *properties; // Blancaaaaaaaaa stats :))))))
+	int *properties; /*[0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense*/
 	int location;
 }
