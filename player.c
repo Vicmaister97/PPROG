@@ -7,8 +7,8 @@
 */
 
 
-
 #include "player.h"
+		
 
 struct _Player{
 	char* name;
@@ -16,7 +16,8 @@ struct _Player{
 	int stats[5];  /*[0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense*/
 };
 
-/*Función privada*/
+
+/*Private function*/
 int* setDefStats( Player *p ){
 	int i = 0;
 	if( p == NULL) 	
@@ -26,7 +27,8 @@ int* setDefStats( Player *p ){
 	return p->stats;
 }
 
-/*Funciones públicas*/
+
+/*Public functions*/
 Player* create_player( char* name ) {
 	Player* p = NULL;
 	p = ( Player *) malloc( sizeof( Player ));
