@@ -1,15 +1,28 @@
+/*  
+	Group: Obviously nut
+		Alfonso Villar
+		Arturo Turmo
+		Blanca Martín
+		Víctor Gracía
+*/
+
+
+
 #include "player.h"
 
 struct _Player{
-	char *name;
+	char* name;
 	int wai; /*Where he is*/
 	int stats[5];  /*[0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense*/
 };
 
 /*Función privada*/
-int *setDefStats( Player *p ){
-	for (int i=0; i < 5; i++)
-		p->stats[i]=50;
+int* setDefStats( Player *p ){
+	int i = 0;
+	if( p == NULL) 	
+		return NULL;
+	for ( ; i < 5; i++)
+		p->stats[i] = 50;
 	return p->stats;
 }
 
@@ -22,6 +35,12 @@ Player* create_player( char* name ) {
 	p->wai = 0;
 	return p;
 }	
+
+
+Status destroy_player( Player* p){
+	free( p->name );
+	free( p );
+}
 
 char* getName_player( Player* p ){
 	return p->name;
@@ -40,7 +59,16 @@ Status modName_player( Player* p, char* newName){
 	return OK;
 }
 
-Status destroy_player( Player* p)
-	
+Status modStats_player(Player *p, int *newStats){
+	int i = 0;
+	for( ; i < 5; i++)
+			p->stats[i] = newStats[i];
+	return OK;
+}	
+
+Status modWaI_player(Player *p, int newWaI){
+	p->wai = newWaI;
+	return OK;
+}
 
 
