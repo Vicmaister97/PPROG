@@ -9,23 +9,24 @@
 
 struct _Space{
 	int id;
-	char *name;
-	char *desc;
-	char *long_desc;
-	int lenght;
+	char name[MAX_CHAR];
+	char desc[MAX_CHAR];
+	char long_desc[MAX_CHAR];
+	int length;
 	int width;
-	int neigh[4];/*refers to all four neighbor points*/
-	int locked[4];/*refers to the neighbor spaces
+	
+	int neigh[4];/*refers to all four neighbor spaces by their id*/
+	Status locked[4];/*refers to the neighbor spaces
 	if there is some type of of door blocking the path*/	
-} 
-/*typedef enum {
-    RIGHT = 0,
-    UP = 1,
-    LEFT = 2,
-    DOWN = 3,
-    STAY = 4
-} Move;maybe this goes on a file who regulates actions from character*/
-
+	/*North=0
+	East=1
+	South=2
+	West=3
+	*/
+	char **table;
+	Object *o[Max-objects];
+	/*two different options in order to store objects from a space*/
+}
 int createID(FILE *f);
 
 char *create_name(Space *s);
@@ -71,8 +72,6 @@ if (!s)return NULL;
 return s->long_desc;
 }
 /*obtain different and complementary descriptions of the space*/
-Space* go_toSpace(int id);
-/*we move to another space using the id to select it*/
 
 
 Bool isSpace(Space *s){/*indicates if he can move to adjacent
@@ -80,9 +79,22 @@ places,maybe he cant there is a wall*/
 }
 Bool isLocked(Space *s, int status, int dir){
 }/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/
-Space *create_Space(FILE *fp);/*do we need it? or it just creates the space
-at world.c while reading the text*/
-{  }
+Space *create_Space(){
+	Space*s=(Space*)malloc (sizeof(Space));
+	if(!s)return NULL;
+	int i;
+	s->id=-1;
+	s->length=-1;
+	s->width=-1;
+	s->name="name";
+	s->desc="desc";
+	s->long_desc="long_desc";
+	for(i=0;i<4;i++){
+		s->locked[i]=ERR;
+		s->neighbor[i]=-1;
+	}
+
+  }
 
 /*these functions below should be called from world.c*/
 Status delete_space(Space *s);
