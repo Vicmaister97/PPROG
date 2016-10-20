@@ -12,6 +12,15 @@
 
 typedef struct _Player Player;
 
+/*
+
+struct _Player{
+	char* name;
+	int wai; /*Where he is*/
+	int stats[5];  /*[0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense*/
+};
+*/
+
 Player *create_player(char *name); /*Creates a Player and allocates memory for it*/
 Status *destroy_player( Player* p); /*Frees the memory allocated for the Player p*/
 char *getName_player(Player *p); /*Given a Player, returns its name*/
