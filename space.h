@@ -22,9 +22,9 @@ typedef struct _Space Space;
 	South=2
 	West=3
 	
-	char **table;
+	
 	Object *o[Max-objects];
-	two different options in order to store objects from a space*/
+	
 }*/
 int getID(Space *s);/*we obtain space id which help us identify it*/
 Status deleteID(Space *s);
@@ -38,8 +38,8 @@ char *long_desc(Space *s);
 Space * go_toSpace(int id);
 Bool isSpace(Space *s);/*indicates if he can move to adjacent
 places,maybe he cant there is a wall*/
-Bool isLocked(Space *s, int status, int dir);/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/
-Space *create_Space();/*create memory for space values=-1*/
+Bool isLocked(Space *s, int direction);/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/
+Space *create_Space(FILE *f);
 Status delete_space(Space *s);
 Space *load_space(FILE *f);/*we obtain info from a text file where we has saved the space*/
 Status save_space(Space *s,FILE *f);/*we write the space and all its info on a new

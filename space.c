@@ -24,7 +24,7 @@ struct _Space{
 	West=3
 	*/
 	char **table;
-	Object *o[Max-objects];
+	Object *o;
 	/*two different options in order to store objects from a space*/
 }
 int createID(FILE *f);
@@ -74,10 +74,14 @@ return s->long_desc;
 /*obtain different and complementary descriptions of the space*/
 
 
-Bool isSpace(Space *s){/*indicates if he can move to adjacent
+Bool isSpace(Space *s,int direction){/*indicates if he can move to adjacent
 places,maybe he cant there is a wall*/
+
 }
-Bool isLocked(Space *s, int status, int dir){
+Bool isLocked(Space *s, int direction){
+	if(!s)return FALSE;
+if(s->locked[direction]==TRUE)return TRUE;
+return FALSE;
 }/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/
 Space *create_Space(){
 	Space*s=(Space*)malloc (sizeof(Space));
@@ -95,6 +99,11 @@ Space *create_Space(){
 	}
 
   }
+   int go_toSpace(Space*s,int direction){
+   	if(!s)return ERR;
+   	if(isLocked(s,direction)==FALSE)return ERR;
+   	return s->neighbor[direction];
+   }
 
 /*these functions below should be called from world.c*/
 Status delete_space(Space *s);
