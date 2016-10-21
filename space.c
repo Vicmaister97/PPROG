@@ -83,19 +83,24 @@ Bool isLocked(Space *s, int direction){
 if(s->locked[direction]==TRUE)return TRUE;
 return FALSE;
 }/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/
-Space *create_Space(){
+Space *create_Space(FILE *fp){
 	Space*s=(Space*)malloc (sizeof(Space));
 	if(!s)return NULL;
 	int i;
-	s->id=-1;
-	s->length=-1;
-	s->width=-1;
-	s->name="name";
-	s->desc="desc";
-	s->long_desc="long_desc";
+	char buf[100];
+	s->id = atoi(fgets(buf, 100, fp));
+	fgets(buf, 100, fp);
+	/*buf[strlen(buf)-1] = 0;*/
+	s->name = strdup(buf);
+	fgets(buf, 100, fp);
+	s->desc=strdup(buf);
+	fgets(buf, 100, fp);
+	s->long_desc=strdup(buf);
+	s->length=atoi(fgets(buf, 100, fp));
+	s->width=atoi(fgets(buf, 100, fp));
 	for(i=0;i<4;i++){
-		s->locked[i]=ERR;
-		s->neighbor[i]=-1;
+		s->locked[i]=strdup(buf);
+		s->neighbor[i]=atoi(fgets(buf,100,fp221));
 	}
 
   }
