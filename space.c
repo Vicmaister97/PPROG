@@ -1,19 +1,14 @@
-/*Group:Obviously nut
-	Arturo Turmo
-	Blanca Martin
-	Alfonso Villar
-	Victor*/
 #include <string.h>
 #include "space.h"
-#include "space.h"
+#define MAX_CHAR 20
 
 struct _Space{
 	int id;
-	char name[MAX_CHAR];
-	char desc[MAX_CHAR];
-	char long_desc[MAX_CHAR];
-	int length;
-	int width;
+	char *name;
+	char *desc;
+	char *long_desc;
+	int rows;
+	int cols;
 	
 	int neigh[4];/*refers to all four neighbor spaces by their id*/
 	Status locked[4];/*refers to the neighbor spaces
@@ -23,45 +18,15 @@ struct _Space{
 	South=2
 	West=3
 	*/
-	char **table;
-	Object *o;
+	char **pict;
+	/*Object *o;*/
 	/*two different options in order to store objects from a space*/
-}
-int createID(FILE *f);
+};
 
-char *create_name(Space *s);
-char * create_desc();
-/*these functions obtain the info from a created text file*/
 int getID(Space *s){
-if (!s)return NULL;
+if (!s)return 0;
 return s->id;
 }/*we obtain space id which help us identify it*/
-
-Status deleteID(Space *s){
-if(s->id)
-s->id=-1;
-return OK;
-}
-
-Status change_ID(Space *s,int id){
-if(!s)return ERR;
-s->id=id;
-return OK; 
-}
-/*these two functions modify the space id from an existant ID*/
-
-char *get_name(Space *s){
-if (!s)return NULL;
-return s->name;
-}
-
-Status modify_name(Space *s,char *c){
-if(!s)return ERR;
-strcpy(s->name,c);
-assert(s->name);
-return OK;
-}/*used when the space has been modified, we may want to change its name too*/
-
 
 char *desc(Space *s){
 if (!s)return NULL;
@@ -71,47 +36,72 @@ char *long_desc(Space *s){
 if (!s)return NULL;
 return s->long_desc;
 }
-/*obtain different and complementary descriptions of the space*/
-
-
-Bool isSpace(Space *s,int direction){/*indicates if he can move to adjacent
-places,maybe he cant there is a wall*/
-
-}
 Bool isLocked(Space *s, int direction){
 	if(!s)return FALSE;
-if(s->locked[direction]==TRUE)return TRUE;
+if(s->locked[direction])return TRUE;
 return FALSE;
 }/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/
 Space *create_Space(FILE *fp){
 	Space*s=(Space*)malloc (sizeof(Space));
-	if(!s)return NULL;
 	int i;
 	char buf[100];
+	if(!s)return NULL;
 	s->id = atoi(fgets(buf, 100, fp));
 	fgets(buf, 100, fp);
 	/*buf[strlen(buf)-1] = 0;*/
-	s->name = strdup(buf);
+	s->name = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(s->name, buf);
 	fgets(buf, 100, fp);
-	s->desc=strdup(buf);
+	s->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(s->desc, buf);
 	fgets(buf, 100, fp);
-	s->long_desc=strdup(buf);
-	s->length=atoi(fgets(buf, 100, fp));
-	s->width=atoi(fgets(buf, 100, fp));
-	for(i=0;i<4;i++){
-		s->locked[i]=strdup(buf);
-		s->neighbor[i]=atoi(fgets(buf,100,fp221));
+	s->long_desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(s->long_desc, buf);
+	s->rows=atoi(fgets(buf, 100, fp));
+	s->cols=atoi(fgets(buf, 100, fp));
+	fgets(buf,100,fp);
+	for(i=0; i<4; i++)
+		s->locked[i] = buf[i]-'0';
+	fgets(buf,100,fp);
+	for(i=0; i<4; i++)
+		s->neigh[i] = buf[i]-'0';
+	/*for(i=0;i<4;i++){
+		s->locked[i]=atoi(fgets(buf,6,fp));
+		s->neigh[i]=atoi(fgets(buf,100,fp));
+	}*/
+	s->pict = (char **)malloc(sizeof(char*)*s->rows);
+	for(i=0;i<s->rows;i++){
+		fgets(buf, 100, fp);
+		s->pict[i] = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+		strcpy(s->pict[i], buf);
 	}
+	return s;
 
   }
-   int go_toSpace(Space*s,int direction){
-   	if(!s)return ERR;
-   	if(isLocked(s,direction)==FALSE)return ERR;
-   	return s->neighbor[direction];
-   }
 
-/*these functions below should be called from world.c*/
-Status delete_space(Space *s);
-Space *load_space(FILE *f);
-Status save_space(Space *s,FILE *f);/*we write the space and all its info on a new
-empty document so we can the load it*/
+  int pictRows_space(Space *s){
+  	if(!s) return 0;
+  	return s->rows;
+  }
+
+  int getNeigh_space(Space *s, int dir){
+  	if(!s || dir < 0 || dir > 3) return 0;
+  	return s->neigh[dir];
+  }
+
+  char **getPict_space(Space *s){
+  	if(!s) return NULL;
+  	return s->pict;
+  }
+
+  void delete_space(Space *s){
+  	int i = 0;
+  	if(!s) return;
+  	if(s->name) free(s->name);
+  	if(s->desc) free(s->desc);
+  	if(s->long_desc) free(s->long_desc);
+  	for( ; i < s->rows; i++)
+  		if(s->pict[i]) free(s->pict[i]);
+  	if(s->pict) free(s->pict);
+  	free(s);
+  }

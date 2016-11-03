@@ -25,7 +25,7 @@ int getId_object (Object *po); /* Function that returns the ID an object */
 Status setName_object (Object *po, char *name); /* Function that changes the name of an object */
 char* getName_object (Object *po); /* Function that returns the name of an object */
 char* getDesc_object (Object *po); /* Function that returns the description of an object */
-Status setProp_object (Object *po, int *prop, int nv); /* Function that changes a certain property of an object to a given value */
+Status setProp_object (Object *po, int prop, int nv); /* Function that changes a certain property of an object to a given value */
 int* getProp_object (Object *po); /* Function that returns the properties of an object */
 int getLocation_object (Object *po); /* Function that returns the location of an object */
 

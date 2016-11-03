@@ -10,30 +10,42 @@ struct _Object{
 	char *desc;
 	int *properties; /* [0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense;  [5]: Luck */
 	int location; /* If location is -1, we say that the object is in the Inventory of the player, is picked */
-}
+	Bool picked;
+};
 
-Object* create_objet (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
+Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
 	Object *po = (Object *) malloc (sizeof (Object));
+	char buf[100];
+	/*int nsp;*/
+	char *pt;
+	int i = 0;
+	
 	if (po == NULL)
 		return NULL;
 
-	char buf[100];
 	po->id = atoi(fgets(buf, 100, fp));
 	fgets(buf, 100, fp);
-	buf[strlen(buf)-1] = 0;
-	po->name = strdup(buf);
+	po->name = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(po->name, buf);
 	fgets(buf, 100, fp);
-	buf[strlen(buf)-1] = 0;
-	po->desc = strdup(buf);
+	po->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(po->desc, buf);
 	fgets(buf, 100, fp);
-	int nsp;
-	char *pt;
-	for (pt = buf, nsp = 0; *pt; pt++){ /*Podría sustituirse por poner directamente nsp = 4 si al final hay sólo 4 propiedades */
+	
+	/*for (pt = buf, nsp = 0; *pt; pt++){ Podría sustituirse por poner directamente nsp = 4 si al final hay sólo 4 propiedades 
 		if (*pt == ' ')
 			nsp++;	
+	}*/
+
+	po->properties = (int *) malloc(6*sizeof(int));
+
+	pt = strtok(buf," ");
+	for( ; pt; i++){
+		po->properties[i] = atoi(pt);
+		pt = strtok(NULL, " ");
 	}
 
-	po->properties = (int *) malloc((nsp+1)*sizeof(int));
+	/*
 	if (po->properties == NULL){
 		free (po->name);
 		free (po->desc);
@@ -42,7 +54,7 @@ Object* create_objet (FILE *fp){ /*Fuction that creates and allocs memory for an
 	}
 
 
-	for (pt = buf, int i = 0; i < nsp; i++){
+	for (pt = buf; i < nsp; i++){
 		char *c = strchr(pt,' ');
 		if (!c) {
 			po->properties[i] = atoi(pt);
@@ -54,10 +66,12 @@ Object* create_objet (FILE *fp){ /*Fuction that creates and allocs memory for an
 		}
 		*c = 0;
 		po->properties[i] = atoi(pt);
+		printf("%d\t%d\n", po->properties[i],i);
 		pt = c+1;
 	}
-
+	*/
 	po->location = atoi(fgets(buf, 100, fp));
+	po->picked = FALSE;
 
 	return po;
 }
@@ -70,17 +84,11 @@ void delete_object (Object *po){ /*Fuction that receives an object and deletes i
 	free (po->desc);
 	free (po->properties);
 	free (po);
-	return
+	return;
 }
 
 Bool isInInventory (Object *po){ /*Function that returns wether an object is in the Inventory of the player or not*/
-	if (po == NULL)
-		return FALSE;
-
-	if (po->location == -1){
-		return TRUE;
-	}
-
+	if(po && po->picked) return TRUE;
 	return FALSE;
 }
 
@@ -97,7 +105,7 @@ Object* pick_object (Object *po){ /*Function that moves a given object to the In
 	if (po == NULL)
 		return NULL;
 
-	po->location == -1;
+	po->location = -1;
 
 	return po;
 }
@@ -124,7 +132,8 @@ Status setName_object (Object *po, char *name){ /*Function that changes the name
 		return ERROR;
 
 	free (po->name);
-	po->name = strdup(name);
+	po->name = (char *)malloc(sizeof(char)*(strlen(name)+1));
+	strcpy(po->name, name);
 
 	return OK;
 }
@@ -144,7 +153,7 @@ char* getDesc_object (Object *po){ /*Function that returns the description of a 
 }
 
 Status setProp_object (Object *po, int prop, int nv){ /*Function that changes a certain property of a given object to a given value*/
-	if (po == NULL || -1 < prop < 5)
+	if (po == NULL || -1 > prop || prop > 5) /*No será esto?*/
 		return ERROR;
 
 	po->properties[prop] = nv;

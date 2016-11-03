@@ -1,78 +1,51 @@
 
 
-#include <stdio.h>
+
+#include "world.h"
 
 
-
-
-main() {
-
+int main() {
+	int j = 0;
 /* load the world */
-	world *w;
+	World *w = create_world("espacios.txt");
 
-	while(1) {
-
-		int curr = p_whereAmI(w_getPlayer(w));
-		space *cs = w_getById(w, curr);
-		char *c = s_short_desc(cs);
-		printf("%s\n", c);
-		int r = s_pictRows(cs);
-
-		char **pict = s_getPict(cs);
-		for (int i=0; i<r; i++) 
+	while(j <= 2) {
+		int err;
+		int i = 0;
+		char buf[100];
+		int curr_id = getWaI_player(getPlayer_world(w));
+		Space *curr_sp = getByID_world(w, curr_id);
+		char *desc = desc(curr_sp);
+		int rows = pictRows_space(curr_sp);
+		char **pict = getPict_space(curr_sp);
+		j++;
+		printf("%s\n", desc);
+		for ( ; i<rows; i++) 
 			printf("%s\n", pict[i]);
 
 		/* Print current room */
 
-		char buf[100];
+		
 		fgets(buf, 100, stdin);
-		if buf[0] == 'n' {
-			int err = w_movePlayer(w, NORTH)
-		}
-		else if buf[0] == 's' {
-			int err = w_movePlayer(w, SOUTH)
-		}
-		else if buf[0] == 'e' {
-			int err = w_movePlayer(w, EAST)
-		}
-		else if buf[0] == 'w' {
-			int err = w_movePlayer(w, WEST)
-		}
-		else  {
+		if (buf[0] == 'n')
+			err = movePlayer_world(w, 0);
+		else if (buf[0] == 's')
+			err = movePlayer_world(w, 2);
+		else if (buf[0] == 'e')
+			err = movePlayer_world(w, 1);
+		else if (buf[0] == 'w')
+			err = movePlayer_world(w, 3);
+		else {
 			printf("wha?\n");
 			err = 0;
 		}
-		if (err) {
-			printf("Error: %d\n", err);
-		} else {
-			printf("Done!\n");
-		}
+		if (err) printf("Error: %d\n", err);
+
+		else printf("Done!\n");
 	}
-	
+	delete_world(w);
+
+	return 0;
 
 }
 
-
-
-space *_get_by_id(world, *w, int id) {
-    space **s = w->map->space;
-    for (int i=0; i<w->map->size; i++)
-        if (s_getId(s[i])==id) 
-            return s[i];
-    return NULL; 
-}
-
-
-int w_movePlayer(wodld *w, int dir) {
-
-    int sid = p_whereAmI(w->player);
-    space *here = _get_by_id(w, id);
-    int newsp = s_get_neigh(here, dir);
-    if (!newsp) {
-        return 1;
-    }
-    /* check for locked door */
-    p_goto(w->player, newsp);
-    return 0;
-
-}
