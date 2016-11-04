@@ -9,7 +9,7 @@ struct _Object{
 	char *name;
 	char *desc;
 	int *properties; /* [0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense;  [5]: Luck */
-	int location; /* If location is -1, we say that the object is in the Inventory of the player, is picked */
+	int location;
 	Bool picked;
 };
 
@@ -37,7 +37,7 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 			nsp++;	
 	}*/
 
-	po->properties = (int *) malloc(6*sizeof(int));
+	po->properties = (int *) malloc(6*sizeof(int)); /*That 6 comes from the fact that we have 6 properties*/
 
 	pt = strtok(buf," ");
 	for( ; pt; i++){
@@ -153,7 +153,7 @@ char* getDesc_object (Object *po){ /*Function that returns the description of a 
 }
 
 Status setProp_object (Object *po, int prop, int nv){ /*Function that changes a certain property of a given object to a given value*/
-	if (po == NULL || -1 > prop || prop > 5) /*No será esto?*/
+	if (po == NULL || -1 > prop || prop > 5)
 		return ERROR;
 
 	po->properties[prop] = nv;

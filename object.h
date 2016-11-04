@@ -11,7 +11,8 @@ typedef struct _Object Object;
 	char *name;
 	char *desc;
 	int *properties; [0]: // Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense; [5]: Luck
-	int location; // If location is -1, we say that the object is in the Inventory of the player, is picked
+	int location;
+	Bool picked;
 }
 */
 
