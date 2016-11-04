@@ -110,6 +110,12 @@ Object* pick_object (Object *po){ /*Function that moves a given object to the In
 	return po;
 }
 
+Status drop_object(Object *po){
+	if(!po) return ERROR;
+	po->location = 0;
+	return OK;
+}
+
 /*Bool isUsable_object (Object *po){  Function that tells you if you are able to use a given object or not
 	if (po == NULL)
 		return FALSE;

@@ -3,4 +3,4 @@
 Artuspada
 Es una cacho de espada to guapa primo
 20 50 65 0 30 5
-6
+3

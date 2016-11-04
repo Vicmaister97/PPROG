@@ -8,7 +8,7 @@
 typedef struct _Space Space;
 
 int getID(Space *s);/*we obtain space id which help us identify it*/
-char *desc(Space *s);
+char *desc_space(Space *s);
 char *long_desc(Space *s);
 /*obtain different and complementary descriptions of the space*/
 Bool isLocked(Space *s, int direction);/*tell us if we need some special stuf(RELATE TO object.c) to be able to move there*/

@@ -5,7 +5,7 @@
 #include "object.h"
 
 int main (){
-	FILE* fo = fopen("ficheroob.txt", "r");
+	FILE* fo = fopen("test1ob.txt", "r");
 	int n;
 	char buf[100];
 	int i = 0;

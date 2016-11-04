@@ -7,7 +7,7 @@
 int main() {
 	int j = 0;
 /* load the world */
-	World *w = create_world("espacios.txt");
+	World *w = create_world("test1sp.txt","ficheroob.txt");
 
 	while(j <= 2) {
 		int err;
@@ -15,11 +15,11 @@ int main() {
 		char buf[100];
 		int curr_id = getWaI_player(getPlayer_world(w));
 		Space *curr_sp = getByID_world(w, curr_id);
-		char *desc = desc(curr_sp);
+		char *desc = desc_space(curr_sp);
 		int rows = pictRows_space(curr_sp);
 		char **pict = getPict_space(curr_sp);
 		j++;
-		printf("%s\n", desc);
+		printf("\n%s\n", desc);
 		for ( ; i<rows; i++) 
 			printf("%s\n", pict[i]);
 

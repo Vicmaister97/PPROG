@@ -34,7 +34,7 @@ Player* create_player() {
 	for( ; i < 6; i++ ){
 		p->stats[i] = setDefStats(p)[i];
 	}
-	p->wai = 0;
+	p->wai = 1;
 	return p;
 }	
 

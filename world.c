@@ -48,9 +48,10 @@ World *create_world(const char *filesp, const char *fileob){
         fclose(pfo);
     	return NULL;
     }*/
+    w->n_objects = atoi(fgets(buf, 100, pfo));
     w->objects = (Object **)malloc(sizeof(Object *)*w->n_objects);
-    for( ; j < w->n_objects; i++){
-        w->objects[i] = create_object(pfo);
+    for( ; j < w->n_objects; j++){
+        w->objects[j] = create_object(pfo);
     }
     return w;
 
@@ -62,6 +63,10 @@ void delete_world(World *w){
 	for( ; i < w->n_spaces; i++)
 		delete_space(w->spaces[i]);
     free(w->spaces);
+    for( i = 0; i < w->n_objects; i++){
+        delete_object(w->objects[i]);
+    }
+    free(w->objects);
 	delete_player(w->player);
 	free(w);
 }
@@ -75,7 +80,7 @@ Space *getByID_world(World *w, int id) {
     int i=0;
     Space **s = w->spaces;
     for ( ; i < w->n_spaces; i++)
-        if (getID(s[i])==id) 
+        if (getID(s[i]) == id) 
             return s[i];
     return NULL; 
 }
@@ -95,6 +100,7 @@ int movePlayer_world(World *w, int dir) {
     int curr_id = getWaI_player(w->player);
     Space *curr_sp = getByID_world(w, curr_id);
     int new_id = getNeigh_space(curr_sp, dir); /*Dudas sobre la implementación de la función*/
+    if(!getByID_world(w,new_id)) return curr_id;
     if (!curr_sp) return 1;
     if(isLocked(curr_sp,dir)==TRUE) return 2;
     if(modWaI_player(w->player,new_id)==ERROR) return 3;
@@ -102,13 +108,44 @@ int movePlayer_world(World *w, int dir) {
 
 }
 
-Object *getByIdObject_world(World *w, int id){
-    
+
+int _get_num_objects_space(int sp_id, World *w){
+    int i = 0, cont = 0;
+    if(sp_id < 0) return 0;
+    for( ; i < w->n_objects; i++)
+        if(getLocation_object(w->objects[i]) == sp_id)
+            cont ++;
+    return cont;
 }
 
 Object **getObjectsSpace_world(World *w, int sp_id){
-    if(!w || sp_id < 0) return NULL;
-
+    int i = 0, j = 0;
+    Object **obs = (Object **)malloc(sizeof(Object *)*_get_num_objects_space(sp_id,w));
+    if(!w || sp_id <= 0){
+        free(obs);
+        return NULL;
+    }
+    for( ; i < w->n_objects; i++){
+        if(getLocation_object(w->objects[i]) == sp_id){
+            obs[j] = w->objects[i];
+            j++;
+        }
+    }
+    return obs;
 }
+
+Object *getByIdObject_world(World *w, int id){
+    int i = 0;
+    Object **obs = w->objects;
+    if(!w || id < 0) return NULL;
+    for( ; i < w->n_objects; i++){
+        if(getId_object(obs[i]) == id)
+            return obs[i];
+    }
+    return NULL;
+}
+
+
+
 
 

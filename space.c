@@ -28,7 +28,7 @@ if (!s)return 0;
 return s->id;
 }/*we obtain space id which help us identify it*/
 
-char *desc(Space *s){
+char *desc_space(Space *s){
 if (!s)return NULL;
 return s->desc;
 }

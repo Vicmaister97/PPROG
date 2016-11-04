@@ -15,54 +15,64 @@ int main(){
 
 		int i = 0;
 		int location = 0;
-		char move;
+		char move[10];
+		int err;
 
 		int curr_id = getWaI_player(getPlayer_world(w));
 		Space *curr_sp = getByID_world(w, curr_id);
-		char *desc_sp = desc(curr_sp);
+		char *desc_sp = desc_space(curr_sp);
 		Object **obs = getObjectsSpace_world(w, curr_id);
 		int rows = pictRows_space(curr_sp);
 		char **pict = getPict_space(curr_sp);
-		printf("%s\n",desc_sp);
+		int num_obj = _get_num_objects_space(curr_id,w);
+		printf("\n%s\n",desc_sp);
 		for ( ; i<rows; i++) 
 			printf("%s\n", pict[i]);
-
+		i = 0;
 		
-		while(obs[i]){
+		while(i < num_obj){
 			
 			char *desc_ob = getDesc_object(obs[i]);
-			printf("%s\n",desc_ob);
+			printf("\n%s\n",desc_ob);
 			
 			location = getLocation_object(obs[i]);
-			printf("Not in inventory: %d", location);
+			printf("\nNot in inventory: %d", location);
 
 			pick_object(obs[i]);
 			location = getLocation_object(obs[i]);
-			printf("In inventory: %d", location);
+			printf("\nIn inventory: %d", location);
 
 			drop_object(obs[i]);
 			location = getLocation_object(obs[i]);
-			printf("Dropped: %d", location);
+			printf("\nDropped: %d\n", location);
 
 			i++;
 
 		}
 
-		fgetc(move, 1, stdin);
-		if(move == 'n')
-			movePlayer_world(w,0);
-		else if (buf[0] == 's')
-			movePlayer_world(w, 2);
-		else if (buf[0] == 'e')
-			movePlayer_world(w, 1);
-		else if (buf[0] == 'w')
-			movePlayer_world(w, 3);
-		else printf("wha?\n");
+		fgets(move, 10, stdin);
+		if(move[0] == 'n')
+			err = movePlayer_world(w,0);
+		else if (move[0] == 's')
+			err = movePlayer_world(w, 2);
+		else if (move[0] == 'e')
+			err = movePlayer_world(w, 1);
+		else if (move[0] == 'w')
+			err = movePlayer_world(w, 3);
+		else{
+			printf("wha?\n");
+			err = 0;
+		}
+		if(err) printf("Error: %d\n", err);
+		else printf("Done!\n");
 
 		j++;
+		free(obs);
 
 	}
 
+
 	delete_world(w);
+	return 0;
 
 }
