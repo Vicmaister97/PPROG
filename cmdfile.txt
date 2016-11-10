@@ -1,0 +1,23 @@
+5
+dance
+cmd1 internal
+1
+Yes, let’s dance a *
+sing
+cmd1 internal
+1
+Yes, let’s sing * together
+play
+cmd2 internal
+1
+I would LOVE to play *
+pick
+cmd3 internal
+3
+You have picked up the *
+There is no * here!
+You can’t pick up the *: you need more strength
+error
+error internal
+1
+Sorry... I don’t know what * is
