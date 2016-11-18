@@ -15,6 +15,7 @@ struct _Object{
 
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
 	Object *po = (Object *) malloc (sizeof (Object));
+	
 	char buf[100];
 	/*int nsp;*/
 	char *pt;
