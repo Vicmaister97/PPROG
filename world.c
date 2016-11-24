@@ -30,7 +30,7 @@ World *create_world(const char *filesp, const char *fileob){
         w->spaces[i] = create_Space(pfs);
         /*if(!w->spaces[i]){
         	for( ; i >= 0; i--)
-        		delete_space( w->spaces[i] );
+        		delete_Space( w->spaces[i] );
             free(w->spaces);
         	free( w );
             fclose(pfs);
@@ -41,7 +41,7 @@ World *create_world(const char *filesp, const char *fileob){
     w->player = create_player(); 
     /*if(!w->player){
     	for( ; i >= 0; i--)
-    		delete_space( w->spaces[i] );
+    		delete_Space( w->spaces[i] );
         free(w->spaces);
     	free(w);
         fclose(pfs);
@@ -61,7 +61,7 @@ void delete_world(World *w){
     int i=0;
 	if(!w) return;
 	for( ; i < w->n_spaces; i++)
-		delete_space(w->spaces[i]);
+		delete_Space(w->spaces[i]);
     free(w->spaces);
     for( i = 0; i < w->n_objects; i++){
         delete_object(w->objects[i]);
@@ -80,7 +80,7 @@ Space *getByID_world(World *w, int id) {
     int i=0;
     Space **s = w->spaces;
     for ( ; i < w->n_spaces; i++)
-        if (getID(s[i]) == id) 
+        if (getID_Space(s[i]) == id) 
             return s[i];
     return NULL; 
 }
@@ -99,10 +99,10 @@ Space *getByID_world(World *w, int id) {
 int movePlayer_world(World *w, int dir) {
     int curr_id = getWaI_player(w->player);
     Space *curr_sp = getByID_world(w, curr_id);
-    int new_id = getNeigh_space(curr_sp, dir); /*Dudas sobre la implementación de la función*/
+    int new_id = getNeigh_Space(curr_sp, dir); /*Dudas sobre la implementación de la función*/
     if(!getByID_world(w,new_id)) return curr_id;
     if (!curr_sp) return 1;
-    if(isLocked(curr_sp,dir)==TRUE) return 2;
+    if(isLocked_Space(curr_sp,dir)==TRUE) return 2;
     if(modWaI_player(w->player,new_id)==ERROR) return 3;
     return 0;
 

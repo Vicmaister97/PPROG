@@ -15,9 +15,9 @@ int main() {
 		char buf[100];
 		int curr_id = getWaI_player(getPlayer_world(w));
 		Space *curr_sp = getByID_world(w, curr_id);
-		char *desc = desc_space(curr_sp);
-		int rows = pictRows_space(curr_sp);
-		char **pict = getPict_space(curr_sp);
+		char *desc = desc_Space(curr_sp);
+		int rows = pictRows_Space(curr_sp);
+		char **pict = getPict_Space(curr_sp);
 		j++;
 		printf("\n%s\n", desc);
 		for ( ; i<rows; i++) 
