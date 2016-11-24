@@ -1,0 +1,25 @@
+2
+0
+uno
+bonito
+muy bonito
+3
+4
+0000
+0030
+tttt
+7777
+8888
+3
+tres
+feo
+muy feo
+5
+2
+0000
+0000
+34
+34
+45
+65
+76

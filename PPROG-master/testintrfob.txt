@@ -1,0 +1,21 @@
+4
+1
+unoob
+primerob
+1 1 1 1 1 1
+1
+2
+dosob
+segundoob
+2 2 2 2 2 2
+1
+3
+tresob
+tercerob
+3 3 3 3 3 3
+2
+4
+cuatroob
+cuartoob
+4 4 4 4 4 4
+2
