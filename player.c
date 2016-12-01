@@ -1,10 +1,12 @@
 #include "player.h"
 		
+/*Falta decidir las abilidades por defecto*/
 
 struct _Player{
 	char* name;
 	int wai; /*Where he is*/
 	int stats[6];  /*[0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense; [5]: Luck*/
+	int abilities[4]; /*IDs*/
 };
 
 
@@ -76,6 +78,13 @@ Status modWaI_player(Player *p, int newWaI){
 	if(!p) return ERROR;
 	p->wai = newWaI;
 	return OK;
+}
+
+/*Falta decidir cómo vamos a modificar las abilidades*/
+Status modAbilities_player(Player *p, int id){
+	if(!p) return ERROR;
+
+
 }
 
 
