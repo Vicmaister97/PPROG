@@ -1,13 +1,30 @@
-2
-
-error
-error_cmd_int
+5
+destruir
+cmd1_internal
+4
+Por supuesto, destruyamos *
+No vamos a destruir *
+Que destruya * tu puta madre
+¿Qué diablos es *?
+dance
+cmd1_internal
 1
-I don’t know hot to *
-
+Yes, let’s dance a *
+sing
+cmd2_internal
+1
+Yes, let’s sing * together
+play
+cmd3_internal
+1
+I would LOVE to play *
 pick
-pick_cmd_int
+cmd4_internal
 3
 You have picked up the *
 There is no * here!
 You can’t pick up the *: you need more strength
+error
+error_internal
+1
+Sorry... I don’t know what * is

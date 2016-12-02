@@ -1,23 +1,23 @@
-5
+4
 dance
-cmd1 internal
+cmd1_internal
 1
 Yes, let’s dance a *
 sing
-cmd1 internal
+cmd2_internal
 1
 Yes, let’s sing * together
 play
-cmd2 internal
+cmd3_internal
 1
 I would LOVE to play *
 pick
-cmd3 internal
+cmd4_internal
 3
 You have picked up the *
 There is no * here!
 You can’t pick up the *: you need more strength
 error
-error internal
+error_internal
 1
 Sorry... I don’t know what * is

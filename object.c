@@ -8,7 +8,7 @@ struct _Object{
 	int id; /* id >= 0 */
 	char *name;
 	char *desc;
-	int *properties; /* [0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense;  [5]: Luck */
+	int *properties; /* [0]: Strength; [1]: Endurance; [2]: HP; [3]: Speed; [4]: Agility;  [5]: Luck */
 	int location;
 	Bool picked;
 };
