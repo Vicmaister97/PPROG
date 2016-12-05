@@ -78,7 +78,7 @@ sc_rectangle *win_new(int r1, int c1, int nr, int nc, int bg, int fg) {
   Returns:
       nothing.
  */
-void win_cls(sc_rectangle *sc) {
+void win_cls(sc_rectangle *sc, int print) {
     char *buf;
     int i;
   
@@ -89,9 +89,7 @@ void win_cls(sc_rectangle *sc) {
     _prepare_font(sc);
     for (i = sc->r1; i < sc->r1 + sc->nr; i++) {
         _move_to(sc, i - sc->r1, 0); /*Este -1 esta puesto de forma aleatoria, pero funciona*/
-        printf("%s", buf);
-        /*    printf("%d", i); 
-            fflush(stdout); */
+        if(print) printf("%s", buf);
     }
     fflush(stdout);
     free(buf);
@@ -193,26 +191,34 @@ int win_write_line_at(sc_rectangle *sc, int r, int c, char *str) {
     char *nl_p;
     char save, av_space, ret;
     char *aux = (char *) malloc(sizeof(char)*(strlen(str)+1));
-    strcpy(aux, str);
+    strcpy (aux, str);    
 
-    if(!aux) return 0;
-
-    if (!_is_visible(sc)) return 0;
-    if (r >= sc->nr || c >= sc->nc) return 0;
-    nl_p = strchr(aux, '\n');
-    if (nl_p) *nl_p = 0;
-  
+    if (!_is_visible(sc)){
+      free(aux);
+      return 0;
+    }
+    if (r >= sc->nr || c >= sc->nc){
+      free(aux);
+      return 0;
+    }
+      
+    nl_p = strchr(str, '\n');/*obtiene el los caracteres que estan a la derecha de \n*/
+    
+    if (nl_p) {
+          *nl_p = 0;
+    }
     av_space = sc->nc - c;
     save = -1;
     if (strlen(aux) > av_space) {
         save = aux[av_space - 1];
-        aux[av_space - 1] = 0;
+        aux[av_space-1] = 0;
     }
-  
+
     _prepare_font(sc);
     _move_to(sc, r, c);
     printf("%s", aux);
     fflush(stdout);
+    
     if (save > 0) {
         aux[av_space - 1] = save;
         ret = av_space;

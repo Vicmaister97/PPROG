@@ -1,7 +1,7 @@
 
-
 #include "myintrf.h"
 #include "world.h"
+
 
 int main(){
 
@@ -18,7 +18,7 @@ int main(){
 		obj_row[i] = i+1;
 	}
 
-	setMenu_intrf(ic, "Hey", stats, 15, 10);
+	setMenu_intrf(ic, "Hey", stats, 15, 9);
 	setPlayData_intrf(ic, 'P', obj, 4, 1, 2, obj_col, obj_row);	
 	setField_intrf(ic, 4, 4, getPict_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))));
 	addObjects_intrf(ic, obj_row, 4);
@@ -27,6 +27,9 @@ int main(){
 	setStats_intrf(ic, stats);
 	movePlayer_intrf(ic, EAST);
 
+	fflush(stdout);
+	while(1)
+		;
 
 	delete_world(w);
 	delete_intrf(ic);
