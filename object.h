@@ -29,7 +29,7 @@ char* getDesc_object (Object *po); /* Function that returns the description of a
 Status setProp_object (Object *po, int prop, int nv); /* Function that changes a certain property of an object to a given value */
 int* getProp_object (Object *po); /* Function that returns the properties of an object */
 int getLocation_object (Object *po); /* Function that returns the location of an object */
-
+char getPicture_object (Object *po);
 Status drop_object(Object *po);
 
 

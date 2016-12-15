@@ -11,6 +11,7 @@ struct _Object{
 	int *properties; /* [0]: Strength; [1]: Endurance; [2]: HP; [3]: Speed; [4]: Agility;  [5]: Luck */
 	int location;
 	Bool picked;
+	char picture;
 };
 
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
@@ -72,6 +73,7 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	}
 	*/
 	po->location = atoi(fgets(buf, 100, fp));
+	po->picture = fgetc(fp);
 	po->picked = FALSE;
 
 	return po;
@@ -179,4 +181,9 @@ int getLocation_object (Object *po){ /*Function that returns the location of a g
 		return -2;
 
 	return po->location;
+}
+
+char getPicture_object (Object *po){
+	if(!po) return ' ';
+	return po->picture;
 }
