@@ -1,29 +1,31 @@
-5
-destruir
-cmd1_internal
-4
-Por supuesto, destruyamos *
-No vamos a destruir *
-Que destruya * tu puta madre
-¿Qué diablos es *?
-dance
-cmd1_internal
-1
-Yes, let’s dance a *
-sing
-cmd2_internal
-1
-Yes, let’s sing * together
-play
+X
+##delete
+##cmd1_internal
+##3
+##The object * was deleted
+##Sorry, the object * cannot be deleted
+##Sorry, * doesn't seem to exist... Did you mean "erase *" for a ##player?
+##pick
+##cmd2_internal
+##2
+##You picked *
+##Sorry, you couldn't pick *
+use
 cmd3_internal
-1
-I would LOVE to play *
-pick
+2
+You used *
+You couldn't use *
+name
 cmd4_internal
-3
-You have picked up the *
-There is no * here!
-You can’t pick up the *: you need more strength
+2
+You changed the name of *
+You couldn't change the name of *
+info
+cmd5_internal
+0
+description
+cmd6_internal
+0
 error
 error_internal
 1

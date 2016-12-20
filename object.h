@@ -30,7 +30,7 @@ Status setProp_object (Object *po, int prop, int nv); /* Function that changes a
 int* getProp_object (Object *po); /* Function that returns the properties of an object */
 int getLocation_object (Object *po); /* Function that returns the location of an object */
 
-Status drop_object(Object *po);
+Status drop_object(Object *po); /*QUEDA POR IMPLEMENTAR*/
 
 
 #endif

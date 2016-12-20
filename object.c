@@ -4,10 +4,12 @@
 #include <string.h>
 #include "object.h"
 
+
 struct _Object{
 	int id; /* id >= 0 */
 	char *name;
 	char *desc;
+	char *long_desc;
 	int *properties; /* [0]: Strength; [1]: Endurance; [2]: HP; [3]: Speed; [4]: Agility;  [5]: Luck */
 	int location;
 	Bool picked;
@@ -31,6 +33,9 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	fgets(buf, 100, fp);
 	po->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->desc, buf);
+	fgets(buf, 100, fp);
+	po->long_desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(po->long_desc, buf);
 	fgets(buf, 100, fp);
 	
 	/*for (pt = buf, nsp = 0; *pt; pt++){ Podría sustituirse por poner directamente nsp = 4 si al final hay sólo 4 propiedades 
@@ -83,6 +88,7 @@ void delete_object (Object *po){ /*Fuction that receives an object and deletes i
 
 	free (po->name);
 	free (po->desc);
+	free (po->long_desc);
 	free (po->properties);
 	free (po);
 	return;
@@ -156,7 +162,7 @@ char* getDesc_object (Object *po){ /*Function that returns the description of a 
 	if (po == NULL)
 		return NULL;
 
-	return po->desc;
+	return po->long_desc;
 }
 
 Status setProp_object (Object *po, int prop, int nv){ /*Function that changes a certain property of a given object to a given value*/
