@@ -96,6 +96,10 @@ Space *create_Space(FILE *fp){
   	if(!s) return 0;
   	return s->rows;
   }
+   int pictCols_Space(Space *s){
+  	if(!s) return 0;
+  	return s->cols;
+  }
 
   int getNeigh_Space(Space *s, int dir){
   	if(!s || dir < 0 || dir > 3) return 0;
@@ -118,3 +122,4 @@ Space *create_Space(FILE *fp){
   	if(s->pict) free(s->pict);
   	free(s);
   }
+ 

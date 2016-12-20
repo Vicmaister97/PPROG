@@ -18,7 +18,7 @@ struct _World{
 };
 
 
-World *create_world(const char *filesp, const char *fileob){
+World *create_world(const char *filesp, const char *fileob,const char *fileplayer){
     char buf[100];
     int i = 0, j = 0;
     World *w= (World *) malloc(sizeof(World));
@@ -38,7 +38,7 @@ World *create_world(const char *filesp, const char *fileob){
         	return NULL;
         }*/
     }
-    w->player = create_player(); 
+    w->player = create_player(fileplayer); 
     /*if(!w->player){
     	for( ; i >= 0; i--)
     		delete_Space( w->spaces[i] );

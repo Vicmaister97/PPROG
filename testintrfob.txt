@@ -1,21 +1,36 @@
-4
+5
 1
 unoob
 primerob
 1 1 1 1 1 1
 1
+x10
+16
 2
 dosob
 segundoob
 2 2 2 2 2 2
 1
+y14
+14
 3
-tresob
+eltresob
 tercerob
 3 3 3 3 3 3
 2
+v19
+17
 4
 cuatroob
 cuartoob
 4 4 4 4 4 4
 2
+w11
+13
+5
+quintoob
+cintob
+5 5 4 4 4 4
+2
+t18
+13

@@ -12,6 +12,8 @@ struct _Object{
 	int location;
 	Bool picked;
 	char picture;
+	int col;
+	int row;
 };
 
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
@@ -75,6 +77,8 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	po->location = atoi(fgets(buf, 100, fp));
 	po->picture = fgetc(fp);
 	po->picked = FALSE;
+	po->row = atoi(fgets(buf, 100, fp));
+	po->col = atoi(fgets(buf, 100, fp));
 
 	return po;
 }
@@ -91,7 +95,7 @@ void delete_object (Object *po){ /*Fuction that receives an object and deletes i
 }
 
 Bool isInInventory (Object *po){ /*Function that returns wether an object is in the Inventory of the player or not*/
-	if(po && po->picked) return TRUE;
+	if(po && po->location == -1) return TRUE;
 	return FALSE;
 }
 
@@ -187,3 +191,17 @@ char getPicture_object (Object *po){
 	if(!po) return ' ';
 	return po->picture;
 }
+
+int getRow_object (Object *po){
+	if(!po) return -1;
+
+	return po->row;
+}
+
+int getCol_object (Object *po){
+	if(!po) return -1;
+
+	return po->col;
+}
+
+

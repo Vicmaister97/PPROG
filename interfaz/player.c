@@ -5,6 +5,9 @@ struct _Player{
 	char* name;
 	int wai; /*Where he is*/
 	int stats[6];  /*[0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense; [5]: Luck*/
+	int col;
+	int row;
+	char show;
 };
 
 
@@ -20,9 +23,10 @@ int* setDefStats( Player *p ){
 
 
 /*Public functions*/
-Player* create_player() { 
+Player* create_player(const char * file_player) { 
 /*No muy claro qué necesito para crear un jugador*/
 	int i = 0;
+	char buff[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
 	p->name = (char *)malloc(sizeof(char)*10);
@@ -34,7 +38,14 @@ Player* create_player() {
 	for( ; i < 6; i++ ){
 		p->stats[i] = setDefStats(p)[i];
 	}
+	FILE *f;
+	f=fopen(file_player,"r");
+	p->col=atoi(fgets(buff,100,f));
+	p->row=atoi(fgets(buff,100,f));
+
+	p->show=fgetc(f);
 	p->wai = 1;
+	fclose(f);
 	return p;
 }	
 
@@ -77,5 +88,25 @@ Status modWaI_player(Player *p, int newWaI){
 	p->wai = newWaI;
 	return OK;
 }
-
-
+int getRow_player(Player *p){
+	if(!p) return -1;
+	return p->row;
+}
+int getCol_player(Player *p){
+	if(!p) return -1;
+	return p->col;
+}
+Status modRow_player(Player *p,int row){
+	if(!p)return ERROR;
+	p->row=row;
+	return OK;
+}
+Status modCol_player(Player *p,int col){
+	if(!p)return ERROR;
+	p->col=col;
+	return OK;
+}
+char getSymbol_player(Player *p){
+	if(!p)return ' ';
+	return p->show;
+}

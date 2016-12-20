@@ -12,7 +12,7 @@
 
 typedef struct _World World;
 
-World *create_world(const char *filesp, const char *fileob);
+World *create_world(const char *filesp, const char *fileob,const char* );
 void delete_world(World *w);
 Player *getPlayer_world(World *w);
 Space *getByID_world(World *w, int id);

@@ -10,7 +10,7 @@ typedef struct _Object Object;
 	int id; //id >= 0
 	char *name;
 	char *desc;
-	int *properties; [0]: Strength, [1]: Endurance, [2]: HP, [3]: Speed, [4]: Agility, [5]: Luck
+	int *properties; [0]: // Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense; [5]: Luck
 	int location;
 	Bool picked;
 }
@@ -29,8 +29,9 @@ char* getDesc_object (Object *po); /* Function that returns the description of a
 Status setProp_object (Object *po, int prop, int nv); /* Function that changes a certain property of an object to a given value */
 int* getProp_object (Object *po); /* Function that returns the properties of an object */
 int getLocation_object (Object *po); /* Function that returns the location of an object */
-char getPicture_object (Object *po);
 Status drop_object(Object *po);
-
+char getPicture_object (Object *po);
+int getRow_object (Object *po);
+int getCol_object (Object *po);
 
 #endif

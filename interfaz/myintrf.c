@@ -129,11 +129,19 @@ void _cap_redraw(intrf *ic){
 
 
 /*Sets the general info and creates the windows but doesn't draw anything inside them*/
-intrf *create_intrf(int rows, int cols, int menu, int extra){
+intrf *create_intrf(const char* file_intrfc){
 	intrf *ic = NULL;
+	int rows,cols,menu,extra;
+	FILE *pfi=fopen(file_intrfc,"r");
+	char buf[100];
 
+	rows=atoi(fgets(buf,100,pfi));
+	cols=atoi(fgets(buf,100,pfi));
+	menu=atoi(fgets(buf,100,pfi));
+	extra=atoi(fgets(buf,100,pfi));
 	if(rows < 0 || cols < 0) return NULL;
-	
+
+
 	ic = (intrf *)malloc(sizeof(intrf));
 	ic->rows = rows;
 	ic->cols = cols;
@@ -171,6 +179,7 @@ int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_
 
 /*Sets the playfield data (player and objects) but doesn't draw anything*/
 int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row){
+	int i = 0;
 	if(!ic)	return 0;
 	/*Player*/
 	ic->player = player;
@@ -180,10 +189,18 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 	/*Objects*/
 	ic->num_obj = num_obj;
 	ic->obj = obj;
-	ic->obj_row = obj_row;
-	ic->obj_col = obj_col;
-
+	ic->obj_row = (int *) malloc(sizeof(int)*num_obj);
+	ic->obj_col = (int *) malloc(sizeof(int)*num_obj);
+	for( ; i < num_obj; i++){
+		ic->obj_row[i] = obj_row[i];
+		ic->obj_col[i] = obj_col[i];
+	}
+	/*if(num_obj == 3){
+		sprintf(buf, "%d %d %d %d %d %d", ic->obj_row[0], ic->obj_col[0], ic->obj_row[1], ic->obj_col[1], ic->obj_row[2], ic->obj_col[2]);
+		extra_write_message_object_intrf(ic, buf);
+	}*/
 	return 1;
+	
 
 }
 
@@ -205,10 +222,9 @@ int addObjects_intrf(intrf *ic, int *sel_obj, int sel_num_obj){
 
 	if(!ic || !sel_obj) return 0;
 
-	for( ; i < sel_num_obj; i++){
-		int ind = sel_obj[i];
+	for( ; i < sel_num_obj; i++)
 		win_write_char_at(ic->field, ic->obj_row[i], ic->obj_col[i], ic->obj[i]);
-	}	
+	
 	return 1;
 
 }
@@ -216,14 +232,16 @@ int addObjects_intrf(intrf *ic, int *sel_obj, int sel_num_obj){
 /*Removes an object*/
 int removeObject(intrf *ic, int row, int col){
 	int i = 0;
-	for( ; i < ic->num_obj; i++){
+	if(!ic) return 0;
+
+	for( ; i < ic->num_obj; i++)
 		if(ic->obj_row[i] == row && ic->obj_col[i] == col){
-			win_write_char_at(ic->field, row, col, ' ');
-			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
-			return 1;
+			ic->obj_row[i] *= -1;
+			ic->obj_col[i] *= -1;
 		}
-	}
-	return 0;
+	win_write_char_at(ic->field, row, col, ' ');
+	win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
+	return 1;
 }
 
 /*Draws the field with all the info*/
@@ -252,7 +270,7 @@ int setStats_intrf(intrf *ic, int *stats){
 	if(!ic || !stats) return 0;
 
 	ic->stats = stats;
-	for( ; i < sizeof(ic->stats)/sizeof(ic->stats[0]); i++){
+	for( ; i < 6; i++){
 		win_write_line_at(ic->menu, 3, ic->stats_col, " ");
 		sprintf(buf, "%3d", stats[i]);
 		win_write_line_at(ic->menu, i+1, ic->stats_col, buf);
@@ -269,7 +287,6 @@ int movePlayer_intrf(intrf *ic, int dir){
 	if(dir == NORTH || dir == SOUTH){
 		int new_row = ic->player_row;
 		/*printf("%d", ic->player_row);*/
-		
 		if(dir == NORTH)
 			new_row --;
 		else
@@ -278,10 +295,14 @@ int movePlayer_intrf(intrf *ic, int dir){
 		if(new_row >= 0 && new_row <= (ic->rows - ic->extra_rows) && ic->map[new_row - 1][ic->player_col - 1] == ' '){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_row = new_row;
-			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
-			/*printf("%d", ic->player_row);*/
-			if(isOnObject_intrf(ic))
+
+			if(isOnObject_intrf(ic)){
+				removeObject(ic, ic->player_row, ic->player_col);
 				extra_write_message_object_intrf(ic, "You have found an object!");
+			}
+			else
+				win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
+			/*printf("%d", ic->player_row);*/
 			return 1;
 		}
 	}
@@ -295,9 +316,12 @@ int movePlayer_intrf(intrf *ic, int dir){
 		if(new_col >= 0 && new_col <= (ic->cols - ic->menu_cols) && ic->map[ic->player_row - 1][new_col - 1] == ' '){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_col = new_col;
-			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
-			if(isOnObject_intrf(ic))
+			if(isOnObject_intrf(ic)){
+				removeObject(ic, ic->player_row, ic->player_col);
 				extra_write_message_object_intrf(ic, "You have found an object!");
+			}
+			else
+				win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
 			return 1;
 		}
 	}
@@ -313,20 +337,38 @@ int isOnObject_intrf(intrf *ic){
 	int i = 0;
 	if(!ic) return 0;
 	for( ; i < ic->num_obj; i++)
-		if(ic->obj_row[i] == ic->player_row && ic->obj_col[i] == ic->player_col)
+		/*sprintf(buf, "%d %d %d %d ", ic->obj_row[i], ic->obj_col[i], ic->player_row, ic->player_col);
+		extra_write_message_object_intrf(ic, buf);*/
+		if(ic->obj_row[i] == 
+			ic->player_row && 
+			ic->obj_col[i] == 
+			ic->player_col)
 			return 1;
+	
+	return 0;
+}
+
+int isOnDoor_intrf(intrf *ic){
+	if(!ic) return 0;
+
+	if(ic->player_col == 1 || ic->player_row == 1 || ic->player_row == ic->map_rows || ic->player_col == ic->map_cols) return 1;
+
 	return 0;
 }
 
 void extra_write_message_object_intrf(intrf *ic, char * mg){
-	char *str = malloc(sizeof(char)*strlen(mg) + 1);
+	/*char *str = malloc(sizeof(char)*strlen(mg) + 1);*/
 	if(!ic) return;
+	win_cls(ic->extra, 0);
 	win_write_line_at(ic->extra, 2, 2, mg);
-	win_write_line_at(ic->extra, 2, 2, str);
+	/*win_write_line_at(ic->extra, 2, 2, str);*/
 }
 
 void delete_intrf(intrf *ic){
 	if(!ic) return;
+	free(ic->obj_row);
+	free(ic->obj_col);
+	free(ic->menu_cap);
 	win_delete(ic->field);
 	win_delete(ic->menu);
 	win_delete(ic->extra);

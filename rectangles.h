@@ -125,7 +125,7 @@ typedef struct {
 sc_rectangle *win_new(int r1, int c1, int nr, int nc, int bg, int fg);
   
   
-void win_cls(sc_rectangle *sc);
+void win_cls(sc_rectangle *sc, int print);
   
 /*
   Releases the structure allocated for a window. After calling this

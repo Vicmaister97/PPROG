@@ -33,5 +33,11 @@ int getWaI_player(Player *p); /*Given a Player, returns where it is*/
 Status modName_player(Player *p, char *newName); /*Modifies the name of a given Player*/
 Status modStats_player(Player *p, int *newStats); /*Modifies the stats of a given Player*/
 Status modWaI_player(Player *p, int newWaI); /*Modifies where the Player is*/
+int getRow_player(Player *p);
+int getCol_player(Player *p);
+char getSymbol_player(Player *p);
+Status modRow_player(Player *p, int row);
+Status modCol_player(Player *p, int col);
+
 
 #endif

@@ -8,13 +8,17 @@ struct _Object{
 	int id; /* id >= 0 */
 	char *name;
 	char *desc;
-	int *properties; /* [0]: Strength; [1]: HP; [2]: Speed; [3]: Wisdom; [4]: Defense;  [5]: Luck */
+	int *properties; /* [0]: Strength; [1]: Endurance; [2]: HP; [3]: Speed; [4]: Agility;  [5]: Luck */
 	int location;
 	Bool picked;
+	char picture;
+	int col;
+	int row;
 };
 
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
 	Object *po = (Object *) malloc (sizeof (Object));
+	
 	char buf[100];
 	/*int nsp;*/
 	char *pt;
@@ -71,7 +75,10 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	}
 	*/
 	po->location = atoi(fgets(buf, 100, fp));
+	po->picture = fgetc(fp);
 	po->picked = FALSE;
+	po->row = atoi(fgets(buf, 100, fp));
+	po->col = atoi(fgets(buf, 100, fp));
 
 	return po;
 }
@@ -178,4 +185,21 @@ int getLocation_object (Object *po){ /*Function that returns the location of a g
 		return -2;
 
 	return po->location;
+}
+
+char getPicture_object (Object *po){
+	if(!po) return ' ';
+	return po->picture;
+}
+
+int getRow_object (Object *po){
+	if(!po) return -1;
+
+	return po->row;
+}
+
+int getCol_object (Object *po){
+	if(!po) return -1;
+
+	return po->col;
 }

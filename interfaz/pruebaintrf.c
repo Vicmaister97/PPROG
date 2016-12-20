@@ -65,45 +65,69 @@ int _read_key() {
     return choice;
 }
 
+
 int main(){
 
-	World *w = create_world("testintrfsp.txt", "testintrfob.txt");
-	intrf *ic = create_intrf(40, 80, 19, 7);
+	World *w = create_world("testintrfsp.txt", "testintrfob.txt","testintrf_player.txt");
+	intrf *ic = create_intrf("testintrf_dim.txt");
 	int *stats = getStats_player(getPlayer_world(w));
 
-	char obj[2]; 
+	char obj[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)]; 
 	int i = 0;
-	int obj_row[2], obj_col[2];
-	int aux[2];
+	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)];
+	int aux[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)];
 	char str[10];
 	strcpy(str, "Hey");
 
-	for(; i < 2; i++)
+	for(; i < _get_num_objects_space(getWaI_player(getPlayer_world(w)),w); i++)
 		aux[i] = i;
 	
-	for(i = 0; i < 2; i++){
-		obj[i] = 'o';
-		obj_col[i] = i+10;
-		obj_row[i] = i+16;
-	}
+	for(i = 0; i < _get_num_objects_space(getWaI_player(getPlayer_world(w)),w); i++){
+    obj[i] = getPicture_object(getObjectsSpace_world(w,getWaI_player(getPlayer_world(w)))[i]);
+    obj_row[i] = getRow_object(getObjectsSpace_world(w, getWaI_player(getPlayer_world(w)))[i]);
+    obj_col[i] = getCol_object(getObjectsSpace_world(w, getWaI_player(getPlayer_world(w)))[i]);
+  }
 
-	
-	setPlayData_intrf(ic, 'P', obj, 2, 6, 6, obj_col, obj_row);
-	setField_intrf(ic, 26, 54, getPict_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))));
-	setMenu_intrf(ic, str, stats, 10, 2);
+	setPlayData_intrf(ic, getSymbol_player(getPlayer_world(w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w), getRow_player(getPlayer_world(w)) , getCol_player(getPlayer_world(w)), obj_col, obj_row);
+	setField_intrf(ic, pictRows_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))),pictCols_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))) , getPict_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))));
+
+  setMenu_intrf(ic, str, stats, 10, 2);
 	
 	drawField_intrf(ic, aux, 0);
-	addObjects_intrf(ic, obj_row, 2);	
-	/*removeObject(ic, 3, 3);*/
+	addObjects_intrf(ic, aux, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w));	
 	
-	setStats_intrf(ic, stats);
-	/*movePlayer_intrf(ic, SOUTH);*/
+	setStats_intrf(ic, stats);	
 	
-	
-	fprintf(stdout, "%c[%d;%dH", 27, 8, 8);
+	fprintf(stdout, "%c[%d;%dH", 27, getRow_player(getPlayer_world(w))+2, getCol_player(getPlayer_world(w))+3);
 	fflush(stdout);
-	while(1)
+	while(1){
 		movePlayer_intrf(ic, - _read_key());
+
+    if(isOnDoor_intrf(ic)){
+      movePlayer_world(w, - _read_key());
+      char obja[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)]; 
+      int obj_rowa[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)], obj_cola[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)];
+      int auxa[_get_num_objects_space(getWaI_player(getPlayer_world(w)), w)];
+
+      for(i = 0; i < _get_num_objects_space(getWaI_player(getPlayer_world(w)),w); i++)
+        auxa[i] = i;
+      
+      for(i = 0; i < _get_num_objects_space(getWaI_player(getPlayer_world(w)),w); i++){
+        obja[i] = getPicture_object(getObjectsSpace_world(w,getWaI_player(getPlayer_world(w)))[i]);
+        obj_rowa[i] = getRow_object(getObjectsSpace_world(w, getWaI_player(getPlayer_world(w)))[i]);
+        obj_cola[i] = getCol_object(getObjectsSpace_world(w, getWaI_player(getPlayer_world(w)))[i]);
+      }
+
+      setPlayData_intrf(ic, getSymbol_player(getPlayer_world(w)), obja, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w), getRow_player(getPlayer_world(w)) , getCol_player(getPlayer_world(w)), obj_cola, obj_rowa);
+      setField_intrf(ic, pictRows_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))),pictCols_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))) , getPict_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))));
+      
+      drawField_intrf(ic, auxa, 0);
+      addObjects_intrf(ic, auxa, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w));    
+      
+      fprintf(stdout, "%c[%d;%dH", 27, getRow_player(getPlayer_world(w))+2, getCol_player(getPlayer_world(w))+3);
+      fflush(stdout);
+      }
+  }
 
 	delete_world(w);
 	delete_intrf(ic);

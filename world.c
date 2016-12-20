@@ -18,7 +18,7 @@ struct _World{
 };
 
 
-World *create_world(const char *filesp, const char *fileob){
+World *create_world(const char *filesp, const char *fileob,const char *fileplayer){
     char buf[100];
     int i = 0, j = 0;
     World *w= (World *) malloc(sizeof(World));
@@ -38,7 +38,7 @@ World *create_world(const char *filesp, const char *fileob){
         	return NULL;
         }*/
     }
-    w->player = create_player(); 
+    w->player = create_player(fileplayer); 
     /*if(!w->player){
     	for( ; i >= 0; i--)
     		delete_Space( w->spaces[i] );
@@ -93,17 +93,22 @@ Space *getByID_world(World *w, int id) {
 	OUTPUT:
 	- 1 : the current space is NULL
 	- 0 : the player has been moved succesfully
-	- 2 : the room is locked
-	- 3 : some error related to the modification of the player wai (player == NULL)
+	- negative number : the id of the needed object
+	- 2 : some error related to the modification of the player wai (player == NULL)
 */
 int movePlayer_world(World *w, int dir) {
+    int ret = 0;
     int curr_id = getWaI_player(w->player);
     Space *curr_sp = getByID_world(w, curr_id);
-    int new_id = getNeigh_Space(curr_sp, dir); /*Dudas sobre la implementación de la función*/
+    int new_id = getNeigh_Space(curr_sp, dir);/*Dudas sobre la implementación de la función*/
     if(!getByID_world(w,new_id)) return curr_id;
     if (!curr_sp) return 1;
-    if(isLocked_Space(curr_sp,dir)==TRUE) return 2;
-    if(modWaI_player(w->player,new_id)==ERROR) return 3;
+    if(isLocked_Space(curr_sp,dir)==TRUE){
+        ret = getUnlock_Space(curr_sp, dir);
+        if(!isInInventory(getByIdObject_world(w, ret)))
+            return -ret;
+    }
+    if(modWaI_player(w->player,new_id)==ERROR) return 2;
     return 0;
 
 }
@@ -137,15 +142,22 @@ Object **getObjectsSpace_world(World *w, int sp_id){
 Object *getByIdObject_world(World *w, int id){
     int i = 0;
     Object **obs = w->objects;
-    if(!w || id < 0) return NULL;
     for( ; i < w->n_objects; i++){
-        if(getId_object(obs[i]) == id)
+        if(getId_object(obs[i]) == id){
             return obs[i];
+        }
     }
     return NULL;
 }
 
 
-
+Object *getObjectByCoordinates_world(World *w, int row, int col, int sp_id){
+    Object **objs = getObjectsSpace_world(w, sp_id);
+    int i = 0;
+    for( ; i < _get_num_objects_space(sp_id, w); i++)
+        if(getRow_object(objs[i]) == row && getCol_object(objs[i]) == col)
+            return objs[i];
+    return NULL;
+}
 
 

@@ -86,7 +86,7 @@ Fight:
     printf ("1. %s\n", get_player_hab_name(fight->player, 0));
     printf ("2. %s\n", get_player_hab_name(fight->player, 1));
     printf ("3. %s\n", get_player_hab_name(fight->player, 2));
-    printf ("4. %s\n", get_player_hab_namefight->(player, 3));
+    printf ("4. %s\n", get_player_hab_name(fight->player, 3));
     scanf ("\n%d", &whatoption);
     if (whatoption<5 && whatoption>0) goto Resolution;
     else {
