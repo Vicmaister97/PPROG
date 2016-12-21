@@ -83,11 +83,11 @@ void win_cls(sc_rectangle *sc, int print) {
     int i;
   
     sc->last_line = 0;
-    buf = (char *) malloc((sc->nc - 1) * sizeof (char));
-    memset(buf, ' ', sc->nc - 1);
-    buf[sc->nc - 2] = 0;
+    buf = (char *) malloc((sc->nc + 1) * sizeof (char));
+    memset(buf, ' ', sc->nc);
+    buf[sc->nc] = 0;
     _prepare_font(sc);
-    for (i = sc->r1; i < sc->r1 + sc->nr - 1; i++) {
+    for (i = sc->r1; i < sc->r1 + sc->nr; i++) {
         _move_to(sc, i - sc->r1, 0); /*Este -1 esta puesto de forma aleatoria, pero funciona*/
         if(print) printf("%s", buf);
     }

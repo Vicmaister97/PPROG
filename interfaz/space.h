@@ -22,6 +22,5 @@ int pictCols_Space(Space *s);
 int getNeigh_Space(Space *s, int dir);
 char **getPict_Space(Space *s);
 void delete_Space(Space *s);
- int getUnlock_Space(Space *s, int dir);
 
 #endif

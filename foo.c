@@ -2,6 +2,7 @@
 
 
 #include "world.h"
+#include <curses.h>
 
 
 int main() {
@@ -26,7 +27,7 @@ int main() {
 		/* Print current room */
 
 		
-		fgets(buf, 100, stdin);
+		/*fgets(buf, 100, stdin);
 		if (buf[0] == 'n')
 			err = movePlayer_world(w, 0);
 		else if (buf[0] == 's')
@@ -38,7 +39,24 @@ int main() {
 		else {
 			printf("wha?\n");
 			err = 0;
+		}*/
+
+		if(getch()!= '\033') printf("nop");
+		getch();
+		i = getch();
+		if(i == 65)
+			err = movePlayer_world(w, 0);
+		else if(i == 66)
+			err = movePlayer_world(w, 2);
+		else if(i == 67)
+			err = movePlayer_world(w, 1);
+		else if(i == 68)
+			err = movePlayer_world(w, 3);
+		else{
+			printf("wha?\n");
+			err = 0;
 		}
+
 		if (err) printf("Error: %d\n", err);
 
 		else printf("Done!\n");

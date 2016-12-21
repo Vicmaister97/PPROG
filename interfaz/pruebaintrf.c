@@ -93,8 +93,8 @@ int main(){
 
   setMenu_intrf(ic, str, stats, 10, 2);
 	
-	drawField_intrf(ic, 0);
-	addObjects_intrf(ic);	
+	drawField_intrf(ic, aux, 0);
+	addObjects_intrf(ic, aux, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w));	
 	
 	setStats_intrf(ic, stats);	
 	
@@ -121,8 +121,8 @@ int main(){
       setPlayData_intrf(ic, getSymbol_player(getPlayer_world(w)), obja, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w), getRow_player(getPlayer_world(w)) , getCol_player(getPlayer_world(w)), obj_cola, obj_rowa);
       setField_intrf(ic, pictRows_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))),pictCols_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))) , getPict_Space(getByID_world(w,getWaI_player(getPlayer_world(w)))));
       
-      drawField_intrf(ic, 0);
-      addObjects_intrf(ic);    
+      drawField_intrf(ic, auxa, 0);
+      addObjects_intrf(ic, auxa, _get_num_objects_space(getWaI_player(getPlayer_world(w)), w));    
       
       fprintf(stdout, "%c[%d;%dH", 27, getRow_player(getPlayer_world(w))+2, getCol_player(getPlayer_world(w))+3);
       fflush(stdout);

@@ -36,8 +36,5 @@ Status modWaI_player(Player *p, int newWaI); /*Modifies where the Player is*/
 int getRow_player(Player *p);
 int getCol_player(Player *p);
 char getSymbol_player(Player *p);
-Status modRow_player(Player *p, int row);
-Status modCol_player(Player *p, int col);
-
 
 #endif

@@ -48,7 +48,7 @@ void _i_redraw(intrf *ic){
 
 	fprintf(stdout, " +");
 	k++;
-	for( ; k < ic->cols-3; k++)
+	for( ; k < ic->cols-2; k++)
 		fprintf(stdout, "-");
 	fprintf(stdout, "+");
 
@@ -62,7 +62,7 @@ void _i_redraw(intrf *ic){
 
 	fprintf(stdout, " +");
 	k++;
-	for( ; k < ic->cols-3; k++)
+	for( ; k < ic->cols-2; k++)
 		fprintf(stdout, "-");
 	fprintf(stdout, "+");
 
@@ -98,7 +98,7 @@ void _i_redraw(intrf *ic){
 	for(k = 2; k < ic->rows -1; k++){
 		fprintf(stdout, "%c[%d;%dH", 27, k, ic->cols - ic->menu_cols - 1);
 		fprintf(stdout, "|");
-		fprintf(stdout, "%c[%d;%dH", 27, k, ic->cols - 1);
+		fprintf(stdout, "%c[%d;%dH", 27, k, ic->cols);
 		fprintf(stdout, "|");
 	}
 
@@ -149,8 +149,8 @@ intrf *create_intrf(const char* file_intrfc){
 	ic->extra_rows = extra;
 	ic->total = win_new(0, 0, rows, cols, BACKGROUND, FOREGROUND);
 	ic->menu = win_new(1, cols-menu-1, rows-2, menu, BACKGROUND, FOREGROUND);
-	ic->field = win_new(1, 1, rows-extra-3, cols-menu-3, BACKGROUND, FOREGROUND);
-	ic->extra = win_new(rows-extra-2, 1, extra, cols-menu-3, BACKGROUND, FOREGROUND);
+	ic->field = win_new(1, 1, rows-extra-2, cols-menu-2, BACKGROUND, FOREGROUND);
+	ic->extra = win_new(rows-extra-1, 1, extra, cols-menu-2, BACKGROUND, FOREGROUND);
 	ic->player = 'p';
 	ic->num_obj = 0;
 	ic->menu_cap=(char*)malloc(sizeof(char)*10);/*reservado para uso posterior que no pete*/
@@ -188,11 +188,10 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 
 	/*Objects*/
 	ic->num_obj = num_obj;
-	ic->obj = (char *) malloc(sizeof(int)*num_obj);
+	ic->obj = obj;
 	ic->obj_row = (int *) malloc(sizeof(int)*num_obj);
 	ic->obj_col = (int *) malloc(sizeof(int)*num_obj);
 	for( ; i < num_obj; i++){
-		ic->obj[i] = obj[i];
 		ic->obj_row[i] = obj_row[i];
 		ic->obj_col[i] = obj_col[i];
 	}
@@ -216,12 +215,14 @@ int setField_intrf(intrf *ic, int map_rows, int map_cols, char **map){
 	return 1;
 }
 
-int addObjects_intrf(intrf *ic){
+/*Draws the selected objects in their positions?????*/
+/*sel_obj is an array containing the indexes? of the objects that we want to print*/
+int addObjects_intrf(intrf *ic, int *sel_obj, int sel_num_obj){
 	int i = 0;
 
-	if(!ic) return 0;
+	if(!ic || !sel_obj) return 0;
 
-	for( ; i < ic->num_obj; i++)
+	for( ; i < sel_num_obj; i++)
 		win_write_char_at(ic->field, ic->obj_row[i], ic->obj_col[i], ic->obj[i]);
 	
 	return 1;
@@ -237,23 +238,25 @@ int removeObject(intrf *ic, int row, int col){
 		if(ic->obj_row[i] == row && ic->obj_col[i] == col){
 			ic->obj_row[i] *= -1;
 			ic->obj_col[i] *= -1;
-			extra_write_message_object_intrf(ic, "You have found an object!");
 		}
-
+	win_write_char_at(ic->field, row, col, ' ');
+	win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
 	return 1;
 }
 
-int drawField_intrf(intrf *ic, int clear){
+/*Draws the field with all the info*/
+/*int *sel_obj is the array containing the indexes of the objects that we want to print*/
+int drawField_intrf(intrf *ic, int *sel_obj, int clear){
 	int i = 0;
 
-	if(!ic) return 0;
+	if(!ic || !sel_obj) return 0;
 
 	if(clear)
 		win_cls(ic->field, 0);
 	
 	for( ; i < ic->map_rows; i++)
 		win_write_line_at(ic->field, i+1, 1, ic->map[i]);
-	addObjects_intrf(ic);
+	addObjects_intrf(ic, sel_obj, sizeof(sel_obj)/sizeof(sel_obj[0]));
 	win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
 
 	return 1;
@@ -286,37 +289,48 @@ int movePlayer_intrf(intrf *ic, int dir){
 		/*printf("%d", ic->player_row);*/
 		if(dir == NORTH)
 			new_row --;
-		if(dir == SOUTH)
+		else
 			new_row ++;
 		
 		if(new_row >= 0 && new_row <= (ic->rows - ic->extra_rows) && ic->map[new_row - 1][ic->player_col - 1] == ' '){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_row = new_row;
-			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
+
+			if(isOnObject_intrf(ic)){
+				removeObject(ic, ic->player_row, ic->player_col);
+				extra_write_message_object_intrf(ic, "You have found an object!");
+			}
+			else
+				win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
 			/*printf("%d", ic->player_row);*/
-			return dir;
+			return 1;
 		}
 	}
 	else if(dir == EAST || dir == WEST){
 		int new_col = ic->player_col;
 		if(dir == EAST)
 			new_col ++;
-		if(dir == WEST)
+		else
 			new_col --;
 
 		if(new_col >= 0 && new_col <= (ic->cols - ic->menu_cols) && ic->map[ic->player_row - 1][new_col - 1] == ' '){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_col = new_col;
-			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
-			return dir;
+			if(isOnObject_intrf(ic)){
+				removeObject(ic, ic->player_row, ic->player_col);
+				extra_write_message_object_intrf(ic, "You have found an object!");
+			}
+			else
+				win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
+			return 1;
 		}
 	}
 	else if(dir == HERE){
 		win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 		win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
-		return dir;
+		return 1;
 	}
-	return -1;
+	return 0;
 }
 
 int isOnObject_intrf(intrf *ic){
@@ -325,7 +339,10 @@ int isOnObject_intrf(intrf *ic){
 	for( ; i < ic->num_obj; i++)
 		/*sprintf(buf, "%d %d %d %d ", ic->obj_row[i], ic->obj_col[i], ic->player_row, ic->player_col);
 		extra_write_message_object_intrf(ic, buf);*/
-		if(ic->obj_row[i] == ic->player_row && ic->obj_col[i] == ic->player_col)
+		if(ic->obj_row[i] == 
+			ic->player_row && 
+			ic->obj_col[i] == 
+			ic->player_col)
 			return 1;
 	
 	return 0;
@@ -340,10 +357,11 @@ int isOnDoor_intrf(intrf *ic){
 }
 
 void extra_write_message_object_intrf(intrf *ic, char * mg){
+	/*char *str = malloc(sizeof(char)*strlen(mg) + 1);*/
 	if(!ic) return;
-	win_cls(ic->extra, 1);
+	win_cls(ic->extra, 0);
 	win_write_line_at(ic->extra, 2, 2, mg);
-	fprintf(stdout, "%c[%d;%dH", 27, ic->player_row, ic->player_col);
+	/*win_write_line_at(ic->extra, 2, 2, str);*/
 }
 
 void delete_intrf(intrf *ic){

@@ -14,7 +14,7 @@ segundoob
 y14
 14
 3
-eltresob
+tresob
 tercerob
 3 3 3 3 3 3
 2
