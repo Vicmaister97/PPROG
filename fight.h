@@ -4,8 +4,8 @@ There'll be some facts that will make the fight get easier or harder for the fig
 Also the fighters'll have 4 habilities to make the diference in the fight.
 and they'll be SPEED HP DMG EVASION 
 */
-#ifndef WORLD_H
-#define WORLD_H
+#ifndef FIGTH_H
+#define FIGTH_H
 
 #include "world.h"	
 #include <stdio.h>

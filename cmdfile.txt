@@ -1,22 +1,42 @@
-4
-dance
-cmd1_internal
-1
-Yes, let’s dance a *
-sing
-cmd2_internal
-1
-Yes, let’s sing * together
-play
+X
+##delete
+##cmd1_internal
+##3
+##The object * was deleted
+##Sorry, the object * cannot be deleted
+##Sorry, * doesn't seem to exist... Did you mean "erase *" for a ##player?
+##pick
+##cmd2_internal
+##2
+##You picked *
+##Sorry, you couldn't pick *
+use
 cmd3_internal
+<<<<<<< HEAD
 1
 I would LOVE to play *
 drop
+=======
+2
+You used *
+You couldn't use *
+name
+>>>>>>> 0ade9fbc8c62dff2630cae75478e6730e4ba1ae4
 cmd4_internal
-3
-You have picked up the *
-There is no * here!
-You can’t pick up the *: you need more strength
+2
+You changed the name of *
+You couldn't change the name of *
+info
+cmd5_internal
+0
+description
+cmd6_internal
+0
+pick
+cmd7_internal
+2
+You dropped *
+You couldn't drop *
 error
 error_internal
 1
