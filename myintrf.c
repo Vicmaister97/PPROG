@@ -11,6 +11,7 @@ struct _intrf{
 	sc_rectangle *menu; 
 	sc_rectangle *field;
 	sc_rectangle *extra;
+	sc_rectangle *cmd;
 	int menu_cols; /*Columns for the menu*/
 	int menu_rows;
 	int extra_cols;
@@ -79,6 +80,12 @@ void _i_redraw(intrf *ic){
 		fprintf(stdout, "-");
 	fprintf(stdout, "+");
 
+	fprintf(stdout, "%c[%d;1H", 27, ic->rows - 3);
+	fprintf(stdout, "+");
+	for(k = 2; k < (ic->cols - ic->menu_cols - 3); k++)
+		fprintf(stdout, "-");
+	fprintf(stdout, "+");
+
 	/*Verticales*/
 	for(k = 2; k < ic->rows - ic->extra_rows - 3; k++){
 		fprintf(stdout, "%c[%d;1H", 27, k);
@@ -89,10 +96,14 @@ void _i_redraw(intrf *ic){
 	
 	k += 2;
 	for( ; k < ic->rows - 1; k++){
-		fprintf(stdout, "%c[%d;1H", 27, k);
-		fprintf(stdout, "|");
-		fprintf(stdout, "%c[%d;%dH", 27, k, ic->cols - ic->menu_cols - 3);
-		fprintf(stdout, "|");
+		if(k != ic->rows - 3){
+			fprintf(stdout, "%c[%d;1H", 27, k);
+			fprintf(stdout, "|");
+			fprintf(stdout, "%c[%d;%dH", 27, k, ic->cols - ic->menu_cols - 3);
+			fprintf(stdout, "|");
+		}
+		else
+			;
 	}
 
 	for(k = 2; k < ic->rows -1; k++){
@@ -149,8 +160,9 @@ intrf *create_intrf(const char* file_intrfc){
 	ic->extra_rows = extra;
 	ic->total = win_new(0, 0, rows, cols, BACKGROUND, FOREGROUND);
 	ic->menu = win_new(1, cols-menu-1, rows-2, menu, BACKGROUND, FOREGROUND);
-	ic->field = win_new(1, 1, rows-extra-3, cols-menu-3, BACKGROUND, FOREGROUND);
-	ic->extra = win_new(rows-extra-2, 1, extra, cols-menu-3, BACKGROUND, FOREGROUND);
+	ic->field = win_new(1, 1, rows-extra-4, cols-menu-3, BACKGROUND, FOREGROUND);
+	ic->extra = win_new(rows-extra-2, 1, extra-1, cols-menu-3, BACKGROUND, FOREGROUND);
+	ic->cmd = win_new(rows-3, 1, 1, cols-menu-3, BACKGROUND, FOREGROUND);
 	ic->player = 'p';
 	ic->num_obj = 0;
 	ic->menu_cap=(char*)malloc(sizeof(char)*10);/*reservado para uso posterior que no pete*/
@@ -237,7 +249,7 @@ int removeObject(intrf *ic, int row, int col){
 		if(ic->obj_row[i] == row && ic->obj_col[i] == col){
 			ic->obj_row[i] *= -1;
 			ic->obj_col[i] *= -1;
-			extra_write_message_object_intrf(ic, "You have found an object!");
+			/*extra_write_message_object_intrf(ic, "You have found an object!");*/
 		}
 
 	return 1;
@@ -279,8 +291,8 @@ int setStats_intrf(intrf *ic, int *stats){
 /*Moves the player and redraws it*/
 /*El -1 viene de la diferencia entre field_rows/cols y map_rows/cols*/
 int movePlayer_intrf(intrf *ic, int dir){
-	if(!ic || dir < 0 || dir > 4) return 0;
-
+	if(!ic || dir < 0 || dir > 4) return -1;
+	
 	if(dir == NORTH || dir == SOUTH){
 		int new_row = ic->player_row;
 		/*printf("%d", ic->player_row);*/
@@ -343,7 +355,12 @@ void extra_write_message_object_intrf(intrf *ic, char * mg){
 	if(!ic) return;
 	win_cls(ic->extra, 1);
 	win_write_line_at(ic->extra, 2, 2, mg);
-	fprintf(stdout, "%c[%d;%dH", 27, ic->player_row, ic->player_col);
+	/*fprintf(stdout, "%c[%d;%dH", 27, ic->player_row, ic->player_col);*/
+}
+
+void prepare_to_write_cmd_intrf(intrf *ic){
+	if(!ic) return;
+	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, 2);
 }
 
 void delete_intrf(intrf *ic){
@@ -354,6 +371,8 @@ void delete_intrf(intrf *ic){
 	win_delete(ic->field);
 	win_delete(ic->menu);
 	win_delete(ic->extra);
+	win_delete(ic->cmd);
+	win_delete(ic->total);
 	free(ic);
 }
 

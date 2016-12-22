@@ -4,7 +4,7 @@
 #include <string.h>
 #include "cop.h"
 
-char *strdup(char *);
+/*char *strdup(char *);*/
 
 typedef struct {
 	char *cmd;
@@ -130,7 +130,9 @@ int CoP_assoc(CoP *c, char *int_name, cmdfun_type cfun) {
 	}
 
 	int_cmd *new_a = (int_cmd *)malloc(sizeof(int_cmd));
-	new_a->i_name = strdup(int_name);
+	/*new_a->i_name = strdup(int_name);*/
+	new_a->i_name = (char *) malloc(sizeof(char)*strlen(int_name)+1);
+	strcpy(new_a->i_name, int_name);
 	new_a->fct = cfun;
 
 	/*c->i_lst[c->int_no++] = new_a;

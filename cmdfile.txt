@@ -11,7 +11,7 @@ play
 cmd3_internal
 1
 I would LOVE to play *
-pick
+drop
 cmd4_internal
 3
 You have picked up the *

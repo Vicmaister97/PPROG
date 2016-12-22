@@ -29,5 +29,6 @@ int isOnObject_intrf(intrf *ic);
 void delete_intrf(intrf *ic);
 void extra_write_message_object_intrf(intrf *ic, char *mg);
 int isOnDoor_intrf(intrf *ic);
+void prepare_to_write_cmd_intrf(intrf *ic);
 
 #endif
