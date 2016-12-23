@@ -84,7 +84,7 @@ struct _Game{
 	CoP *cop;
 };
 
-
+/*no dibuja nada, solo asigna datos de la interfaz*/
 static void prepare_game(Game *gm){
 	int i = 0, col, row, num_obj;
 	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
@@ -110,6 +110,7 @@ static void prepare_game(Game *gm){
 
 }
 
+/*dibuja la interfaz, objetos y demás*/
 static void draw_game(Game *gm){
 
 	if(!gm) return;
@@ -123,7 +124,7 @@ static void draw_game(Game *gm){
 	fflush(stdout);
 
 }
-
+/*
 void cmd1(void *dummy, char *obj, char **str, int n) {
 	world *q = (world *) dummy;
 	printf("cmd1: %s\n", str[0]);
@@ -161,7 +162,7 @@ static void asociemos_cosas(CoP *cop){
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;
 }
-
+*/
 
 Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *cmdnofile){
 	Game *gm;
@@ -177,7 +178,7 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 	gm->ic = create_intrf(fileic);
 	gm->cop = CoP_create(cmdfile);
 
-	asociemos_cosas(gm->cop);
+	/*asociemos_cosas(gm->cop);*/
 
 	prepare_game(gm);
 	draw_game(gm);
@@ -186,6 +187,9 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 	return gm;
 }
 
+/*cuando tratas de entrar en un espacio bloqueado y necesitas
+un objeto que no tienes, te imprime el mensaje de error
+con el nombre del objeto*/
 static void write_object_missing_intrf(Game *gm, int ob_id){
 	char buf[50];
 	char *aux = NULL;
@@ -200,6 +204,7 @@ static void write_object_missing_intrf(Game *gm, int ob_id){
 	return;
 }
 
+/*cuando encuentras un objeto te imprime un mensaje y su nombre*/
 static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 	char buf[50];
 	char *aux = NULL;
@@ -214,6 +219,13 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 	return;	
 }
 
+/*esto es lo que realmente hace que el jugador se mueva.
+tomamos la fila o columna del payer y la aumentamos o disminuimos
+dependiendo de la direccion pasada "ret" y modificamos la struct.
+despues miramos si está encima de un objeto, y entonces
+llamamos a esas tres preciosas funciones que lo borran de la interfaz
+y mueven ahí al jugador, escriben el mensaje de que has encontrado
+un objeto, y cambian su struct para marcar que está en inventario*/
 static void moving_moving(Game *gm, int ret){
 	int new;
 	if(ret == NORTH || ret == SOUTH){
@@ -241,26 +253,36 @@ static void moving_moving(Game *gm, int ret){
 	}
 }
 
+/*esta se supone que debería de leer algo, que lo hace, y utilizar el cop*/
 static void _read_smth(Game *gm){
 	char buf[50];
 	fgets(buf, 50, stdin);
-	/*extra_write_message_object_intrf(gm->ic, buf);*/
-	CoP_execute(c, buf, (void *) gm->w);
+	extra_write_message_object_intrf(gm->ic, buf);
+	/*CoP_execute(c, buf, (void *) gm->w);*/
 }
 
-
+/*este es el bucle turbio en proceso de formarse, el juego en sí*/
+/*ahora mismo pulsndo + sales del bucle eterno, de ahí lo de aux == -43*/
 void play_game(Game *gm){
-	int ret = 0, aux;
+	int ret = 0, aux, sh;
 	
 	if(!gm) return;
 
 	while(1){
+		/*simplemente sitúa el puntero de escritura abajo*/
 		prepare_to_write_cmd_intrf(gm->ic);
-		/*sprintf(buf, "%d %d ", getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)));
-		extra_write_message_object_intrf(gm->ic, buf);*/
+		/*si el jugador está en una puerta (un hueco en el marco del espacio)..*/
 		if(isOnDoor_intrf(gm->ic)){
 			aux = - _read_key();
-			if(aux >= 0){		
+			if(aux == -43)
+				return;
+			/*como he cambiado el signo las flechas son números positivos ahora*/
+			if(aux >= 0){
+				/*si te mueves en la misma dirección que has hecho antes (como que vas
+				más allá de la puerta), intenta moverlo de espacio, y si ret es un 
+				número negativo, quiere decir que te falta un objeto (con id -ret (brillante esto)).
+				si ret es positivo (estoy sudando de cde) te modifica la fila y columna
+				del player a 6,6 (porque me apetece) y vuelve a cargar la interfaz con el nuevo espacio*/		
 				if(ret == aux){
 					ret = movePlayer_world(gm->w, ret);
 					if(ret < 0){
@@ -274,24 +296,37 @@ void play_game(Game *gm){
 						draw_game(gm);
 					}
 				}
+				/*si en una puerta en el norte no pulsas la tecla de arriba sino 
+				la del sur esto te permite salir del hueco ese.
+				no sé por qué, pero esto se necesita*/
+				/*darse cuenta de que NORTH = 0 y SOUTH = 2 (0+2=2..2%2=0) y 
+				EAST = 1 y WEST = 3 ... ya se intuye*/
 				else if(aux != ret && (aux + ret)%2 == 0){
 					ret = movePlayer_intrf(gm->ic, aux);
-					/*printf("%d", ret);*/
 					if(ret >= 0)
 						moving_moving(gm, ret);
 				}	
 			}
+			/*si la tecla pulsada no es una flecha se lee lo que se
+			escribe y se debería llamar al cop en la función _read_smth*/
 			else{
 				prepare_to_write_cmd_intrf(gm->ic);
 				_read_smth(gm);		
 			}
 		}
 
-		else{																
-			ret = movePlayer_intrf(gm->ic, - _read_key());
+		/*más de lo mismo pero cuando no estás en una puerta
+		(mucho menos turbio)*/
+		else{		
+			sh = - _read_key();	
+			if(sh == -43)
+				return;													
+			
 			/*printf("%d", ret);*/
-			if(ret >= 0)
+			if(sh >= 0){
+				ret = movePlayer_intrf(gm->ic, sh);
 				moving_moving(gm, ret);
+			}
 			else{
 				prepare_to_write_cmd_intrf(gm->ic);
 				_read_smth(gm);

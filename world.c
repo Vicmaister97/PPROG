@@ -17,21 +17,6 @@ struct _World{
     int n_objects;
 };
 
-void delete(void *w, char *ob, char **strs, int nstr) { /* EJEMPLO, NO SE BORRAN OBJETOS */
-    World *wd = (world *) w;
-    Interface *intf = getInt(w); /*Por implementar creo*/
-    Object *o = getByName(wd, ob); /*La implemento yo*/
-    if (!o) {
-        printOnWindow(intf, 3, 1, 2, strs[2]); /*Imprime un mensaje en la interfaz*/
-        return;
-    }
-    else {
-        delete_object (o);
-        printOnWindow(intf, 3, 1, 2, strs[0]);
-    }
-}
-
-
 World *create_world(const char *filesp, const char *fileob,const char *fileplayer){
     char buf[100];
     int i = 0, j = 0;

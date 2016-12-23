@@ -56,7 +56,7 @@ return FALSE;
 Space *create_Space(FILE *fp){
 	Space*s=(Space*)malloc (sizeof(Space));
 	int i;
-	char buf[100];
+	char buf[150];
 	if(!s)return NULL;
 	s->id = atoi(fgets(buf, 100, fp));
 
@@ -90,7 +90,7 @@ Space *create_Space(FILE *fp){
 	
 	s->pict = (char **)malloc(sizeof(char*)*s->rows);
 	for(i=0;i<s->rows;i++){
-		fgets(buf, 100, fp);
+		fgets(buf, 150, fp);
 		s->pict[i] = (char *)malloc(sizeof(char)*strlen(buf) + 1);
 		strcpy(s->pict[i], buf);
 	}
