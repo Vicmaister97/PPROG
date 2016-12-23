@@ -32,6 +32,9 @@ struct _intrf{
 	int menucap_col, extracap_row, extracap_col; /*Situation for the captions*/
 	/*Menu info*/
 	int *stats; 
+	char **name_stats;
+	int num_stats;
+	int *limit_stats;
 	int stats_col; /*Calculamos a ojo y es la columna en la que van a estar todas ordenadas*/
 };
 
@@ -116,23 +119,33 @@ void _i_redraw(intrf *ic){
 	return;
 }
 
+static void _print_justif_left(sc_rectangle *win, char *buf, int row, int col){
+	int i = 0;
+	for( ; i <= strlen(buf); i++)
+		win_write_char_at(win, row, col-i, buf[strlen(buf)-i]);
+}
+
 void _cap_redraw(intrf *ic){
+
+	int i = 0;
+	char buf[5];
 
 	win_bgcol(ic->menu, BACKGROUND);
 	win_fgcol(ic->menu, FOREGROUND);
 	win_cls(ic->menu, 0);
 	
-	win_write_line_at(ic->menu, 1, 1, "Strength:    /100");
-	win_write_line_at(ic->menu, 2, 1, "      HP:    /100");
-	win_write_line_at(ic->menu, 3, 1, "   Speed:    /100");
-	win_write_line_at(ic->menu, 4, 1, "  Wisdom:    /100");
-	win_write_line_at(ic->menu, 5, 1, " Defense:    /100");
-	win_write_line_at(ic->menu, 6, 1, "    Luck:    /100");
+	for( ; i < ic->num_stats; i++){
+		_print_justif_left(ic->menu, ic->name_stats[i], i+2, ic->stats_col);
+		win_write_char_at(ic->menu, i+2, ic->stats_col-1, ':');
+		win_write_char_at(ic->menu, i+2, ic->stats_col+3, '/');
+		sprintf(buf, "%d", ic->limit_stats[i]);
+		_print_justif_left(ic->menu, buf, i+2, ic->stats_col+7);
+	}
+	setStats_intrf(ic, ic->stats);
 	win_write_line_at(ic->menu, 10, ic->menucap_col, ic->menu_cap);/*menucap_col ahora 9 porque si 
 	no se mete en mierda y peta en esta funcion*/
 	
 	fflush(stdout);
-	setStats_intrf(ic, ic->stats);
 	return;
 }
 
@@ -176,11 +189,14 @@ intrf *create_intrf(const char* file_intrfc){
 }
 
 /*Sets the menu info and redraws the window*/
-int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_col){
+int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_col, char **name_stats, int num_stats, int *limit_stats){
 	if(!ic) return 0;
 	strcpy(ic->menu_cap, menu_cap);
 	ic->stats = stats; /*?*/
 	ic->stats_col = stats_col;
+	ic->name_stats = name_stats;
+	ic->num_stats = num_stats;
+	ic->limit_stats = limit_stats;
 	ic->menucap_col = cap_col;
 
 	_cap_redraw(ic);
@@ -282,7 +298,7 @@ int setStats_intrf(intrf *ic, int *stats){
 	for( ; i < 6; i++){
 		win_write_line_at(ic->menu, 3, ic->stats_col, " ");
 		sprintf(buf, "%3d", stats[i]);
-		win_write_line_at(ic->menu, i+1, ic->stats_col, buf);
+		win_write_line_at(ic->menu, i+2, ic->stats_col, buf);
 	}
 	return 1;
 }
@@ -361,6 +377,7 @@ void extra_write_message_object_intrf(intrf *ic, char * mg){
 void prepare_to_write_cmd_intrf(intrf *ic){
 	if(!ic) return;
 	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, 3);
+	printf("> ");
 	
 }
 
@@ -381,6 +398,24 @@ void clear_cmd_intrf(intrf *ic){
 void dark_spaces_intrf(intrf *ic){
 	if(!ic) return;
 	win_fgcol(ic->field, BACKGROUND);
+}
+
+void display_inventory(intrf *ic, char *pict, char **names, int num){
+	int i = 0, j = 0;
+	char buf[30];
+	if(!ic || !pict || !names)
+		return;
+
+	win_cls(ic->extra, 1);
+	for( ; i < num; i++){
+		sprintf(buf, "%c  --%s", pict[i], names[i]);
+		if(i+1 < ic->extra_rows)
+			win_write_line_at(ic->extra, i+1, 2, buf);
+		else{
+			win_write_line_at(ic->extra, j+1, 2, buf);
+			j++;
+		}
+	}
 }
 
 void delete_intrf(intrf *ic){

@@ -38,6 +38,9 @@ int getCol_player(Player *p);
 char getSymbol_player(Player *p);
 Status modRow_player(Player *p, int row);
 Status modCol_player(Player *p, int col);
+int *getLimitStats_player(Player *p);
+char **getNameStats_player(Player *p);
+int getNumStats_player(Player *p);
 
 
 #endif

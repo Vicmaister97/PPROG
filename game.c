@@ -117,7 +117,7 @@ static void draw_game(Game *gm){
 
 	if(!gm) return;
 
-	setMenu_intrf(gm->ic, "Hey", getStats_player(getPlayer_world(gm->w)), 10, 2);
+	setMenu_intrf(gm->ic, "Hey", getStats_player(getPlayer_world(gm->w)), 12, 2, getNameStats_player(getPlayer_world(gm->w)), getNumStats_player(getPlayer_world(gm->w)), getLimitStats_player(getPlayer_world(gm->w)));
 	drawField_intrf(gm->ic, 0);
 	addObjects_intrf(gm->ic);
 	setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
@@ -364,6 +364,8 @@ void play_game(Game *gm){
 		(mucho menos turbio)*/
 		else{		
 			sh = - _read_key();	
+			if(sh == -43)
+				display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
 			/*sprintf(buf, "%d", sh);
 			extra_write_message_object_intrf(gm->ic, buf);*/
 			if(sh == -126)

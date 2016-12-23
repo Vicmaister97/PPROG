@@ -14,6 +14,8 @@ struct _Object{
 	char picture;
 	int col;
 	int row;
+	int type;
+	Bool used;
 };
 
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
@@ -79,6 +81,8 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	po->picked = FALSE;
 	po->row = atoi(fgets(buf, 100, fp));
 	po->col = atoi(fgets(buf, 100, fp));
+	po->type = atoi(fgets(buf, 100, fp));
+	po->used = FALSE;
 
 	return po;
 }
@@ -132,6 +136,11 @@ Status drop_object(Object *po){
 
 
 }*/
+
+int getType_object(Object *po){
+	if(!po) return -1;
+	return po->type;
+}
 
 int getId_object (Object *po){ /*Function that returns the Id of a given object*/
 	if (po == NULL)
@@ -204,7 +213,16 @@ int getCol_object (Object *po){
 	return po->col;
 }
 
+/*He decidido, porque quiero y me gusta, que los objetos de tipo 1 
+van a ser los que se puedan usar*/
+Bool isUsable_object(Object *po){
+	if(!po) return FALSE;
+	if(po->type == 1) return TRUE;
+}
+
 Status use_object (Object *po){
-	
+	if(!po) return ERROR;
+	po->used = TRUE;
+	return OK;
 }
 

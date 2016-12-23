@@ -6,6 +6,7 @@ primerob
 1
 x10
 16
+0
 2
 dosob
 segundoob
@@ -13,6 +14,7 @@ segundoob
 1
 y14
 14
+0
 3
 el tresob
 tercerob
@@ -20,6 +22,7 @@ tercerob
 2
 v19
 17
+0
 4
 cuatroob
 cuartoob
@@ -27,6 +30,7 @@ cuartoob
 2
 w11
 13
+0
 5
 quintoob
 cintob
@@ -34,3 +38,4 @@ cintob
 2
 t18
 13
+0
