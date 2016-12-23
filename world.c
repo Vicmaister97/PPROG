@@ -216,4 +216,24 @@ char *getPicturesObjectsInventory_world(World *w){
     return pict;
 }
 
+Object *getObjectByName_wordl(World *w, char *name){
+    int i = 0;
+    if(!w || !name)
+        return NULL;
+    for( ; i < w->n_objects; i++)
+        if(!strcmp(getName_object(w->objects[i]), name))
+            return w->objects[i];
+    return NULL;
+}
+
+Space *getSpaceByName_world(World *w, char *name){
+    int i = 0;
+    if(!w || !name)
+        return NULL;
+    for( ; i < w->n_spaces; i++)
+        if(!strcmp(name_Space(w->spaces[i]), name))
+            return w->spaces[i];
+    return NULL;
+}
+
 
