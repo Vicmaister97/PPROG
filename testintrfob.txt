@@ -1,8 +1,9 @@
 5
 1
-unoob
-primerob
-1 1 1 1 1 1
+Bananito's sword
+It's the sword dropped by Platanito, the Guanche Emperor
+It's not really strong, but it has a really deep meaning for you as it's the sword with which he killed you family
+20 10 0 0 0 10
 1
 x10
 16

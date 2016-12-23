@@ -5,7 +5,7 @@
 
 CC = gcc -std=c99 -pedantic
 CFLAGS = -Wall -g
-EXE = pruebacop pruebagame
+EXE = pruebagame
 
 all : $(EXE)
 
@@ -20,9 +20,9 @@ clean :
 	@echo "# Ha cambiado $<"
 	$(CC) $(CFLAGS) -c $<
 
-$(EXE) : % : %.o cop.o space.o world.o player.o object.o myintrf.o rectangles.o game.o
+$(EXE) : % : %.o cop.o space.o world.o player.o object.o myintrf.o rectangles.o game.o pruebagame.o
 	@echo "#---------------------------"
 	@echo "# Generando $@ "
 	@echo "# Depende de $^"
 	@echo "# Ha cambiado $<"
-	$(CC) $(CFLAGS) -o $@ $@.o cop.o space.o world.o player.o object.o myintrf.o rectangles.o game.o
+	$(CC) $(CFLAGS) -o $@ $@.o cop.o space.o world.o player.o object.o myintrf.o rectangles.o game.o pruebagame.o

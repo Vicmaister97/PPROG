@@ -18,7 +18,7 @@ struct _World{
 };
 
 void delete(void *w, char *ob, char **strs, int nstr) { /* EJEMPLO, NO SE BORRAN OBJETOS */
-    world *wd = (world *) w;
+    World *wd = (world *) w;
     Interface *intf = getInt(w); /*Por implementar creo*/
     Object *o = getByName(wd, ob); /*La implemento yo*/
     if (!o) {
