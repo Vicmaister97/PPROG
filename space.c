@@ -11,13 +11,14 @@ struct _Space{
 	int cols;
 	
 	int neigh[4];/*refers to all four neighbor spaces by their id*/
-	Status locked[4];/*refers to the neighbor spaces
+	Bool locked[4];/*refers to the neighbor spaces
 	if there is some type of of door blocking the path*/	
 	/*North=0
 	East=1
 	South=2
 	West=3
 	*/
+	Bool light[4];
 	int unlock[4];
 
 	char **pict;
@@ -87,6 +88,10 @@ Space *create_Space(FILE *fp){
 	fgets(buf,100,fp);
 	for(i=0; i<4; i++)
 		s->unlock[i] = buf[i]-'0';
+
+	fgets(buf,100,fp);
+	for(i=0; i<4; i++)
+		s->light[i] = buf[i]-'0';
 	
 	s->pict = (char **)malloc(sizeof(char*)*s->rows);
 	for(i=0;i<s->rows;i++){
@@ -120,6 +125,11 @@ Space *create_Space(FILE *fp){
   int getUnlock_Space(Space *s, int dir){
   	if(!s || dir < 0 || dir > 3) return 0;
   	return s->unlock[dir];
+  }
+
+  Bool isDark_Space(Space *s, int dir){
+  	if(!s || dir < 0 || dir > 3) return 0;
+  	return s->light[dir];
   }
 
   void delete_Space(Space *s){

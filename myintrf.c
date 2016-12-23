@@ -360,11 +360,32 @@ void extra_write_message_object_intrf(intrf *ic, char * mg){
 
 void prepare_to_write_cmd_intrf(intrf *ic){
 	if(!ic) return;
+	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, 3);
+	
+}
+
+void clear_cmd_intrf(intrf *ic){
+	char *buf;
+	if(!ic) return;
+
+	buf = (char *) malloc((ic->cols-ic->menu_cols-4)*sizeof(char));
+	memset(buf, ' ', (ic->cols-ic->menu_cols-4));
+	buf[ic->cols-ic->menu_cols-5] = 0;
 	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, 2);
+	printf("%s", buf);
+	fflush(stdout);
+	free(buf);
+	
+}
+
+void dark_spaces_intrf(intrf *ic){
+	if(!ic) return;
+	win_fgcol(ic->field, BACKGROUND);
 }
 
 void delete_intrf(intrf *ic){
 	if(!ic) return;
+	free(ic->obj);
 	free(ic->obj_row);
 	free(ic->obj_col);
 	free(ic->menu_cap);

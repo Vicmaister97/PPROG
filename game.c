@@ -89,6 +89,7 @@ static void prepare_game(Game *gm){
 	int i = 0, col, row, num_obj;
 	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	char obj[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
+	Object **obs = getObjectsSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
 
 	if(!gm) return;
 
@@ -97,9 +98,9 @@ static void prepare_game(Game *gm){
 	num_obj = _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)),gm->w);
 	
 	for( ; i < num_obj; i++){
-	    obj[i] = getPicture_object(getObjectsSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)))[i]);
-	    obj_row[i] = getRow_object(getObjectsSpace_world(gm->w, getWaI_player(getPlayer_world(gm->w)))[i]);
-	    obj_col[i] = getCol_object(getObjectsSpace_world(gm->w, getWaI_player(getPlayer_world(gm->w)))[i]);
+	    obj[i] = getPicture_object(obs[i]);
+	    obj_row[i] = getRow_object(obs[i]);
+	    obj_col[i] = getCol_object(obs[i]);
 	}
 	
   	setPlayData_intrf(gm->ic, getSymbol_player(getPlayer_world(gm->w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w), row ,col , obj_col, obj_row);
@@ -108,6 +109,7 @@ static void prepare_game(Game *gm){
   	col = pictCols_Space(getByID_world(gm->w,getWaI_player(getPlayer_world(gm->w))));
   	setField_intrf(gm->ic, row, col, getPict_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w)))));
 
+  	free(obs);
 }
 
 /*dibuja la interfaz, objetos y demás*/
@@ -190,15 +192,18 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 /*cuando tratas de entrar en un espacio bloqueado y necesitas
 un objeto que no tienes, te imprime el mensaje de error
 con el nombre del objeto*/
-static void write_object_missing_intrf(Game *gm, int ob_id){
+static void write_object_missing_intrf(Game *gm, int ob_id, int flag){
 	char buf[50];
 	char *aux = NULL;
-	aux = getName_object(getByIdObject_world(gm->w, -ob_id));
+	aux = getName_object(getByIdObject_world(gm->w, ob_id));
 	char *name = (char *) malloc(sizeof(char)*strlen(aux)+1);
 	int fin = strlen(aux);
 	strcpy(name, aux);
-	name[fin-1] = ' ';
-	sprintf(buf, "Locked! You need %sto unlock the space", name);
+	name[fin-1] = '\0';
+	if(flag)
+		sprintf(buf, "Locked! You need %s to unlock the space", name);
+	else
+		sprintf(buf, "Dark! You need %s to see smthing", name);
 	extra_write_message_object_intrf(gm->ic, buf);
 	free(name);
 	return;
@@ -212,12 +217,13 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 	char *name = (char *) malloc(sizeof(char)*strlen(aux)+1);
 	int fin = strlen(aux);
 	strcpy(name, aux);
-	name[fin-1] = ' ';
+	name[fin-1] = '\0';
 	sprintf(buf, "You have found %s!", name);
 	extra_write_message_object_intrf(gm->ic, buf);
 	free(name);
 	return;	
 }
+
 
 /*esto es lo que realmente hace que el jugador se mueva.
 tomamos la fila o columna del payer y la aumentamos o disminuimos
@@ -253,18 +259,48 @@ static void moving_moving(Game *gm, int ret){
 	}
 }
 
+/*Para que el jugador entre por la puerta del otro espacio*/
+static void doors_al(Game *gm, int aux){
+	int new_row = getRow_player(getPlayer_world(gm->w));
+	int new_col = getCol_player(getPlayer_world(gm->w));
+	if(aux == NORTH || aux == SOUTH){
+		if(aux == NORTH)
+			new_row += -2 + pictRows_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+		else
+			new_row -= -2 + pictRows_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+	}
+	else if(aux == EAST || aux == WEST){
+		if(aux == WEST)
+			new_col += -2 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+		else
+			new_col -= -2 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+	}
+	modRow_player(getPlayer_world(gm->w), new_row);
+	modCol_player(getPlayer_world(gm->w), new_col);
+}
+
 /*esta se supone que debería de leer algo, que lo hace, y utilizar el cop*/
-static void _read_smth(Game *gm){
+static void _read_smth(Game *gm, char c){
 	char buf[50];
-	fgets(buf, 50, stdin);
+	int i = 0;
+	char aux = c;
+	prepare_to_write_cmd_intrf(gm->ic);
+	while(aux != 10){
+		buf[i] = aux;
+		printf("%c", aux);
+		aux = _read_key();
+		i++;
+	}
+	buf[i] = '\0';
 	extra_write_message_object_intrf(gm->ic, buf);
 	/*CoP_execute(c, buf, (void *) gm->w);*/
 }
 
 /*este es el bucle turbio en proceso de formarse, el juego en sí*/
-/*ahora mismo pulsndo + sales del bucle eterno, de ahí lo de aux == -43*/
+/*ahora mismo pulsndo supr sales del bucle eterno, de ahí lo de aux == -126*/
 void play_game(Game *gm){
 	int ret = 0, aux, sh;
+	/*char buf[50];*/
 	
 	if(!gm) return;
 
@@ -274,7 +310,7 @@ void play_game(Game *gm){
 		/*si el jugador está en una puerta (un hueco en el marco del espacio)..*/
 		if(isOnDoor_intrf(gm->ic)){
 			aux = - _read_key();
-			if(aux == -43)
+			if(aux == -126)
 				return;
 			/*como he cambiado el signo las flechas son números positivos ahora*/
 			if(aux >= 0){
@@ -286,14 +322,22 @@ void play_game(Game *gm){
 				if(ret == aux){
 					ret = movePlayer_world(gm->w, ret);
 					if(ret < 0){
-						write_object_missing_intrf(gm, ret);
+						write_object_missing_intrf(gm, -ret, 1);
 						ret = aux;
 					}
-					else{
-						modRow_player(getPlayer_world(gm->w), 6);
-						modCol_player(getPlayer_world(gm->w), 6);
+					else if(ret > 2){
+						doors_al(gm, aux);
+						write_object_missing_intrf(gm, ret/3, 0);
+						dark_spaces_intrf(gm->ic);
 						prepare_game(gm);
 						draw_game(gm);
+						extra_write_message_object_intrf(gm->ic, desc_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w)))));
+					}
+					else{
+						doors_al(gm, aux);
+						prepare_game(gm);
+						draw_game(gm);
+						extra_write_message_object_intrf(gm->ic, desc_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w)))));
 					}
 				}
 				/*si en una puerta en el norte no pulsas la tecla de arriba sino 
@@ -310,8 +354,9 @@ void play_game(Game *gm){
 			/*si la tecla pulsada no es una flecha se lee lo que se
 			escribe y se debería llamar al cop en la función _read_smth*/
 			else{
-				prepare_to_write_cmd_intrf(gm->ic);
-				_read_smth(gm);		
+				/*prepare_to_write_cmd_intrf(gm->ic);*/
+				clear_cmd_intrf(gm->ic);
+				_read_smth(gm, -aux);		
 			}
 		}
 
@@ -319,7 +364,9 @@ void play_game(Game *gm){
 		(mucho menos turbio)*/
 		else{		
 			sh = - _read_key();	
-			if(sh == -43)
+			/*sprintf(buf, "%d", sh);
+			extra_write_message_object_intrf(gm->ic, buf);*/
+			if(sh == -126)
 				return;													
 			
 			/*printf("%d", ret);*/
@@ -328,11 +375,12 @@ void play_game(Game *gm){
 				moving_moving(gm, ret);
 			}
 			else{
-				prepare_to_write_cmd_intrf(gm->ic);
-				_read_smth(gm);
+				/*prepare_to_write_cmd_intrf(gm->ic);*/
+				clear_cmd_intrf(gm->ic);
+				_read_smth(gm, -sh);
 			}
 		}
-		prepare_to_write_cmd_intrf(gm->ic);
+		/*prepare_to_write_cmd_intrf(gm->ic);*/
 	}	
 }
 
