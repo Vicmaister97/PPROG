@@ -17,6 +17,7 @@ struct _World{
     int n_objects;
 };
 
+
 World *create_world(const char *filesp, const char *fileob,const char *fileplayer){
     char buf[100];
     int i = 0, j = 0;
@@ -107,6 +108,12 @@ int movePlayer_world(World *w, int dir) {
         if(!isInInventory(getByIdObject_world(w, ret)))
             return -ret;
     }
+    if(isDark_Space(curr_sp, dir) == TRUE){
+        ret = getUnlock_Space(curr_sp, dir);
+        modWaI_player(w->player,new_id);
+        if(!isInInventory(getByIdObject_world(w, ret)))
+            return ret*3;
+    }
     if(modWaI_player(w->player,new_id)==ERROR) return 2;
     return 0;
 
@@ -152,10 +159,14 @@ Object *getByIdObject_world(World *w, int id){
 
 Object *getObjectByCoordinates_world(World *w, int row, int col, int sp_id){
     Object **objs = getObjectsSpace_world(w, sp_id);
+    Object *ret = NULL;
     int i = 0;
     for( ; i < _get_num_objects_space(sp_id, w); i++)
         if(getRow_object(objs[i]) == row && getCol_object(objs[i]) == col)
-            return objs[i];
+            ret = objs[i];
+        
+    free(objs);
+    if(ret) return ret;
     return NULL;
 }
 
