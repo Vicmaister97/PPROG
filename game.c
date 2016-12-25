@@ -126,9 +126,9 @@ static void draw_game(Game *gm){
 	fflush(stdout);
 
 }
-/*
-void cmd1(void *dummy, char *obj, char **str, int n) {
-	world *q = (world *) dummy;
+
+/*void fgetId_object(void *dummy, char *obj, char **str, int n) {
+	int num = getId_object ()
 	printf("cmd1: %s\n", str[0]);
 }
 
@@ -153,7 +153,7 @@ void err(void *dummy, char *obj, char **str, int n) {
 }
 
 static void asociemos_cosas(CoP *cop){
-	if (CoP_assoc(cop, "cmd1_internal", cmd1) == -1)
+	if (CoP_assoc(cop, "prueba_internal", fgetId_object) == -1)
 		return;
 	if (CoP_assoc(cop, "cmd2_internal", cmd2) == -1)
 		return;
@@ -163,8 +163,8 @@ static void asociemos_cosas(CoP *cop){
 		return;
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;
-}
-*/
+} */
+
 
 Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *cmdnofile){
 	Game *gm;
@@ -174,7 +174,7 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 		return NULL;
 
 	_term_init();
-	cmdfile = fopen(cmdnofile, "r");
+	cmdfile = fopen("cmdfile.txt", "r");
 	gm = (Game *) malloc(sizeof(Game));
 	gm->w = create_world(filesp, fileob, filepl);
 	gm->ic = create_intrf(fileic);
@@ -389,6 +389,9 @@ void delete_game(Game *gm){
 		delete_world(gm->w);
 	if(gm->ic)
 		delete_intrf(gm->ic);
+	/*if(gm->cop)
+	CoP_delete(gm->cop);
+	*/
 	if(gm)
 		free(gm);
 }
