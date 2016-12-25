@@ -100,6 +100,11 @@ char **getNameStats_player(Player *p){
 	return p->name_stats;
 }
 
+int getNumStats_player(Player *p){
+	if(!p) return -1;
+	return p->num_stats;
+}
+
 Status modName_player( Player* p, char* newName){
 	if(!newName) return ERROR;
 	strcpy( p->name, newName);

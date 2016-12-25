@@ -170,4 +170,70 @@ Object *getObjectByCoordinates_world(World *w, int row, int col, int sp_id){
     return NULL;
 }
 
+int _get_num_objects_inventory(World *w){
+    int i = 0, ret = 0;
+    for( ; i < w->n_objects; i++){
+        if(isInInventory(w->objects[i]))
+            ret++;
+    }
+    return ret;
+}
+
+Object **getObjectsInventory_world(World *w){
+    Object **obs = (Object **) malloc(sizeof(Object *)*_get_num_objects_inventory(w));
+    int i = 0, j = 0;
+    if(!w){
+        free(obs);
+        return NULL;
+    }
+    for( ; i < _get_num_objects_inventory(w); i++)
+        if(isInInventory(w->objects[i])){
+            obs[j] = w->objects[i];
+            j++;
+        }
+    return obs;
+}
+
+char **getNamesObjectsInventory_world(World *w){
+    Object **obs = getObjectsInventory_world(w);
+    char **ret = (char **) malloc(sizeof(char *)*_get_num_objects_inventory(w));
+    int i = 0;
+    for( ; i < _get_num_objects_inventory(w); i++){
+        ret[i] = (char *) malloc(sizeof(char)*strlen(getName_object(obs[i]))+1);
+        strcpy(ret[i], getName_object(obs[i]));
+    }
+    free(obs);
+    return ret;
+}
+
+char *getPicturesObjectsInventory_world(World *w){
+    Object **obs = getObjectsInventory_world(w);
+    char *pict = (char *) malloc(sizeof(char) * _get_num_objects_inventory(w));
+    int i = 0;
+    for( ; i < _get_num_objects_inventory(w); i++)
+        pict[i] = getPicture_object(obs[i]);
+    free(obs);
+    return pict;
+}
+
+Object *getObjectByName_wordl(World *w, char *name){
+    int i = 0;
+    if(!w || !name)
+        return NULL;
+    for( ; i < w->n_objects; i++)
+        if(!strcmp(getName_object(w->objects[i]), name))
+            return w->objects[i];
+    return NULL;
+}
+
+Space *getSpaceByName_world(World *w, char *name){
+    int i = 0;
+    if(!w || !name)
+        return NULL;
+    for( ; i < w->n_spaces; i++)
+        if(!strcmp(name_Space(w->spaces[i]), name))
+            return w->spaces[i];
+    return NULL;
+}
+
 

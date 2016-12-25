@@ -34,5 +34,6 @@ char getPicture_object (Object *po);
 int getRow_object (Object *po);
 int getCol_object (Object *po);
 Status use_object (Object *po);
+int getType_object(Object *po);
 
 #endif

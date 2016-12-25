@@ -21,6 +21,12 @@ Object **getObjectsSpace_world(World *w, int sp_id);
 int _get_num_objects_space(int sp_id, World *w);
 Object *getObjectByCoordinates_world(World *w, int row, int col, int sp_id);
 Object *getByIdObject_world(World *w, int id);
+int _get_num_objects_inventory(World *w);
+Object **getObjectsInventory_world(World *w);
+char **getNamesObjectsInventory_world(World *w);
+char *getPicturesObjectsInventory_world(World *w);
+Object *getObjectByName_wordl(World *w, char *name);
+Space *getSpaceByName_world(World *w, char *name);
 
 #endif
 
