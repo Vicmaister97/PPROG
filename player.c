@@ -115,7 +115,7 @@ Status modName_player( Player* p, char* newName){
 Status modStats_player(Player *p, int *newStats){
 	int i = 0;
 	for( ; i < p->num_stats; i++)
-			p->stats[i] = newStats[i];
+			p->stats[i] += newStats[i];
 	return OK;
 }	
 

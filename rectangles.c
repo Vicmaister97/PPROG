@@ -126,7 +126,7 @@ void win_delete(sc_rectangle *sc) {
  */
 int win_bgcol(sc_rectangle *sc, int col) {
     if (!_is_visible(sc)) return ERROR;
-    if (col >= 40 && col <= 49) sc->bg_color = col;
+    /*if (col >= 40 && col <= 49)*/ sc->bg_color = col;
     return OK;
 }
   
@@ -143,7 +143,7 @@ int win_bgcol(sc_rectangle *sc, int col) {
  */
 int win_fgcol(sc_rectangle *sc, int col) {
     if (!_is_visible(sc)) return ERROR;
-    if (col >= 30 && col <= 39) sc->bg_color = col;
+    /*if (col >= 30 && col <= 40)*/ sc->fg_color = col;
     return OK;
 }
   

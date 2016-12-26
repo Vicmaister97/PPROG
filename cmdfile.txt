@@ -1,27 +1,22 @@
-5
-pick
+4
+dance
 cmd1_internal
+1
+Yes, let’s dance a *
+sing
+cmd2_internal
+1
+Yes, let’s sing * together
+use
+cmd3_internal
+1
+I would LOVE to play *
+drop
+cmd4_internal
 3
 You have picked up the *
 There is no * here!
 You can’t pick up the *: you need more strength
-get
-prueba_internal
-2
-Walabadabu *
-No todos los días son fiesta mendrugo
-dance
-cmd2_internal
-1
-Yes, let’s dance a *
-sing
-cmd3_internal
-1
-Yes, let’s sing * together
-play
-cmd4_internal
-1
-I would LOVE to play *
 error
 error_internal
 1

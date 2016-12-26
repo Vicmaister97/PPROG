@@ -182,11 +182,7 @@ int _get_num_objects_inventory(World *w){
 Object **getObjectsInventory_world(World *w){
     Object **obs = (Object **) malloc(sizeof(Object *)*_get_num_objects_inventory(w));
     int i = 0, j = 0;
-    if(!w){
-        free(obs);
-        return NULL;
-    }
-    for( ; i < _get_num_objects_inventory(w); i++)
+    for( ; i < w->n_objects; i++)
         if(isInInventory(w->objects[i])){
             obs[j] = w->objects[i];
             j++;
@@ -198,9 +194,15 @@ char **getNamesObjectsInventory_world(World *w){
     Object **obs = getObjectsInventory_world(w);
     char **ret = (char **) malloc(sizeof(char *)*_get_num_objects_inventory(w));
     int i = 0;
+    if(!obs){
+        free(ret);
+        return NULL;
+    }
     for( ; i < _get_num_objects_inventory(w); i++){
-        ret[i] = (char *) malloc(sizeof(char)*strlen(getName_object(obs[i]))+1);
-        strcpy(ret[i], getName_object(obs[i]));
+        if(obs[i]){
+            ret[i] = (char *) malloc(sizeof(char)*strlen(getName_object(obs[i]))+1);
+            strcpy(ret[i], getName_object(obs[i]));
+        }
     }
     free(obs);
     return ret;
@@ -223,6 +225,7 @@ Object *getObjectByName_wordl(World *w, char *name){
     for( ; i < w->n_objects; i++)
         if(!strcmp(getName_object(w->objects[i]), name))
             return w->objects[i];
+    
     return NULL;
 }
 

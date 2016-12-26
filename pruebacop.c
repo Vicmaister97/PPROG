@@ -46,10 +46,6 @@ int main() {
 		printf("Error in the first association");
 		return -1;
 	}
-	if (CoP_assoc(c, "prueba_internal", cmd4) == -1){
-		printf("Error in the fourth association");
-		return -1;
-	}
 	if (CoP_assoc(c, "cmd2_internal", cmd2) == -1){
 		printf("Error in the second association");
 		return -1;
@@ -73,9 +69,4 @@ int main() {
 		fgets(buf, 100, stdin);
 		CoP_execute(c, buf, (void *) w);
 	}
-
-	CoP_delete(c);
-	fclose(fp);
-
-	return 0;
 }

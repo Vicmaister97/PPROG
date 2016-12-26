@@ -33,6 +33,7 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	fgets(buf, 100, fp);
 	po->name = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->name, buf);
+	po->name[strlen(po->name)-1] = '\0';
 	fgets(buf, 100, fp);
 	po->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->desc, buf);
@@ -122,7 +123,7 @@ Object* pick_object (Object *po){ /*Function that moves a given object to the In
 }
 
 Status drop_object(Object *po){
-	if(!po) return ERROR;
+	if(!po || !isInInventory(po)) return ERROR;
 	po->location = 0;
 	return OK;
 }

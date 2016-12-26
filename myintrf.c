@@ -395,16 +395,18 @@ void clear_cmd_intrf(intrf *ic){
 	
 }
 
-void dark_spaces_intrf(intrf *ic){
-	if(!ic) return;
-	win_fgcol(ic->field, BACKGROUND);
+int dark_spaces_intrf(intrf *ic){
+	if(!ic) return -1;
+	return win_fgcol(ic->field, BACKGROUND);
 }
 
 void display_inventory(intrf *ic, char *pict, char **names, int num){
 	int i = 0, j = 0;
 	char buf[30];
-	if(!ic || !pict || !names)
+	if(!ic || !pict || !names){
+		win_write_line_at(ic->extra, 2, 2, "nop");
 		return;
+	}
 
 	win_cls(ic->extra, 1);
 	for( ; i < num; i++){
@@ -416,6 +418,12 @@ void display_inventory(intrf *ic, char *pict, char **names, int num){
 			j++;
 		}
 	}
+}
+
+void smth_useful(intrf *ic, int col){
+	if(!ic) return;
+	win_write_char_at(ic->cmd, 0, col, ' ');
+	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, col+2);
 }
 
 void delete_intrf(intrf *ic){

@@ -5,7 +5,6 @@
 #include "myintrf.h"
 #include "world.h"
 #include "cop.h"
-#include "object.h"
 
 
 typedef struct _Game Game;

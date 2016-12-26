@@ -1,10 +1,10 @@
 5
 1
-Platanito's sword
-It's not really strong, but it has a powerful meaning for you
-20 10 0 0 0 20
+a flashlight
+primerob
+0 0 0 0 0 0
 1
-/10
+x10
 16
 0
 2
@@ -16,7 +16,7 @@ y14
 14
 0
 3
-el tresob
+tresob
 tercerob
 3 3 3 3 3 3
 2

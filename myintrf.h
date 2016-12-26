@@ -31,7 +31,8 @@ void extra_write_message_object_intrf(intrf *ic, char *mg);
 int isOnDoor_intrf(intrf *ic);
 void prepare_to_write_cmd_intrf(intrf *ic);
 void clear_cmd_intrf(intrf *ic);
-void dark_spaces_intrf(intrf *ic);
+int dark_spaces_intrf(intrf *ic);
 void display_inventory(intrf *ic, char *pict, char **names, int num);
+void smth_useful(intrf *ic, int col);
 
 #endif
