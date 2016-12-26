@@ -5,7 +5,7 @@
 
 CC = gcc -std=c99 -pedantic
 CFLAGS = -Wall -g
-EXE = pruebagame pruebacop
+EXE = pruebacop
 
 all : $(EXE)
 

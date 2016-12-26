@@ -124,9 +124,11 @@ void CoP_delete(CoP *c){
 	free(c->error->msg);
 	free(c->error);
 
-	for (int i = 0; i < c->int_no; i++)
+	for (int i = 0; i < c->int_no; i++){
 		free(c->i_list[i]->i_name);
-
+		free(c->i_list[i]);
+	}
+	
 	free(c->i_list);
 
 	free(c);
