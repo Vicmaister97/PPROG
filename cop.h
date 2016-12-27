@@ -20,6 +20,7 @@ typedef int (*cmdfun_type)(void *, char *, char **, int n);
 CoP *CoP_create(FILE *cmdfile);
 int CoP_assoc(CoP *c, char *int_name, cmdfun_type cfun);
 int CoP_execute(CoP *c, char *cmd, void *pt);
+void CoP_delete(CoP *c);
 
 
 #endif
