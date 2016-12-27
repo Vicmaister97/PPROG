@@ -127,12 +127,46 @@ static void draw_game(Game *gm){
 }
 
 int cmd1(void *dummy, char *obj, char **str, int n) {
-	return printf("cmd1: %s\n", str[0]);
+	/*Game *gm = (Game *) dummy;
+	system("cd /musica");
+	system("aplay platanito.wav -q");
+	extra_write_message_object_intrf(gm->ic, str[0]);
+	*/
+
+	return 1;
 }
 
 
 int cmd2(void *dummy, char *obj, char **str, int n) {
-	return printf("cmd2: %s\n", str[0]);
+	Game *gm = (Game *) dummy;
+	/*if (strcmp(obj,"space") == 0){
+		int idspace = getWaI_player(gm->w->player);
+		extra_write_message_object_intrf(gm->ic, str[0]);
+		extra_write_message_object_intrf(gm->ic, gm->w->spaces[idspace]->name);
+		extra_write_message_object_intrf(gm->ic, gm->w->spaces[idspace]->long_desc);
+
+		return 1;
+	}*/
+
+	Object *po = getObjectByName_wordl(gm->w, obj); /*Info about an object*/
+	if (po != NULL){
+		extra_write_message_object_intrf(gm->ic, str[0]);
+		extra_write_message_object_intrf(gm->ic, getName_object(po));
+		extra_write_message_object_intrf(gm->ic, getDesc_object(po));
+		int *prop = getProp_object(po);
+		char *prop2 = NULL;
+		for (int i = 0; i < 6; i++)
+			prop2[i] = prop[i];
+
+		extra_write_message_object_intrf(gm->ic, prop2);
+		delete_object(po);
+		free(prop);
+		free(prop2);
+		return 1;
+	}
+
+	extra_write_message_object_intrf(gm->ic, str[1]);
+	return 0;
 }
 
 int use_object_game(Game *gm, Object *po){
@@ -363,6 +397,9 @@ void delete_game(Game *gm){
 		delete_world(gm->w);
 	if(gm->ic)
 		delete_intrf(gm->ic);
+	/*if(gm->cop)
+		CoPDelete(gm->cop);
+		*/
 	if(gm)
 		free(gm);
 }

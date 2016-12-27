@@ -1,27 +1,27 @@
-4
-pick
+5
+play
 cmd1_internal
-3
-You have picked up the *
-There is no * here!
-You can’t pick up the *: you need more strength
-get
-prueba_internal
-2
-Walabadabu *
-No todos los días son fiesta mendrugo
-dance
-cmd2_internal
 1
-Yes, let’s dance a *
-sing
+Yes, let’s play *, it's a hit!
+info_space
+cmd2_internal
+2
+information about *:
+Sorry, there is no information about *
+info_object
+cmd5_internal
+2
+information about *:
+Sorry, there is no information about *
+use
 cmd3_internal
 1
-Yes, let’s sing * together
-play
+You used *
+drop
 cmd4_internal
-1
-I would LOVE to play *
+2
+You dropped *
+Man, you are crazy if you want to drop *
 error
 error_internal
 1
