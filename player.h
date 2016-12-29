@@ -42,5 +42,23 @@ int *getLimitStats_player(Player *p);
 char **getNameStats_player(Player *p);
 int getNumStats_player(Player *p);
 
+/*functions for fight*/
+int getStrength_player(Player *p);
+int getEndurance_player(Player *p);
+int getHp_player(Player *p);
+int getSpeed_player(Player *p);
+int getAgility_player(Player *p);
+int getLuck_player(Player *p);
+Status changeStrength_player(Player*p,int strength);
+Status changeEndurance_player(Player*p,int endurance);
+Status changeHp_player(Player*p,int hp);
+Status changeSpeed_player(Player*p,int speed);
+Status changeAgility_player(Player*p,int agility);
+Status changeLuck_player(Player*p,int luck);
+
+char * getAbilityName_player(Player *p,int n);
+int getDamageAbility_player(Player*p,int n);
+
+
 
 #endif

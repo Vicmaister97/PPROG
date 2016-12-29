@@ -13,3 +13,6 @@ Agility
 100
 Luck
 100
+1
+bola
+10

@@ -7,11 +7,11 @@ and they'll be SPEED HP DMG EVASION
 #ifndef FIGTH_H
 #define FIGTH_H
 
-#include "world.h"	
-#include <stdio.h>
+/*#include "world.h"	
 #include "objects.h"
-#include "space.h"
-#include "player.h"
+#include "space.h"*/
+#include <stdio.h>
+#include "player_fight.h"
 #include <time.h>
 
 typedef struct _Fight Fight;

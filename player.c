@@ -11,6 +11,9 @@ struct _Player{
 	int col;
 	int row;
 	char show;
+	char **abilities;
+	int NumAbilities;
+	int damage_ability[4];
 };
 
 
@@ -58,6 +61,26 @@ Player* create_player(const char * file_player) {
 		strcpy(p->name_stats[i], buf);
 		p->limit_stats[i] = atoi(fgets(buf, 100, f));
 	}
+
+
+	/*nuevo para el fight*/
+	/*para leer el fichero del player, en la linea siguiente a la fila(row) debe aparecer un numero que corrsponde al numero
+	de abilidades, Maximo 4*/
+	p->NumAbilities = atoi(fgets(buf,100,f));
+	if(p->NumAbilities>4){
+		printf("ERROR no puede haber tantas habilidades");
+		return NULL;
+	}
+	/*en la siguiente linea va el nombre de la habilidad y en la de debajo el daño que provoca*/
+	/*cuando se llame en la funcion getAbilityName_player(Player *p,int n) n es 1,2,3 y 4*/
+	p->abilities=(char**)malloc(sizeof(char*)*p->NumAbilities);
+	for(i = 0; i < p->NumAbilities; i++){
+		fgets(buf,100,f);
+		p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
+		strcpy(p->abilities[i], buf);
+
+		p->damage_ability[i]=atoi(fgets(buf,100,f));
+	}
 	
 
 	fclose(f);
@@ -72,6 +95,9 @@ void delete_player( Player* p){
 		if(p->name_stats[i]) free(p->name_stats[i]);
 	if(p->name_stats) free(p->name_stats);
 	if(p->limit_stats) free(p->limit_stats);
+	for(i = 0; i < p->NumAbilities; i++)
+		if(p->abilities[i]) free(p->abilities[i]);
+	free(p->abilities);
 	if( p ) free( p );
 }
 
@@ -145,4 +171,89 @@ Status modCol_player(Player *p,int col){
 char getSymbol_player(Player *p){
 	if(!p)return ' ';
 	return p->show;
+}
+
+
+/*funciones del fight*/
+int getStrength_player(Player *p){
+	if(!p)return ERROR;
+	return p->stats[0];
+}
+int getEndurance_player(Player *p){
+	if(!p)return ERROR;
+	return p->stats[1];
+}
+int getHp_player(Player *p){
+	if(!p)return ERROR;
+	return p->stats[2];
+}
+int getSpeed_player(Player *p){
+	if(!p)return ERROR;
+	return p->stats[3];
+}
+int getAgility_player(Player *p){
+	if(!p)return ERROR;
+	return p->stats[4];
+}
+int getLuck_player(Player *p){
+	if(!p)return ERROR;
+	return p->stats[5];
+}
+
+
+Status changeStrength_player(Player*p,int strength){
+	if(!p)return ERROR;
+	p->stats[0]=p->stats[0]+strength;
+	if(p->stats[0]<=0)p->stats[0]=1;
+	return OK;
+}
+
+Status changeEndurance_player(Player*p,int endurance){
+	if(!p)return ERROR;
+	p->stats[1]=p->stats[1]+endurance;
+	if(p->stats[1]<=0)p->stats[1]=1;
+	return OK;
+}
+
+Status changeHp_player(Player*p,int hp){
+	if(!p)return ERROR;
+	p->stats[2]=p->stats[2]+hp;
+	if(p->stats[2]<=0)p->stats[2]=1;
+	return OK;
+}
+
+Status changeSpeed_player(Player*p,int speed){
+	if(!p)return ERROR;
+	p->stats[3]=p->stats[3]+speed;
+	if(p->stats[3]<=0)p->stats[3]=1;
+	return OK;
+}
+
+Status changeAgility_player(Player*p,int agility){
+	if(!p)return ERROR;
+	p->stats[4]=p->stats[4]+agility;
+	if(p->stats[4]<=0)p->stats[4]=1;
+	return OK;
+}
+
+Status changeLuck_player(Player*p,int luck){
+	if(!p)return ERROR;
+	p->stats[5]=p->stats[5]+luck;
+	if(p->stats[5]<=0)p->stats[5]=1;
+	return OK;
+}
+
+
+
+
+
+char * getAbilityName_player(Player *p,int n){
+ if(!p) return NULL;
+ return p->abilities[n-1];
+
+}
+
+int getDamageAbility_player(Player*p,int n){
+	if(!p||n<0)return ERROR;
+	return p->damage_ability[n-1];
 }

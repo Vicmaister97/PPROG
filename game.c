@@ -150,22 +150,22 @@ int cmd2(void *dummy, char *obj, char **str, int n) {
 
 	Object *po = getObjectByName_wordl(gm->w, obj); /*Info about an object*/
 	if (po != NULL){
-		extra_write_message_object_intrf(gm->ic, str[0]);
-		extra_write_message_object_intrf(gm->ic, getName_object(po));
+		/*extra_write_message_object_intrf(gm->ic, str[0]);
+		extra_write_message_object_intrf(gm->ic, getName_object(po));*/
 		extra_write_message_object_intrf(gm->ic, getDesc_object(po));
 		int *prop = getProp_object(po);
 		char *prop2 = NULL;
 		for (int i = 0; i < 6; i++)
 			prop2[i] = prop[i];
 
-		extra_write_message_object_intrf(gm->ic, prop2);
+		/*extra_write_message_object_intrf(gm->ic, prop2);*/
 		delete_object(po);
 		free(prop);
 		free(prop2);
 		return 1;
 	}
 
-	extra_write_message_object_intrf(gm->ic, str[1]);
+	/*extra_write_message_object_intrf(gm->ic, str[1]);*/
 	return 0;
 }
 

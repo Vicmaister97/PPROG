@@ -1,6 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include "fight.h"
+#include "assert.h"
+#include "fight_a.h"
+
 
 struct _Fight{
     Player* player;
@@ -9,7 +10,7 @@ struct _Fight{
     Player* prefoe;
     int round;
     int finish;
-} Fight;
+} ;
 
 void waitFor (unsigned int secs) {
     unsigned int retTime = time(0) + secs;   // Get finishing time.
@@ -21,11 +22,12 @@ int aleat_num(int inf, int sup)
 	return inf + rand() % (sup - inf + 1);
 }
 
-Player* join_fight(Player* player, Player* foe){
+Fight* join_fight(Player* player, Player* foe){/*mirar a ver si hay que implementar funcion copy en player.c*/
     if (player==NULL ||foe==NULL) return NULL;
     Fight* fight=(Fight*) malloc (sizeof(fight));
     if(fight==NULL) return NULL;
-    fight->player=player;
+    fight->player=player;/*aqui no deberia llamar a create_player,para no tener problemas en cambio de datos ya que has igualado 
+    directamente punteros*/
     fight->preplayer=player;
     fight->foe=foe;
     fight->prefoe=foe;
@@ -50,7 +52,8 @@ Combat:
         goto FightMenu;
     }
     
-
+/*mirar a ver donde sale esto. en que parte de la interfaz*/
+    /*debemos usar el cop*/
 FightMenu:
         printf ("\nWhat are you going to do?\n");
         printf ("1. Fight\n");
@@ -68,13 +71,13 @@ FightMenu:
             goto RunAway;
             break;
          default:
-            printf("%s, did you smoke too many joints?. Please choose a real option\n", get_player_name(fight->player);
+            printf("%s, did you smoke too many joints?. Please choose a real option\n", getName_player(fight->player));
             goto FightMenu;
         }
         
 RunAway:
-    if (get_player_speed(fight->player)>=get_player_speed(fight->foe))
-        change_player_hp(fight->preplayer,get_player_hp(fight->player));
+    if (getSpeed_player(fight->player)>= getSpeed_player(fight->foe))
+        changeHp_player(fight->preplayer,getHp_player(fight->player));
         printf ("\nYou do Santa Claus");
         return fight->preplayer;
     else {
@@ -85,10 +88,10 @@ Fight:
     waitFor(2);
     printf("\e[2J\e[H");/*clear screen*/
     printf ("\nChoose one of your four habilities.\n");
-    printf ("1. %s\n", get_player_hab_name(fight->player, 0));
-    printf ("2. %s\n", get_player_hab_name(fight->player, 1));
-    printf ("3. %s\n", get_player_hab_name(fight->player, 2));
-    printf ("4. %s\n", get_player_hab_name(fight->player, 3));
+    printf ("1. %s\n", getAbilityName_player(fight->player, 0));
+    printf ("2. %s\n", getAbilityName_player(fight->player, 1));
+    printf ("3. %s\n", getAbilityName_player(fight->player, 2));
+    printf ("4. %s\n", getAbilityName_player(fight->player, 3));
     scanf ("\n%d", &whatoption);
     if (whatoption<5 && whatoption>0) goto Resolution;
     else {
@@ -98,7 +101,7 @@ Fight:
 
 Resolution:
     /*[0]: Strength, [1]: Endurance, [2]: HP, [3]: Speed, [4]: Agility, [5]: Luck*/
-    if(playerspeed>=foespeed){
+    if(getSpeed_player(fight->player)>=getSpeed_player(fight->foe)){
         foe=resolve(fight->player, fight->foe, whatoption);
         player=resolve(fight->foe, fight->player, aleat_num(1,4));}
     else{
@@ -107,37 +110,47 @@ Resolution:
 
     goto Combat;
 /*p1 attacks and p2 defends*/    
+
+/*hasta aqui estan player_fight las funciones para stats y mierdas*/
+
+
+
+    
+
+
 Player* resolve(Player* p1,Player* p2, int hab){ 
     int ad;
     int fail;
     double critic;
     int dmg;
     int rand;
-    add_player_stats(p1 ,get_player_hab_name(p1, hab));/*CUIDADO QUE NO DE MENOS DE 0!*/
+    /*no entiendo esta funcion*/
+    /*add_player_stats(p1 ,getAbilityName_player(p1, hab));/*CUIDADO QUE NO DE MENOS DE 0!*/
 
-    ad=get_player_strength(p1)*get_player_strength(p1)/get_player_endurance(p2);
-    rand=aleat_num(0,(get_player_agility(p1)+get_player_agility(p2)));
-    if(rand<=(get_player_agility(p2)/2)) fail=0;
+    ad=getStrength_player(p1)*getStrength_player(p1)/getEndurance_player(p2);
+    rand=aleat_num(0,(getAgility_player(p1)+getAgility_player(p2)));
+    if(rand<=(getAgility_player(p2)/2)) fail=0;
     else fail=1;
-    rand=aleat_num(0,(get_player_luck(p1)+get_player_luck(p2)));
-    if(rand<=(get_player_luck(p2)/3)) critic=0.5;
-    else if (rand>=(2/3*get_player_luck(p1)+get_player_luck(p2))) critic=2;
+    rand=aleat_num(0,(getLuck_player(p1)+getLuck_player(p2)));
+    if(rand<=(getLuck_player(p2)/3)) critic=0.5;
+    else if (rand>=(2/3*getLuck_player(p1)+getLuck_player(p2))) critic=2;
     else critic=1;
     dmg=(int) ad*fail*critic;
-    change_player_hp(p2,-dmg);
-    less_player_stats(p1 ,get_player_hab_name(p1, hab));/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
-    if (get_player_hp(p2)<=0) goto finish;
+    changeHp_player(p2,-dmg);
+    /*no entiendo esta funcion*/
+    /*less_player_stats(p1 ,getAbilityName_player(p1, hab));/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
+    if (getHp_player(p2)<=0) goto finish;
     return p1;
 }
 
 Finish:
-if (get_player_hp(fight->player)<=0){
+if (getHp_player(fight->player)<=0){
     printf ("\nYou failed in your adventure, better luck next time");
     waitFor(10);
     return NULL;
 }
 printf ("\nWell done, you did it!")
-return fight->player;
+return fFight->player;
 
 
 Inventory:
