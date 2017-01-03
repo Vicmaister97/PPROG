@@ -1,0 +1,22 @@
+4
+dance
+cmd1_internal
+1
+Yes, let’s dance a *
+fight
+cmd2_internal
+0
+use
+cmd3_internal
+1
+I would LOVE to play *
+drop
+cmd4_internal
+3
+You have picked up the *
+There is no * here!
+You can’t pick up the *: you need more strength
+error
+error_internal
+1
+Sorry... I don’t know what * is
