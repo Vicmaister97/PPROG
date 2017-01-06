@@ -153,6 +153,7 @@ int CoP_assoc(CoP *c, char *int_name, cmdfun_type cfun) {
 
 
 static ext_cmd *_ext_src(CoP *c, char *name) {
+	if(!name) return NULL;
 	int i;
 		for (i = 0; i < c->ext_no; i++){
 		if (strcmp(name, c->e_lst[i]->cmd) == 0){
@@ -174,16 +175,21 @@ char *_unpack(char *str, char *repl) {
 	}
 	/* allocates the array with enough space for the final string (I add
 	1 to store the final zero) */
-	ret = (char *) malloc(strlen(str) + n*strlen(repl));
+	if(repl)
+		ret = (char *) malloc(strlen(str) + n*strlen(repl) + 1);
+	if(!repl)
+		ret = (char *) malloc(strlen(str) +1);
 	p = ret;
 	while (*str) {
 		if (*str != '*') {
 		*p++ = *str++;
 		}
 		else {
-		strcpy(p, repl);
-		p += strlen(repl);
-		str++;
+			if(repl){
+			strcpy(p, repl);
+			p += strlen(repl);
+			str++;
+			}
 		}
 	}
 	return ret;
