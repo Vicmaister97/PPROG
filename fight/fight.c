@@ -27,9 +27,9 @@ Player* resolve(Player* p1,Player* p2, int hab,Fight *fight){
     double critic;
     int dmg;
     int rand;
-    /*no entiendo esta funcion*/
-    /*add_player_stats(p1 ,getAbilityName_player(p1, hab));/*CUIDADO QUE NO DE MENOS DE 0!*/
-
+    
+    printf("Salud de %s antes del ataque: %d\n",getName_player(p2), getHp_player(p2));
+    add_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0!*/
     ad=getStrength_player(p1)*getStrength_player(p1)/getEndurance_player(p2);
     rand=aleat_num(0,(getAgility_player(p1)+getAgility_player(p2)));
     if(rand<=(getAgility_player(p2)/2)) fail=0;
@@ -38,13 +38,13 @@ Player* resolve(Player* p1,Player* p2, int hab,Fight *fight){
     if(rand<=(getLuck_player(p2)/3)) critic=0.5;
     else if (rand>=(2/3*getLuck_player(p1)+getLuck_player(p2))) critic=2;
     else critic=1;
-    dmg=(int) ad*fail*critic;
-    printf("\nDaño producido %d\n",dmg );
+    dmg=(int) ad*fail*critic/5;
+    printf("Daño producido %d\n",dmg );
     changeHp_player(p2,-dmg);
-    printf("Salud de %s: %d\n",getName_player(p2), getHp_player(p2));
+    printf("\nSalud de %s: %d\n",getName_player(p2), getHp_player(p2));
     /*no entiendo esta funcion*/
-    /*less_player_stats(p1 ,getAbilityName_player(p1, hab));/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
-    if (getHp_player(p2)<=0){
+    less_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
+   if (getHp_player(p2)<=0){
         fight->finish=1;
         goto Finish;
     }
@@ -127,6 +127,7 @@ Fight:
 
 Resolution:
     /*[0]: Strength, [1]: Endurance, [2]: HP, [3]: Speed, [4]: Agility, [5]: Luck*/
+    printf("Valor de whatoption: %d\n",whatoption);
     if(getSpeed_player(fight->player)>=getSpeed_player(fight->foe)){
         if(fight->finish==0) foe=resolve(fight->player, fight->foe, whatoption,fight);
         if(fight->finish==0) player=resolve(fight->foe, fight->player, aleat_num(1,4),fight);}

@@ -57,8 +57,12 @@ Status changeAgility_player(Player*p,int agility);
 Status changeLuck_player(Player*p,int luck);
 
 char * getAbilityName_player(Player *p,int n);
-int getDamageAbility_player(Player*p,int n);
 
+int *getAbilities_player(Player *p,int n);
+
+Status add_player_stats(Player* p,int n);
+Status less_player_stats(Player* p,int n);
+Player *copy_player(Player*p1);
 
 
 #endif
