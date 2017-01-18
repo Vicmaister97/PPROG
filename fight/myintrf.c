@@ -27,6 +27,13 @@ struct _intrf{
 	int num_obj; /*Number of objects*/
 	char *obj; /*Array containing the representations of the ojects*/
 	int *obj_row, *obj_col; /*Arrays containing the coordenates of the objects*/
+	
+	/*Enemy info*/
+	int num_enemy;
+	char *enemy;
+	int *enemy_row,*enemy_col;
+
+
 	/*Captions info*/
 	char *menu_cap, *extra_cap; /*Captions*/
 	int menucap_col, extracap_row, extracap_col; /*Situation for the captions*/
@@ -179,6 +186,7 @@ intrf *create_intrf(const char* file_intrfc){
 	ic->cmd = win_new(rows-3, 1, 1, cols-menu-3, BACKGROUND, FOREGROUND);
 	ic->player = 'p';
 	ic->num_obj = 0;
+	ic->num_enemy=0;
 	ic->menu_cap=(char*)malloc(sizeof(char)*10);/*reservado para uso posterior que no pete*/
 
 	fprintf(stdout, "%c[2J", 27);
@@ -207,7 +215,7 @@ int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_
 }
 
 /*Sets the playfield data (player and objects) but doesn't draw anything*/
-int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row){
+int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row, /*new stuff*/char *enemy,int num_enemy,int *enemy_col,int *enemy_row){
 	int i = 0;
 	if(!ic)	return 0;
 	/*Player*/
@@ -229,6 +237,18 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 		sprintf(buf, "%d %d %d %d %d %d", ic->obj_row[0], ic->obj_col[0], ic->obj_row[1], ic->obj_col[1], ic->obj_row[2], ic->obj_col[2]);
 		extra_write_message_object_intrf(ic, buf);
 	}*/
+
+	/*Enemies*/
+	ic->num_enemy = num_enemy;
+	printf("\nValor de num_enemy: %d",num_enemy);
+	ic->enemy = (char *) malloc(sizeof(int)*num_enemy);
+	ic->enemy_row = (int *) malloc(sizeof(int)*num_enemy);
+	ic->enemy_col = (int *) malloc(sizeof(int)*num_enemy);
+	for( i=0; i < num_enemy; i++){
+		ic->enemy[i] = enemy[i];
+		ic->enemy_col[i] = enemy_col[i];
+		ic->enemy_row[i] = enemy_row[i];
+	}
 	return 1;
 	
 
@@ -245,6 +265,55 @@ int setField_intrf(intrf *ic, int map_rows, int map_cols, char **map){
 	return 1;
 }
 
+
+
+
+/*new enemy Stuff*/
+
+int addEnemies_intrf(intrf *ic){
+	int i = 0;
+
+	if(!ic) return 0;
+
+	for( ; i < ic->num_enemy; i++)
+		win_write_char_at(ic->field, ic->enemy_row[i], ic->enemy_col[i], ic->enemy[i]);
+	
+	return 1;
+
+}
+
+int removeEnemy(intrf *ic, int row, int col){
+	int i = 0;
+	if(!ic) return 0;
+
+	for( ; i < ic->num_enemy; i++)
+		if(ic->enemy_row[i] == row && ic->enemy_col[i] == col){
+			ic->enemy_col[i] *= -1;
+			ic->enemy_row[i] *= -1;
+			/*extra_write_message_object_intrf(ic, "You have found an object!");*/
+		}
+
+	return 1;
+}
+
+int isOnEnemy_intrf(intrf *ic,int *row,int *col){
+	int i = 0;
+	if(!ic) return 0;
+	for( ; i < ic->num_enemy; i++)
+		/*sprintf(buf, "%d %d %d %d ", ic->obj_row[i], ic->obj_col[i], ic->player_row, ic->player_col);
+		extra_write_message_object_intrf(ic, buf);*/
+		if(ic->enemy_row[i] == ic->player_row && ic->enemy_col[i] == ic->player_col){
+				*row=ic->enemy_row[i];
+				*col=ic->enemy_col[i];
+				return 1;
+		}
+			
+	
+	return 0;
+}
+
+
+
 int addObjects_intrf(intrf *ic){
 	int i = 0;
 
@@ -256,6 +325,7 @@ int addObjects_intrf(intrf *ic){
 	return 1;
 
 }
+
 
 /*Removes an object*/
 int removeObject(intrf *ic, int row, int col){
@@ -272,6 +342,8 @@ int removeObject(intrf *ic, int row, int col){
 	return 1;
 }
 
+
+
 int drawField_intrf(intrf *ic, int clear){
 	int i = 0;
 
@@ -283,6 +355,7 @@ int drawField_intrf(intrf *ic, int clear){
 	for( ; i < ic->map_rows; i++)
 		win_write_line_at(ic->field, i+1, 1, ic->map[i]);
 	addObjects_intrf(ic);
+	addEnemies_intrf(ic);
 	win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
 
 	return 1;

@@ -15,10 +15,57 @@ struct _World{
     int n_spaces;
     Object **objects;
     int n_objects;
+    
+    /*new stuff*/
+    Player **enemies;
+    int n_enemies;
 };
 
+/*fight stuff*/
+int _get_num_enemies_space(int sp_id, World *w){
+    int i = 0, cont = 0;
+    if(sp_id < 0) return 0;
+    for( ; i < w->n_enemies; i++)
+        if(getWaI_player(w->enemies[i]) == sp_id)
+            cont ++;
+    return cont;
+}
 
-World *create_world(const char *filesp, const char *fileob,const char *fileplayer){
+Player **getEnemiesSpace_world(World *w, int sp_id){
+    int i = 0, j = 0;
+    Player **e = (Player **)malloc(sizeof(Player *)*_get_num_enemies_space(sp_id,w));
+    if(!w || sp_id <= 0){
+        free(e);
+        
+        return NULL;
+    }
+    for( ; i < 1; i++){
+        if(getWaI_player(w->enemies[i]) == sp_id){
+            e[j] = w->enemies[i];
+            j++;
+        }
+    }
+    return e;
+}
+
+Player * getEnemy_world(World *w,Player *p,int col,int row){
+    int i=0,id;
+    id=getWaI_player(p);
+    Player**aux;
+     aux=getEnemiesSpace_world(w,id);
+    for(i=0;i<_get_num_enemies_space(id,w);i++){
+        if(getCol_player(aux[i])==col){
+            if(getRow_player(aux[i])==row)return aux[i];
+        }
+    }
+    return NULL;
+}
+
+
+
+
+
+World *create_world(const char *filesp, const char *fileob,const char *fileplayer,const char *fileEnemy){
     char buf[100];
     int i = 0, j = 0;
     World *w= (World *) malloc(sizeof(World));
@@ -39,6 +86,21 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
         }*/
     }
     w->player = create_player(fileplayer); 
+    
+
+    /*this is new*/
+    FILE *pfe=fopen(fileEnemy,"r");
+    if(pfe==NULL)printf("\nERRRORRR\n");
+    
+    w->n_enemies=atoi(fgets(buf, 100, pfe));
+    w->enemies = (Player **)malloc(sizeof(Player *)*w->n_enemies);
+    for (i=0;i<w->n_enemies;i++){
+            w->enemies[i] = create_enemy(pfe); 
+    }
+    /*fclose(pfe);*/
+
+    
+    
     /*if(!w->player){
     	for( ; i >= 0; i--)
     		delete_Space( w->spaces[i] );
@@ -50,7 +112,7 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
     }*/
     w->n_objects = atoi(fgets(buf, 100, pfo));
     w->objects = (Object **)malloc(sizeof(Object *)*w->n_objects);
-    for( ; j < w->n_objects; j++){
+    for(i=0 ; j < w->n_objects; j++){
         w->objects[j] = create_object(pfo);
     }
     return w;

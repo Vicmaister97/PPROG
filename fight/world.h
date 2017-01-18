@@ -12,7 +12,7 @@
 
 typedef struct _World World;
 
-World *create_world(const char *filesp, const char *fileob,const char* fileplayer);
+World *create_world(const char *filesp, const char *fileob,const char *fileplayer,const char *fileEnemy);
 void delete_world(World *w);
 Player *getPlayer_world(World *w);
 Space *getByID_world(World *w, int id);
@@ -27,6 +27,12 @@ char **getNamesObjectsInventory_world(World *w);
 char *getPicturesObjectsInventory_world(World *w);
 Object *getObjectByName_wordl(World *w, char *name);
 Space *getSpaceByName_world(World *w, char *name);
+
+
+/*fight stuff*/
+int _get_num_enemies_space(int sp_id, World *w);
+Player **getEnemiesSpace_world(World *w, int sp_id);
+Player * getEnemy_world(World *w,Player *p,int col,int row);
 
 #endif
 

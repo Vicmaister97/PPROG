@@ -114,7 +114,7 @@ static void prepare_game(Game *gm){
 	row = getRow_player(getPlayer_world(gm->w));
 	num_obj = _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)),gm->w);
 	
-	for(i=0 ; i < num_obj; i++){
+	for( ; i < num_obj; i++){
 	    obj[i] = getPicture_object(obs[i]);
 	    obj_row[i] = getRow_object(obs[i]);
 	    obj_col[i] = getCol_object(obs[i]);
@@ -213,7 +213,7 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 	asociemos_cosas(gm->cop);
 	prepare_game(gm);
 	draw_game(gm);
-	
+	printf("\n\n\nHola 6\n");
 
 	fclose(cmdfile);
 	return gm;
@@ -248,9 +248,7 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 
 
 static void moving_moving(Game *gm, int ret){
-	int new,*row,*col;
-	row=(int*)malloc(sizeof(int));
-	col=(int*)malloc(sizeof(int));
+	int new;
 	if(ret == NORTH || ret == SOUTH){
 		new = getRow_player(getPlayer_world(gm->w));
 		if(ret == NORTH)
@@ -274,11 +272,8 @@ static void moving_moving(Game *gm, int ret){
 		extra_write_message_found_object_intrf(gm, getObjectByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w))));
 		pick_object(getObjectByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w))));
 	}
-
-	
-	if(isOnEnemy_intrf(gm->ic,row,col)==1){
+	if(isOnEnemy_intrf(gm->ic)){
 		
-		join_fight(getPlayer_world(gm->w),getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row));
 	}
 }
 

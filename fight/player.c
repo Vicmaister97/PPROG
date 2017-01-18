@@ -12,7 +12,8 @@ struct _Player{
 	int row;
 	char show;
 	char **abilities;
-	int NumAbilities;
+	int NumAbilities; 
+	int id;
 
 	int strength_ability[4];
 	int endurance_ability[4];
@@ -54,7 +55,7 @@ Player* create_player(const char * file_player) {
 	f=fopen(file_player,"r");
 	p->col=atoi(fgets(buf,100,f));
 	p->row=atoi(fgets(buf,100,f));
-
+	p->id=0;
 	p->show=fgetc(f);
 	p->wai = 1;
 
@@ -407,3 +408,83 @@ Player *copy_player(Player*p1){
 	return p;
 	
 }
+
+
+Player* create_enemy(FILE * f) { 
+/*No muy claro qué necesito para crear un jugador*/
+	int i = 0;
+	char buf[100];
+	Player* p = ( Player *) malloc( sizeof( Player ));
+	if( !p ) return NULL;
+	p->name = (char *)malloc(sizeof(char)*10);
+	strcpy( p->name, "default" );
+	if( !p->name ){
+		free( p );
+		return NULL;
+	}
+	
+
+	
+	p->col=atoi(fgets(buf,100,f));
+	p->row=atoi(fgets(buf,100,f));
+	p->wai = atoi(fgets(buf,100,f));
+	p->id = atoi(fgets(buf,100,f));
+	p->show=fgetc(f);
+	
+
+	p->num_stats = atoi(fgets(buf, 100, f));
+	p->stats = (int *) malloc(sizeof(int)*p->num_stats);
+	p->stats = setDefStats(p);
+	p->name_stats = (char **) malloc(sizeof(char *)*p->num_stats);
+	p->limit_stats = (int *) malloc(sizeof(int)*p->num_stats);
+	for(i = 0; i < p->num_stats; i++){
+		fgets(buf, 100, f);
+		p->name_stats[i] = (char *) malloc(sizeof(char)*strlen(buf)+1);
+		strcpy(p->name_stats[i], buf);
+		p->limit_stats[i] = atoi(fgets(buf, 100, f));
+		p->stats[i]=atoi(fgets(buf, 100, f));
+	}
+
+	p->NumAbilities = atoi(fgets(buf,100,f));
+	if(p->NumAbilities>4){
+		printf("ERROR no puede haber tantas habilidades");
+		return NULL;
+	}
+
+	p->abilities=(char**)malloc(sizeof(char*)*4);
+
+	for(i=0;i<4;i++){
+	p->abilities[i]=(char*)malloc(sizeof(char)*20);
+	strcpy (p->abilities[i], "vacio");
+
+
+	p->strength_ability[i]=0;
+	p->endurance_ability[i]=0;
+	p->hp_ability[i]=0;
+	p->speed_ability[i]=0;
+	p->agility_ability[i]=0;
+	p->luck_ability[i]=0;
+	}
+
+
+
+
+	for(i = 0; i < p->NumAbilities; i++){
+		fgets(buf,100,f);
+		free(p->abilities[i]);
+		p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
+		strcpy(p->abilities[i], buf);
+
+		p->strength_ability[i]=atoi(fgets(buf,100,f));
+		p->endurance_ability[i]=atoi(fgets(buf,100,f));
+		p->hp_ability[i]=atoi(fgets(buf,100,f));
+		p->speed_ability[i]=atoi(fgets(buf,100,f));
+		p->agility_ability[i]=atoi(fgets(buf,100,f));
+		p->luck_ability[i]=atoi(fgets(buf,100,f));
+	}
+	fgets(buf,100,f);
+	strcpy(p->name,buf);
+	
+
+	return p;
+}	

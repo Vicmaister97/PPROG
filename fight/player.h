@@ -63,6 +63,8 @@ int *getAbilities_player(Player *p,int n);
 Status add_player_stats(Player* p,int n);
 Status less_player_stats(Player* p,int n);
 Player *copy_player(Player*p1);
+Player* create_enemy(FILE *f);
+int getId_player(Player *p);
 
 
 #endif

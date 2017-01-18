@@ -2,7 +2,7 @@
 #include "game.h"
 
 void main(){
-	Game *gm = create_game("testintrfsp.txt", "testintrfob.txt","testintrf_player.txt", "testintrf_dim.txt", "cmdfile.txt");
+	Game *gm = create_game("testintrfsp.txt", "testintrfob.txt","testintrf_player.txt", "testintrf_dim.txt", "cmdfile.txt","enemy.txt");
 	play_game(gm);
 	delete_game(gm);
 }		

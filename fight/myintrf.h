@@ -18,7 +18,7 @@ typedef struct _intrf intrf;
 
 intrf *create_intrf(const char*);
 int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_col, char **name_stats, int num_stats, int *limit_stats);
-int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row);
+int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row,char *enemy,int num_enemy,int *enemy_col,int *enemy_row);
 int setField_intrf(intrf *ic, int map_rows, int map_cols, char **map);
 int addObjects_intrf(intrf *ic);
 int removeObject(intrf *ic, int row, int col);
@@ -34,5 +34,11 @@ void clear_cmd_intrf(intrf *ic);
 int dark_spaces_intrf(intrf *ic);
 void display_inventory(intrf *ic, char *pict, char **names, int num);
 void smth_useful(intrf *ic, int col);
+
+
+/*enemy functions*/
+int isOnEnemy_intrf(intrf *ic,int *row,int *col);
+int addEnemies_intrf(intrf *ic);
+int removeEnemy(intrf *ic, int row, int col);
 
 #endif
