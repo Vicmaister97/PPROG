@@ -503,6 +503,10 @@ void display_inventory(intrf *ic, char *pict, char **names, int num){
 			h++;
 		}
 	}
+
+	for(i = 0; i < num; i ++)
+		free(names[i]);
+	free(names);
 }
 
 void smth_useful(intrf *ic, int col){

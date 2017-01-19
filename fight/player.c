@@ -43,12 +43,7 @@ Player* create_player(const char * file_player) {
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
-	p->name = (char *)malloc(sizeof(char)*10);
-	strcpy( p->name, "default" );
-	if( !p->name ){
-		free( p );
-		return NULL;
-	}
+	
 	
 
 	FILE *f;
@@ -89,10 +84,7 @@ Player* create_player(const char * file_player) {
 	p->abilities=(char**)malloc(sizeof(char*)*4);
 
 	for(i=0;i<4;i++){
-	p->abilities[i]=(char*)malloc(sizeof(char)*20);
-	strcpy (p->abilities[i], "vacio");
-
-
+	
 	p->strength_ability[i]=0;
 	p->endurance_ability[i]=0;
 	p->hp_ability[i]=0;
@@ -118,7 +110,21 @@ Player* create_player(const char * file_player) {
 		p->agility_ability[i]=atoi(fgets(buf,100,f));
 		p->luck_ability[i]=atoi(fgets(buf,100,f));
 	}
+
+
+	
+	if(p->NumAbilities < 4){
+		i = p->NumAbilities;
+		sprintf(buf, "(null)");
+		while(i < 4){
+			p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
+			strcpy(p->abilities[i], buf);
+			i++;
+		}
+	}
+
 	fgets(buf,100,f);
+	p->name = (char *)malloc(strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
 	
@@ -418,14 +424,6 @@ Player* create_enemy(FILE * f) {
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
-	p->name = (char *)malloc(sizeof(char)*10);
-	strcpy( p->name, "default" );
-	if( !p->name ){
-		free( p );
-		return NULL;
-	}
-	
-
 	
 	p->col=atoi(fgets(buf,100,f));
 	p->row=atoi(fgets(buf,100,f));
@@ -456,10 +454,7 @@ Player* create_enemy(FILE * f) {
 	p->abilities=(char**)malloc(sizeof(char*)*4);
 
 	for(i=0;i<4;i++){
-	p->abilities[i]=(char*)malloc(sizeof(char)*20);
-	strcpy (p->abilities[i], "vacio");
-
-
+	
 	p->strength_ability[i]=0;
 	p->endurance_ability[i]=0;
 	p->hp_ability[i]=0;
@@ -476,6 +471,8 @@ Player* create_enemy(FILE * f) {
 		free(p->abilities[i]);
 		p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
 		strcpy(p->abilities[i], buf);
+		p->abilities[i][strlen(buf)-1] = '\0';
+
 
 		p->strength_ability[i]=atoi(fgets(buf,100,f));
 		p->endurance_ability[i]=atoi(fgets(buf,100,f));
@@ -484,7 +481,19 @@ Player* create_enemy(FILE * f) {
 		p->agility_ability[i]=atoi(fgets(buf,100,f));
 		p->luck_ability[i]=atoi(fgets(buf,100,f));
 	}
+
+	if(p->NumAbilities < 4){
+		i = p->NumAbilities;
+		sprintf(buf, "(null)");
+		while(i < 4){
+			p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
+			strcpy(p->abilities[i], buf);
+			i++;
+		}
+	}
+
 	fgets(buf,100,f);
+	p->name = (char *)malloc(strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
 	

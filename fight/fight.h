@@ -28,6 +28,7 @@ Status nextRound_fight(Fight *fight);
 Player *getPlayer_fight(Fight *fight);
 Player *getFoe_fight(Fight *fight);
 void finish_fight(Fight *fight);
+void delete_fight(Fight *fight);
 
 
 

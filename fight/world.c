@@ -129,6 +129,9 @@ void delete_world(World *w){
         delete_object(w->objects[i]);
     }
     free(w->objects);
+    for(i = 0; i < w->n_enemies; i++)
+        delete_player(w->enemies[i]);
+    free(w->enemies);
 	delete_player(w->player);
 	free(w);
 }
