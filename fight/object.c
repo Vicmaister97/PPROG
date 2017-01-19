@@ -100,7 +100,7 @@ void delete_object (Object *po){ /*Fuction that receives an object and deletes i
 }
 
 Bool isInInventory (Object *po){ /*Function that returns wether an object is in the Inventory of the player or not*/
-	if(po && po->location == -1) return TRUE;
+	if(po && po->picked) return TRUE;
 	return FALSE;
 }
 
@@ -117,14 +117,16 @@ Object* pick_object (Object *po){ /*Function that moves a given object to the In
 	if (po == NULL)
 		return NULL;
 
-	po->location = -1;
+	po->picked = TRUE;
 
 	return po;
 }
 
 Status drop_object(Object *po){
 	if(!po || !isInInventory(po)) return ERROR;
-	po->location = 0;
+	
+	po->picked = FALSE;
+	
 	return OK;
 }
 
