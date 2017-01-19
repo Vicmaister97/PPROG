@@ -1,4 +1,5 @@
 5
+0
 1
 platanito's_sword
 It's not really strong, but it has a powerful meaning for you
@@ -39,3 +40,9 @@ cintob
 t18
 13
 0
+1
+Paco
+Hey friend, what's up?
+0
+&10
+24

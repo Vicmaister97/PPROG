@@ -32,7 +32,6 @@ People* create_people (FILE *fp){ /*Fuction that creates and allocs memory for a
 	People *po = (People *) malloc (sizeof (People));
 	
 	char buf[100];
-	int i = 0;
 	
 	if (po == NULL)
 		return NULL;
@@ -66,7 +65,7 @@ void delete_people (People *po){ /*Fuction that receives a person and deletes it
 
 char* getText_people (People *po){ /*Function that returns the text (conversation) of a given person*/
 	if (po == NULL)
-		return -1;
+		return NULL;
 
 	return po->text;
 }
@@ -299,7 +298,6 @@ van a ser los que se puedan usar*/
 Bool isUsable_object(Object *po){
 	if(!po) return FALSE;
 	if(po->type == 1) return TRUE;
-	if(!po->used) return TRUE;
 	return FALSE;
 }
 

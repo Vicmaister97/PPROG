@@ -15,6 +15,8 @@ struct _World{
     int n_spaces;
     Object **objects;
     int n_objects;
+    People **people;
+    int n_people;
     
     /*new stuff*/
     Player **enemies;
@@ -111,10 +113,13 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
     	return NULL;
     }*/
     w->n_objects = atoi(fgets(buf, 100, pfo));
+    w->n_people = atoi(fgets(buf, 100, pfo));
     w->objects = (Object **)malloc(sizeof(Object *)*w->n_objects);
     for( ; j < w->n_objects; j++){
         w->objects[j] = create_object(pfo);
     }
+    for (j = 0; j < w->n_people; j++)
+        w->people[j] = create_people(pfo);
     return w;
 
 }
@@ -128,7 +133,11 @@ void delete_world(World *w){
     for( i = 0; i < w->n_objects; i++){
         delete_object(w->objects[i]);
     }
+    for( i = 0; i < w->n_people; i++){
+        delete_people(w->people[i]);
+    }
     free(w->objects);
+    free(w->people);
     for(i = 0; i < w->n_enemies; i++)
         delete_player(w->enemies[i]);
     free(w->enemies);
@@ -188,13 +197,24 @@ int movePlayer_world(World *w, int dir) {
 int _get_num_objects_space(int sp_id, World *w){
     int i = 0, cont = 0;
     if(sp_id < 0) return 0;
-    for( ; i < w->n_objects; i++)
+    for( ; i < w->n_objects; i++){
         if(getLocation_object(w->objects[i]) == sp_id && isInInventory(w->objects[i]) == FALSE)
             cont ++;
+    }
     return cont;
 }
 
-Object **getObjectsSpace_world(World *w, int sp_id){
+int _get_num_people_space(int sp_id, World *w){
+    int i = 0, cont = 0;
+    if(sp_id < 0) return 0;
+    for( ; i < w->n_people; i++){
+        if(getLocation_people(w->people[i]) == sp_id)
+            cont ++;
+    }
+    return cont;
+}
+
+Object **getObjectsSpace_world(World *w, int sp_id){ /*CUIDADO PORQUE HAY QUE LIBERAR MEMORIA DESPUES DE LLAMAR A ESTA FUNCION*/
     int i = 0, j = 0;
     Object **obs = (Object **)malloc(sizeof(Object *)*_get_num_objects_space(sp_id,w));
     if(!w || sp_id <= 0){
@@ -210,12 +230,37 @@ Object **getObjectsSpace_world(World *w, int sp_id){
     return obs;
 }
 
-Object *getByIdObject_world(World *w, int id){
+People **getPeopleSpace_world(World *w, int sp_id){ /*CUIDADO PORQUE HAY QUE LIBERAR LA MEMORIA FUERA AL LLAMAR A ESTA FUNCION*/
+    int i = 0, j = 0;
+    People **peo = (People **)malloc(sizeof(People *)*_get_num_people_space(sp_id,w));
+    if(!w || sp_id <= 0){
+        free(peo);
+        return NULL;
+    }
+    for( ; i < w->n_people; i++){
+        if(getLocation_people(w->people[i]) == sp_id){
+            peo[j] = w->people[i];
+            j++;
+        }
+    }
+    return peo;
+}
+
+Object *getByIdObject_world(World *w, int id){ /*Lo mismo del CUIDADO, en todas las de + adelante igual, hay que tener cuidado con esa memoria*/
     int i = 0;
-    Object **obs = w->objects;
     for( ; i < w->n_objects; i++){
-        if(getId_object(obs[i]) == id){
-            return obs[i];
+        if(getId_object(w->objects[i]) == id){
+            return w->objects[i];
+        }
+    }
+    return NULL;
+}
+
+People *getByIdPeople_world(World *w, int id){
+    int i = 0;
+    for( ; i < w->n_objects; i++){
+        if(getId_people(w->people[i]) == id){
+            return w->people[i];
         }
     }
     return NULL;
@@ -228,6 +273,19 @@ Object *getObjectByCoordinates_world(World *w, int row, int col, int sp_id){
     int i = 0;
     for( ; i < _get_num_objects_space(sp_id, w); i++)
         if(getRow_object(objs[i]) == row && getCol_object(objs[i]) == col)
+            ret = objs[i];
+        
+    free(objs);
+    if(ret) return ret;
+    return NULL;
+}
+
+People *getPeopleByCoordinates_world(World *w, int row, int col, int sp_id){
+    People **objs = getPeopleSpace_world(w, sp_id);
+    People *ret = NULL;
+    int i = 0;
+    for( ; i < _get_num_people_space(sp_id, w); i++)
+        if(getRow_people(objs[i]) == row && getCol_People(objs[i]) == col)
             ret = objs[i];
         
     free(objs);
