@@ -22,7 +22,7 @@ int aleat_num(int inf, int sup)
 }
 
 
-Status join_fight(Player* player, Player* foe){/*mirar a ver si hay que implementar funcion copy en player.c*/
+Fight *join_fight(Player* player, Player* foe){/*mirar a ver si hay que implementar funcion copy en player.c*/
     if (player==NULL ||foe==NULL) return ERROR;
     Fight* fight=(Fight*) malloc (sizeof(Fight));
     if(fight==NULL) return ERROR;
@@ -67,40 +67,13 @@ Player *getPlayer_fight(Fight *fight){
     return fight->player;
 }
 
-<<<<<<< HEAD
-/*return fight;*/
-=======
->>>>>>> d3764174fef00c78486f1b4a2f99ee1483ae6f7f
 
 int RunAway(Fight *fight){
     if (getSpeed_player(fight->player)>= getSpeed_player(fight->foe)){
         changeHp_player(fight->preplayer,getHp_player(fight->player));
         return 0;
     }
-<<<<<<< HEAD
-    else {
-        printf ("You are a fat bitch, better go gym next time");
-        goto FightMenu;
-    }
-
-
-Combat:
-
-    while (fight->finish==0){
-        printf("\nRound %d ", fight->round);
-        fight->round++;
-        waitFor(1);
-        printf("\e[2J\e[H");/*clear screen*/
-        printf("\n¡FIGHT!");
-        waitFor(1);
-        printf("\e[2J\e[H");/*clear screen*/
-        
-        goto FightMenu;
-    }
-
-
-    return OK;
-=======
-    return 1;
->>>>>>> d3764174fef00c78486f1b4a2f99ee1483ae6f7f
+    else 
+        return 1;
+ 
 }

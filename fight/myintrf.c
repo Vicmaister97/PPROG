@@ -240,10 +240,7 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 
 	/*Enemies*/
 	ic->num_enemy = num_enemy;
-<<<<<<< HEAD
-	
-=======
->>>>>>> d3764174fef00c78486f1b4a2f99ee1483ae6f7f
+
 	ic->enemy = (char *) malloc(sizeof(int)*num_enemy);
 	ic->enemy_row = (int *) malloc(sizeof(int)*num_enemy);
 	ic->enemy_col = (int *) malloc(sizeof(int)*num_enemy);

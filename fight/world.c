@@ -186,7 +186,7 @@ int _get_num_objects_space(int sp_id, World *w){
     int i = 0, cont = 0;
     if(sp_id < 0) return 0;
     for( ; i < w->n_objects; i++)
-        if(getLocation_object(w->objects[i]) == sp_id)
+        if(getLocation_object(w->objects[i]) == sp_id && isInInventory(w->objects[i]) == FALSE)
             cont ++;
     return cont;
 }
@@ -199,7 +199,7 @@ Object **getObjectsSpace_world(World *w, int sp_id){
         return NULL;
     }
     for( ; i < w->n_objects; i++){
-        if(getLocation_object(w->objects[i]) == sp_id){
+        if(getLocation_object(w->objects[i]) == sp_id && isInInventory(w->objects[i]) == FALSE){
             obs[j] = w->objects[i];
             j++;
         }
