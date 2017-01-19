@@ -308,6 +308,8 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     extra_write_lngmess_intrf(gm->ic, buf);
 
     less_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
+    setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
+    prepare_to_write_cmd_intrf(gm->ic);
     if (getHp_player(p2)<=0){
         finish_fight(fight);
         if (getHp_player(getPlayer_fight(fight))<=0){
