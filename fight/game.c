@@ -497,6 +497,8 @@ void delete_game(Game *gm){
 		delete_world(gm->w);
 	if(gm->ic)
 		delete_intrf(gm->ic);
+	if(gm->cop)
+		CoP_delete(gm->cop);
 	if(gm)
 		free(gm);
 }
