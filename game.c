@@ -87,6 +87,22 @@ struct _Game{
 /*no dibuja nada, solo asigna datos de la interfaz*/
 static void prepare_game(Game *gm){
 	int i = 0, col, row, num_obj;
+
+	/*enemy stuff*/
+	int num_enemy;
+	num_enemy = _get_num_enemies_space(getWaI_player(getPlayer_world(gm->w)),gm->w);
+	int enemy_row[num_enemy];
+	int enemy_col[num_enemy];
+	char enemy[num_enemy];
+	Player **enemies = getEnemiesSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
+
+	for( ; i < num_enemy; i++){
+	    enemy[i] = getSymbol_player(enemies[i]);
+	    enemy_row[i] = getRow_player(enemies[i]);
+	    enemy_col[i] = getCol_player(enemies[i]);
+	}
+
+
 	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	char obj[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	Object **obs = getObjectsSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
@@ -217,7 +233,7 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 	_term_init();
 	cmdfile = fopen(cmdnofile, "r");
 	gm = (Game *) malloc(sizeof(Game));
-	gm->w = create_world(filesp, fileob, filepl);
+	gm->w = create_world(filesp, fileob, filepl,fileEnemy);
 	gm->ic = create_intrf(fileic);
 	gm->cop = CoP_create(cmdfile);
 
@@ -259,7 +275,9 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 
 
 static void moving_moving(Game *gm, int ret){
-	int new;
+	int new, *row, *col;
+	row=(int*)malloc(sizeof(int));
+	col=(int*)malloc(sizeof(int));
 	if(ret == NORTH || ret == SOUTH){
 		new = getRow_player(getPlayer_world(gm->w));
 		if(ret == NORTH)
@@ -283,6 +301,9 @@ static void moving_moving(Game *gm, int ret){
 		extra_write_message_found_object_intrf(gm, getObjectByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w))));
 		pick_object(getObjectByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w))));
 	}
+
+	if(isOnEnemy_intrf(gm->ic,row,col)==1)
+		join_fight(getPlayer_world(gm->w),getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row));
 }
 
 /*Para que el jugador entre por la puerta del otro espacio*/

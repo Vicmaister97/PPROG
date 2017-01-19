@@ -6,7 +6,7 @@
 e6
 Strength
 100
-70
+20
 Endurance
 200
 140

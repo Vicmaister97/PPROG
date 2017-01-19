@@ -109,6 +109,7 @@ Player* create_player(const char * file_player) {
 		free(p->abilities[i]);
 		p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
 		strcpy(p->abilities[i], buf);
+		p->abilities[i][strlen(buf)-1] = '\0';
 
 		p->strength_ability[i]=atoi(fgets(buf,100,f));
 		p->endurance_ability[i]=atoi(fgets(buf,100,f));
@@ -119,6 +120,7 @@ Player* create_player(const char * file_player) {
 	}
 	fgets(buf,100,f);
 	strcpy(p->name,buf);
+	p->name[strlen(buf)-1] = '\0';
 	
 
 	fclose(f);
@@ -484,6 +486,7 @@ Player* create_enemy(FILE * f) {
 	}
 	fgets(buf,100,f);
 	strcpy(p->name,buf);
+	p->name[strlen(buf)-1] = '\0';
 	
 
 	return p;

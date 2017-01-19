@@ -34,6 +34,7 @@ void clear_cmd_intrf(intrf *ic);
 int dark_spaces_intrf(intrf *ic);
 void display_inventory(intrf *ic, char *pict, char **names, int num);
 void smth_useful(intrf *ic, int col);
+void extra_write_lngmess_intrf(intrf *ic, char *mg);
 
 
 /*enemy functions*/

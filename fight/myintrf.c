@@ -144,9 +144,9 @@ void _cap_redraw(intrf *ic){
 	for( ; i < ic->num_stats; i++){
 		_print_justif_left(ic->menu, ic->name_stats[i], i+2, ic->stats_col);
 		win_write_char_at(ic->menu, i+2, ic->stats_col-1, ':');
-		win_write_char_at(ic->menu, i+2, ic->stats_col+3, '/');
+		win_write_char_at(ic->menu, i+2, ic->stats_col+4, '/');
 		sprintf(buf, "%d", ic->limit_stats[i]);
-		_print_justif_left(ic->menu, buf, i+2, ic->stats_col+7);
+		_print_justif_left(ic->menu, buf, i+2, ic->stats_col+8);
 	}
 
 	setStats_intrf(ic, ic->stats);
@@ -240,7 +240,10 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 
 	/*Enemies*/
 	ic->num_enemy = num_enemy;
+<<<<<<< HEAD
 	
+=======
+>>>>>>> d3764174fef00c78486f1b4a2f99ee1483ae6f7f
 	ic->enemy = (char *) malloc(sizeof(int)*num_enemy);
 	ic->enemy_row = (int *) malloc(sizeof(int)*num_enemy);
 	ic->enemy_col = (int *) malloc(sizeof(int)*num_enemy);
@@ -372,7 +375,7 @@ int setStats_intrf(intrf *ic, int *stats){
 	for( ; i < 6; i++){
 		win_write_line_at(ic->menu, 3, ic->stats_col, " ");
 		sprintf(buf, "%3d", stats[i]);
-		win_write_line_at(ic->menu, i+2, ic->stats_col, buf);
+		win_write_line_at(ic->menu, i+2, ic->stats_col+1, buf);
 	}
 	return 1;
 }
@@ -448,10 +451,17 @@ void extra_write_message_object_intrf(intrf *ic, char * mg){
 	/*fprintf(stdout, "%c[%d;%dH", 27, ic->player_row, ic->player_col);*/
 }
 
+void extra_write_lngmess_intrf(intrf *ic, char *mg){
+	if(!ic) return;
+	win_cls(ic->extra, 1);
+	win_write_line_at(ic->extra, 1, 2, mg);
+}
+
 void prepare_to_write_cmd_intrf(intrf *ic){
 	if(!ic) return;
 	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, 3);
 	printf("> ");
+	fflush(stdout);
 	
 }
 
