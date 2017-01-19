@@ -492,9 +492,9 @@ void display_inventory(intrf *ic, char *pict, char **names, int num){
 	win_cls(ic->extra, 1);
 	for( ; i < num; i++){
 		sprintf(buf, "%c  --%s", pict[i], names[i]);
-		if(i+1 < 2)
+		if(i+1 < ic->extra_rows)
 			win_write_line_at(ic->extra, i+1, 2, buf);
-		else if(j+1 < 2){
+		else if(j+1 < ic->extra_rows){
 			win_write_line_at(ic->extra, j+1, 40, buf);
 			j++;
 		}
