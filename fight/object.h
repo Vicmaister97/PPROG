@@ -7,6 +7,14 @@
 typedef struct _Object Object;
 typedef struct _People People;
 
+People* create_people (FILE *fp); /*Fuction that creates and allocs memory for a person, reading from a file*/
+void delete_people (People *po); /*Fuction that receives a person and deletes it, freeing its memory*/
+char* getText_people (People *po); /*Function that returns the text (conversation) of a given person*/
+int getId_people (People *po); /*Function that returns the Id of a given person*/
+int getLocation_people (People *po); /*Function that returns the location of a given person*/
+int getRow_people (People *po);
+int getCol_People (People *po);
+
 
 Object* create_object (FILE *fp); /* Function that creates an object reading from a file */
 void delete_object (Object *po); /* Function that destroys an object */

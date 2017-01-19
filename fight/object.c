@@ -21,12 +21,80 @@ struct _Object{
 struct _People{
 	int id;
 	char *name;
+	char *text;
 	int location;
 	char picture;
 	int col;
 	int row;
-	int type;
 };
+
+People* create_people (FILE *fp){ /*Fuction that creates and allocs memory for a person, reading from a file*/
+	People *po = (People *) malloc (sizeof (People));
+	
+	char buf[100];
+	int i = 0;
+	
+	if (po == NULL)
+		return NULL;
+
+	po->id = atoi(fgets(buf, 100, fp));
+	fgets(buf, 100, fp);
+	po->name = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(po->name, buf);
+	po->name[strlen(po->name)-1] = '\0';
+	fgets(buf, 100, fp);
+	po->text = (char *)malloc(sizeof(char)*(strlen(buf)+1));
+	strcpy(po->text, buf);
+	po->text[strlen(po->text)-1] = '\0';
+	po->location = atoi(fgets(buf, 100, fp));
+	po->picture = fgetc(fp);
+	po->row = atoi(fgets(buf, 100, fp));
+	po->col = atoi(fgets(buf, 100, fp));
+
+	return po;
+}
+
+void delete_people (People *po){ /*Fuction that receives a person and deletes it, freeing its memory*/
+	if (po == NULL)
+		return;
+
+	free (po->name);
+	free (po->text);
+	free (po);
+	return;
+}
+
+char* getText_people (People *po){ /*Function that returns the text (conversation) of a given person*/
+	if (po == NULL)
+		return -1;
+
+	return po->text;
+}
+
+int getId_people (People *po){ /*Function that returns the Id of a given person*/
+	if (po == NULL)
+		return -1;
+
+	return po->id;
+}
+
+int getLocation_people (People *po){ /*Function that returns the location of a given person*/
+	if (po == NULL)
+		return -2;
+
+	return po->location;
+}
+int getRow_people (People *po){
+	if(!po) return -1;
+
+	return po->row;
+}
+
+int getCol_People (People *po){
+	if(!po) return -1;
+
+	return po->col;
+}
 
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
 	Object *po = (Object *) malloc (sizeof (Object));

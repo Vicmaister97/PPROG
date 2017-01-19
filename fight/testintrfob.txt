@@ -6,7 +6,7 @@ It's not really strong, but it has a powerful meaning for you
 1
 /10
 16
-0
+1
 2
 raygun
 A powerful weapon to disintegrate your enemies
@@ -14,7 +14,7 @@ A powerful weapon to disintegrate your enemies
 1
 R14
 14
-0
+1
 3
 energy_shield
 An useful defensive weapon to deal with strong enemies
@@ -22,7 +22,7 @@ An useful defensive weapon to deal with strong enemies
 2
 O19
 17
-0
+1
 4
 cuatroob
 cuartoob
