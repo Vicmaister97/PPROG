@@ -381,6 +381,7 @@ static int fight(Game *gm, int *row, int *col){
 
 static void moving_moving(Game *gm, int ret){
 	int new,*row,*col;
+	char buf[100];
 	row=(int*)malloc(sizeof(int));
 	col=(int*)malloc(sizeof(int));
 	if(ret == NORTH || ret == SOUTH){
@@ -408,8 +409,16 @@ static void moving_moving(Game *gm, int ret){
 	}
 
 	
-	if(isOnEnemy_intrf(gm->ic,row,col)==1)
+	if(isOnEnemy_intrf(gm->ic,row,col)==1){
+		if(getHp_player(getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row))==0){
+			sprintf(buf, "Hey man , dont be a bully , you have already defeated %s ", getName_player(getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row)));
+			extra_write_lngmess_intrf(gm->ic, buf);
+		}
+		else{
 		fight(gm, row, col);
+		}
+	}
+		
 	
 }
 
