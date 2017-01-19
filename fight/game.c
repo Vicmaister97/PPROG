@@ -301,11 +301,14 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     else critic=1;
     dmg=(int) ad*fail*critic/5;
 
+    waitFor(2);
+    sprintf(buf, "Salud de %s antes del ataque: %d ",getName_player(p2), getHp_player(p2));
+    extra_write_lngmess_intrf(gm->ic, buf);
     changeHp_player(p2,-dmg);
     
     /*no entiendo esta funcion*/
-    sprintf(buf, "Salud de %s antes del ataque: %d \n\t\tDaño producido: %d \n\t\tSalud de %s: %d",
-    	getName_player(p2), getHp_player(p2), dmg, getName_player(p2), getHp_player(p2));
+    waitFor(2);
+    sprintf(buf, "\n\t\tDaño producido: %d \n\t\tSalud de %s: %d", dmg, getName_player(p2), getHp_player(p2));
     extra_write_lngmess_intrf(gm->ic, buf);
 
     less_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
