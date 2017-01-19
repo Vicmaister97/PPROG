@@ -299,6 +299,7 @@ van a ser los que se puedan usar*/
 Bool isUsable_object(Object *po){
 	if(!po) return FALSE;
 	if(po->type == 1) return TRUE;
+	if(!po->used) return TRUE;
 	return FALSE;
 }
 

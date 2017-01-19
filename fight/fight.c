@@ -37,6 +37,10 @@ Fight *join_fight(Player* player, Player* foe){/*mirar a ver si hay que implemen
     return fight;
 }
 
+void delete_fight(Fight *fight){
+    if(fight) free(fight);
+}
+
 int getRound_fight(Fight *fight){
     if(!fight) return -1;
     return fight->round;
