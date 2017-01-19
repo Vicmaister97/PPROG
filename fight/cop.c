@@ -245,3 +245,32 @@ int CoP_execute(CoP *c, char *cmd, void *pt) {
 	free (str2);
 	return s;
 }
+
+void CoP_delete(CoP *c){
+	if (c == NULL) return;
+	for (int i = 0; i < c->ext_no; i++){
+ 		free(c->e_lst[i]->cmd);
+ 		free(c->e_lst[i]->internal);
+ 		for (int j = 0; j < c->e_lst[i]->n_msg; j++)
+ 			free(c->e_lst[i]->msg[j]);
+ 		free(c->e_lst[i]->msg);
+ 		free(c->e_lst[i]);
+ 	}
+ 	free(c->e_lst);
+ 
+ 	free(c->error->cmd);
+ 	free(c->error->internal);
+ 	for (int j = 0; j < c->error->n_msg; j++)
+ 			free(c->error->msg[j]);
+ 	free(c->error->msg);
+ 	free(c->error);
+ 
+ 	for (int i = 0; i < c->int_no; i++){
+ 		free(c->i_list[i]->i_name);
+ 		free(c->i_list[i]);
+ 	}
+ 	
+ 	free(c->i_list);
+ 
+ 	free(c);
+ }
