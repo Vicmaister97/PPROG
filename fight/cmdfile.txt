@@ -1,8 +1,7 @@
 4
-dance
+run
 cmd1_internal
-1
-Yes, let’s dance a *
+0
 fight
 cmd2_internal
 0

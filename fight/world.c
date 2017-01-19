@@ -112,7 +112,7 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
     }*/
     w->n_objects = atoi(fgets(buf, 100, pfo));
     w->objects = (Object **)malloc(sizeof(Object *)*w->n_objects);
-    for(i=0 ; j < w->n_objects; j++){
+    for( ; j < w->n_objects; j++){
         w->objects[j] = create_object(pfo);
     }
     return w;

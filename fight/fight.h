@@ -18,17 +18,15 @@ typedef struct _Fight Fight;
 
 
 Fight* join_fight(Player* player, Player* foe);
-Player* resolve(Player* p1,Player* p2, int hab,Fight *fight);
 void waitFor (unsigned int secs);
 int aleat_num(int inf, int sup);
-
-
-
-
-
-
-
-
+int getRound_fight (Fight *fight);
+int RunAway(Fight *fight);
+Bool isFinished_fight(Fight *fight);
+Status nextRound_fight(Fight *fight);
+Player *getPlayer_fight(Fight *fight);
+Player *getFoe_fight(Fight *fight);
+void finish_fight(Fight *fight);
 
 
 

@@ -146,15 +146,27 @@ static void draw_game(Game *gm){
 }
 
 int cmd1(void *dummy, char *obj, char **str, int n) {
-	return printf("cmd1: %s\n", str[0]);
+	return -1;
 }
 
 
 int cmd2(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	Player *p = create_player("enemy1.txt");
-	join_fight(getPlayer_world(gm->w), p);
-	return 1;
+	char buf[100];
+	int opt;
+	sprintf(buf, "Choose one of your abilities.\n\t1. %s\n\t2. %s\n\t3. %s\n\t4. %s", 
+		getAbilityName_player(getPlayer_world(gm->w), 0), getAbilityName_player(getPlayer_world(gm->w), 1),
+		getAbilityName_player(getPlayer_world(gm->w), 2), getAbilityName_player(getPlayer_world(gm->w), 3));
+	extra_write_lngmess_intrf(gm->ic, buf);
+	clear_cmd_intrf(gm->ic);
+	prepare_to_write_cmd_intrf(gm->ic);
+	opt = _read_key();
+	if(opt < 48 || opt > 57){
+		sprintf(buf, "Did you smoke too many joints? Please choose a real option.\n\t%s", buf);
+		extra_write_lngmess_intrf(gm->ic, buf);
+		opt = -_read_key();
+	}
+	return opt;
 }
 
 int use_object_game(Game *gm, Object *po){
@@ -247,6 +259,119 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 }
 
 
+static int _read_smth(Game *gm, char c){
+	char buf[50];
+	int i = 0;
+	char aux = c;
+	prepare_to_write_cmd_intrf(gm->ic);
+	while(aux != 10){
+		if(aux == 127 && i > 0){
+			i--;
+			smth_useful(gm->ic, i+3);
+		}
+		else{
+			buf[i] = aux;
+			printf("%c", aux);
+			i++;
+		}
+		aux = _read_key();
+	}
+	buf[i] = '\0';
+	return CoP_execute(gm->cop, buf, gm);
+}
+
+
+Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){ 
+    int ad;
+    int fail;
+    double critic;
+    int dmg;
+    int rand;
+    char buf[100];
+    
+    add_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0!*/
+    ad=getStrength_player(p1)*getStrength_player(p1)/getEndurance_player(p2);
+    rand=aleat_num(0,(getAgility_player(p1)+getAgility_player(p2)));
+    if(rand<=(getAgility_player(p2)/2)) fail=0;
+    else fail=1;
+    rand=aleat_num(0,(getLuck_player(p1)+getLuck_player(p2)));
+    if(rand<=(getLuck_player(p2)/3)) critic=0.5;
+    else if (rand>=(2/3*getLuck_player(p1)+getLuck_player(p2))) critic=2;
+    else critic=1;
+    dmg=(int) ad*fail*critic/5;
+
+    changeHp_player(p2,-dmg);
+    
+    /*no entiendo esta funcion*/
+    sprintf(buf, "Salud de %s antes del ataque: %d \n\t\tDaño producido: %d \n\t\tSalud de %s: %d",
+    	getName_player(p2), getHp_player(p2), dmg, getName_player(p2), getHp_player(p2));
+    extra_write_lngmess_intrf(gm->ic, buf);
+
+    less_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
+    if (getHp_player(p2)<=0){
+        finish_fight(fight);
+        if (getHp_player(getPlayer_fight(fight))<=0){
+            extra_write_message_object_intrf(gm->ic, "You failed in your adventure, better luck next time");
+            waitFor(10);
+            return NULL;
+        }
+        extra_write_message_object_intrf(gm->ic, "Well done, you did it!");
+        return p2;
+    }
+    return p1;
+
+}
+
+
+
+Fight *resolution(Game *gm, int whatoption, Fight *f){
+    if(getSpeed_player(getPlayer_fight(f))>=getSpeed_player(getFoe_fight(f))){
+        if(isFinished_fight(f)) 
+            resolve(gm, getPlayer_fight(f), getFoe_fight(f), whatoption, f);
+        if(isFinished_fight(f)) 
+            resolve(gm, getFoe_fight(f), getPlayer_fight(f), aleat_num(1,4),f);
+    }
+    else{
+        if(isFinished_fight(f)) 
+            resolve(gm, getFoe_fight(f), getPlayer_fight(f), aleat_num(1,4),f);
+        if(isFinished_fight(f)) 
+            resolve(gm, getPlayer_fight(f), getFoe_fight(f), whatoption,f);
+    }
+    return f;
+
+}
+
+
+
+static int fight(Game *gm, int *row, int *col){
+	char buf[100];
+	int c, ret;
+	Fight *f = join_fight(getPlayer_world(gm->w),getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row));
+	
+	while(isFinished_fight(f)){
+		nextRound_fight(f);
+		waitFor(5);
+		sprintf(buf, "Round %d \n\tWhat are you going to do?\n\t\t-Fight\n\t\t-Run away\n", getRound_fight(f));
+		extra_write_lngmess_intrf(gm->ic, buf);
+		
+
+		clear_cmd_intrf(gm->ic);
+		prepare_to_write_cmd_intrf(gm->ic);
+
+		c = _read_key();
+		ret = _read_smth(gm, c);
+
+		if(ret == -1){
+			if(!RunAway(f))
+				return 0;
+		}
+		else
+			f = resolution(gm, ret%48, f);
+	}
+	return 0;
+}
+
+
 static void moving_moving(Game *gm, int ret){
 	int new,*row,*col;
 	row=(int*)malloc(sizeof(int));
@@ -276,11 +401,11 @@ static void moving_moving(Game *gm, int ret){
 	}
 
 	
-	if(isOnEnemy_intrf(gm->ic,row,col)==1){
+	if(isOnEnemy_intrf(gm->ic,row,col)==1)
+		fight(gm, row, col);
 		
-		join_fight(getPlayer_world(gm->w),getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row));
-	}
 }
+
 
 /*Para que el jugador entre por la puerta del otro espacio*/
 static void doors_al(Game *gm, int aux){
@@ -301,29 +426,6 @@ static void doors_al(Game *gm, int aux){
 	modRow_player(getPlayer_world(gm->w), new_row);
 	modCol_player(getPlayer_world(gm->w), new_col);
 }
-
-static void _read_smth(Game *gm, char c){
-	char buf[50];
-	int i = 0;
-	char aux = c;
-	prepare_to_write_cmd_intrf(gm->ic);
-	while(aux != 10){
-		if(aux == 127 && i > 0){
-			i--;
-			smth_useful(gm->ic, i+3);
-		}
-		else{
-			buf[i] = aux;
-			printf("%c", aux);
-			i++;
-		}
-		aux = _read_key();
-	}
-	buf[i] = '\0';
-	extra_write_message_object_intrf(gm->ic, buf);
-	CoP_execute(gm->cop, buf, gm);
-}
-
 
 void play_game(Game *gm){
 	int ret = 0, aux, sh;
