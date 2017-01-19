@@ -17,7 +17,12 @@ and they'll be SPEED HP DMG EVASION
 typedef struct _Fight Fight;
 
 
+<<<<<<< HEAD
+Status join_fight(Player* player, Player* foe);
+Player* resolve(Player* p1,Player* p2, int hab,Fight *fight);
+=======
 Fight* join_fight(Player* player, Player* foe);
+>>>>>>> d3764174fef00c78486f1b4a2f99ee1483ae6f7f
 void waitFor (unsigned int secs);
 int aleat_num(int inf, int sup);
 int getRound_fight (Fight *fight);
