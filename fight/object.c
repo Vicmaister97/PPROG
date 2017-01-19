@@ -63,6 +63,10 @@ void delete_people (People *po){ /*Fuction that receives a person and deletes it
 	return;
 }
 
+char getPicture_people(People *po){
+	if(!po) return ' ';
+	return po->picture;
+}
 char* getText_people (People *po){ /*Function that returns the text (conversation) of a given person*/
 	if (po == NULL)
 		return NULL;

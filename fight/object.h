@@ -14,6 +14,7 @@ int getId_people (People *po); /*Function that returns the Id of a given person*
 int getLocation_people (People *po); /*Function that returns the location of a given person*/
 int getRow_people (People *po);
 int getCol_People (People *po);
+char getPicture_people(People *po);
 
 
 Object* create_object (FILE *fp); /* Function that creates an object reading from a file */

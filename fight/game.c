@@ -119,8 +119,21 @@ static void prepare_game(Game *gm){
 	    obj_row[i] = getRow_object(obs[i]);
 	    obj_col[i] = getCol_object(obs[i]);
 	}
+
+	/*People*/
+	int num_people = _get_num_people_space(getWaI_player(getPlayer_world(gm->w)),gm->w);
+	int people_row[num_people], people_col[num_people];
+	char ppl[num_people];
+	People **people = getPeopleSpace_world(gm->w, getWaI_player(getPlayer_world(gm->w)));
 	
-  	setPlayData_intrf(gm->ic, getSymbol_player(getPlayer_world(gm->w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w), row ,col , obj_col, obj_row/*enemy*/,enemy,num_enemy,enemy_col,enemy_row);
+	for(i = 0; i < num_people; i++){
+		ppl[i] = getPicture_people(people[i]);
+		people_row[i] = getRow_people(people[i]);
+		people_col[i] = getCol_People(people[i]);
+	}
+
+
+  	setPlayData_intrf(gm->ic, getSymbol_player(getPlayer_world(gm->w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w), row ,col , obj_col, obj_row/*enemy*/,enemy,num_enemy,enemy_col,enemy_row, num_people, people_col, people_row, ppl);
   	
   	row = pictRows_Space(getByID_world(gm->w,getWaI_player(getPlayer_world(gm->w))));
   	col = pictCols_Space(getByID_world(gm->w,getWaI_player(getPlayer_world(gm->w))));
@@ -139,6 +152,7 @@ static void draw_game(Game *gm){
 	addObjects_intrf(gm->ic);
 	/*new stuff*/
 	addEnemies_intrf(gm->ic);
+	addPeople_intrf(gm->ic);
 	setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
 
 	fflush(stdout);
@@ -410,7 +424,9 @@ static void moving_moving(Game *gm, int ret){
 	
 	if(isOnEnemy_intrf(gm->ic,row,col)==1)
 		fight(gm, row, col);
-	
+
+	if(isNearPeople_intrf(gm->ic))
+		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w)))));
 }
 
 

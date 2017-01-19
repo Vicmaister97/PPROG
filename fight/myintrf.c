@@ -33,6 +33,11 @@ struct _intrf{
 	char *enemy;
 	int *enemy_row,*enemy_col;
 
+	/*people info*/
+	int  num_people;
+	char *people;
+	int *people_row, *people_col;
+
 
 	/*Captions info*/
 	char *menu_cap, *extra_cap; /*Captions*/
@@ -187,6 +192,7 @@ intrf *create_intrf(const char* file_intrfc){
 	ic->player = 'p';
 	ic->num_obj = 0;
 	ic->num_enemy=0;
+	ic->num_people = 0;
 	ic->menu_cap=(char*)malloc(sizeof(char)*10);/*reservado para uso posterior que no pete*/
 
 	fprintf(stdout, "%c[2J", 27);
@@ -215,7 +221,7 @@ int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_
 }
 
 /*Sets the playfield data (player and objects) but doesn't draw anything*/
-int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row, /*new stuff*/char *enemy,int num_enemy,int *enemy_col,int *enemy_row){
+int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player_row, int player_col, int *obj_col, int *obj_row, /*new stuff*/char *enemy,int num_enemy,int *enemy_col,int *enemy_row, int num_people, int *people_col, int *people_row, char *people){
 	int i = 0;
 	if(!ic)	return 0;
 	/*Player*/
@@ -249,6 +255,19 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 		ic->enemy_col[i] = enemy_col[i];
 		ic->enemy_row[i] = enemy_row[i];
 	}
+
+	/*People*/
+	ic->num_people = num_people;
+
+	ic->people = (char *) malloc(sizeof(int)*num_people);
+	ic->people_row = (int *)malloc(sizeof(int)*num_people);
+	ic->people_col = (int *)malloc(sizeof(int)*num_people);
+	for(i = 0; i < num_people; i++){
+		ic->people[i] = people[i];
+		ic->people_col[i] = people_col[i];
+		ic->people_row[i] = people_row[i];
+	}
+
 	return 1;
 	
 
@@ -280,6 +299,17 @@ int addEnemies_intrf(intrf *ic){
 	
 	return 1;
 
+}
+
+int addPeople_intrf(intrf *ic){
+	int i = 0;
+
+	if(!ic) return 0;
+
+	for( ; i < ic->num_people; i++)
+		win_write_char_at(ic->field, ic->people_row[i], ic->people_col[i], ic->people[i]);
+
+	return 1;
 }
 
 int removeEnemy(intrf *ic, int row, int col){
@@ -356,6 +386,7 @@ int drawField_intrf(intrf *ic, int clear){
 		win_write_line_at(ic->field, i+1, 1, ic->map[i]);
 	addObjects_intrf(ic);
 	addEnemies_intrf(ic);
+	addPeople_intrf(ic);
 	win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
 
 	return 1;
@@ -515,6 +546,18 @@ void smth_useful(intrf *ic, int col){
 	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, col+2);
 }
 
+int isNearPeople_intrf(intrf *ic){
+	int i = 0;
+	if(!ic) return 0;
+	for( ; i < ic->num_people; i++)
+		if(ic->people_row[i] == ic->player_row+1 || ic->people_row[i] == ic->player_row-1 )
+			if(ic->people_col[i] == ic->player_col+1 || ic->people_col[i] == ic->player_col-1)
+				return 1;
+	return 0;
+
+}
+
+
 void delete_intrf(intrf *ic){
 	if(!ic) return;
 	free(ic->obj);
@@ -528,4 +571,5 @@ void delete_intrf(intrf *ic){
 	win_delete(ic->total);
 	free(ic);
 }
+
 
