@@ -52,7 +52,7 @@ Player * getEnemy_world(World *w,Player *p,int col,int row){
     int i=0,id;
     id=getWaI_player(p);
     Player**aux;
-     aux=getEnemiesSpace_world(w,id);
+    aux=getEnemiesSpace_world(w,id);
     for(i=0;i<_get_num_enemies_space(id,w);i++){
         if(getCol_player(aux[i])==col){
             if(getRow_player(aux[i])==row)return aux[i];

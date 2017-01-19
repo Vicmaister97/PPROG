@@ -141,7 +141,7 @@ void delete_player( Player* p){
 		if(p->name_stats[i]) free(p->name_stats[i]);
 	if(p->name_stats) free(p->name_stats);
 	if(p->limit_stats) free(p->limit_stats);
-	for(i = 0; i < p->NumAbilities; i++)
+	for(i = 0; i < 4; i++)
 		if(p->abilities[i]) free(p->abilities[i]);
 	free(p->abilities);
 	if( p ) free( p );
@@ -324,9 +324,7 @@ int *getAbilities_player(Player *p,int n){
 
 Status add_player_stats(Player* p,int n){
     if(!p||n>4||n<0)return ERROR;
-    int *buff;
-    buff=(int*)malloc(sizeof(int)*6);
-    buff=getAbilities_player(p,n-1);
+    int *buff=getAbilities_player(p,n-1);
     changeStrength_player(p, buff[0]);
     changeEndurance_player(p, buff[1]);
     changeHp_player(p, buff[2]);
@@ -339,9 +337,7 @@ Status add_player_stats(Player* p,int n){
 
 Status less_player_stats(Player* p,int n){
 	if(!p||n>4||n<0)return ERROR;
-    int *buff;
-    buff=(int*)malloc(sizeof(int)*6);
-    buff=getAbilities_player(p,n-1);
+    int *buff=getAbilities_player(p,n-1);
     changeStrength_player(p, -buff[0]);
     changeEndurance_player(p, -buff[1]);
     changeSpeed_player(p, -buff[3]);

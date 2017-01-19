@@ -365,8 +365,10 @@ static int fight(Game *gm, int *row, int *col){
 		ret = _read_smth(gm, c);
 
 		if(ret == -1){
-			if(!RunAway(f))
+			if(!RunAway(f)){
+				delete_fight(f);
 				return 0;
+			}
 		}
 		else
 			f = resolution(gm, ret%48, f);
