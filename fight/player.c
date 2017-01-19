@@ -14,6 +14,7 @@ struct _Player{
 	char **abilities;
 	int NumAbilities; 
 	int id;
+	int num;
 
 	int strength_ability[4];
 	int endurance_ability[4];
@@ -43,7 +44,12 @@ Player* create_player(const char * file_player) {
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
-	
+	p->name = (char *)malloc(sizeof(char)*10);
+	strcpy( p->name, "default" );
+	if( !p->name ){
+		free( p );
+		return NULL;
+	}
 	
 
 	FILE *f;
@@ -53,6 +59,7 @@ Player* create_player(const char * file_player) {
 	p->id=0;
 	p->show=fgetc(f);
 	p->wai = 1;
+	p->num=0;
 
 	p->num_stats = atoi(fgets(buf, 100, f));
 	p->stats = (int *) malloc(sizeof(int)*p->num_stats);
@@ -84,7 +91,10 @@ Player* create_player(const char * file_player) {
 	p->abilities=(char**)malloc(sizeof(char*)*4);
 
 	for(i=0;i<4;i++){
-	
+	p->abilities[i]=(char*)malloc(sizeof(char)*20);
+	strcpy (p->abilities[i], "vacio");
+
+
 	p->strength_ability[i]=0;
 	p->endurance_ability[i]=0;
 	p->hp_ability[i]=0;
@@ -110,21 +120,7 @@ Player* create_player(const char * file_player) {
 		p->agility_ability[i]=atoi(fgets(buf,100,f));
 		p->luck_ability[i]=atoi(fgets(buf,100,f));
 	}
-
-
-	
-	if(p->NumAbilities < 4){
-		i = p->NumAbilities;
-		sprintf(buf, "(null)");
-		while(i < 4){
-			p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
-			strcpy(p->abilities[i], buf);
-			i++;
-		}
-	}
-
 	fgets(buf,100,f);
-	p->name = (char *)malloc(strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
 	
@@ -141,7 +137,7 @@ void delete_player( Player* p){
 		if(p->name_stats[i]) free(p->name_stats[i]);
 	if(p->name_stats) free(p->name_stats);
 	if(p->limit_stats) free(p->limit_stats);
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < p->NumAbilities; i++)
 		if(p->abilities[i]) free(p->abilities[i]);
 	free(p->abilities);
 	if( p ) free( p );
@@ -324,7 +320,9 @@ int *getAbilities_player(Player *p,int n){
 
 Status add_player_stats(Player* p,int n){
     if(!p||n>4||n<0)return ERROR;
-    int *buff=getAbilities_player(p,n-1);
+    int *buff;
+    buff=(int*)malloc(sizeof(int)*6);
+    buff=getAbilities_player(p,n-1);
     changeStrength_player(p, buff[0]);
     changeEndurance_player(p, buff[1]);
     changeHp_player(p, buff[2]);
@@ -337,7 +335,9 @@ Status add_player_stats(Player* p,int n){
 
 Status less_player_stats(Player* p,int n){
 	if(!p||n>4||n<0)return ERROR;
-    int *buff=getAbilities_player(p,n-1);
+    int *buff;
+    buff=(int*)malloc(sizeof(int)*6);
+    buff=getAbilities_player(p,n-1);
     changeStrength_player(p, -buff[0]);
     changeEndurance_player(p, -buff[1]);
     changeSpeed_player(p, -buff[3]);
@@ -420,13 +420,21 @@ Player* create_enemy(FILE * f) {
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
+	p->name = (char *)malloc(sizeof(char)*10);
+	strcpy( p->name, "default" );
+	if( !p->name ){
+		free( p );
+		return NULL;
+	}
+	
+
 	
 	p->col=atoi(fgets(buf,100,f));
 	p->row=atoi(fgets(buf,100,f));
 	p->wai = atoi(fgets(buf,100,f));
 	p->id = atoi(fgets(buf,100,f));
 	p->show=fgetc(f);
-	
+	p->num=0;
 
 	p->num_stats = atoi(fgets(buf, 100, f));
 	p->stats = (int *) malloc(sizeof(int)*p->num_stats);
@@ -450,7 +458,10 @@ Player* create_enemy(FILE * f) {
 	p->abilities=(char**)malloc(sizeof(char*)*4);
 
 	for(i=0;i<4;i++){
-	
+	p->abilities[i]=(char*)malloc(sizeof(char)*20);
+	strcpy (p->abilities[i], "vacio");
+
+
 	p->strength_ability[i]=0;
 	p->endurance_ability[i]=0;
 	p->hp_ability[i]=0;
@@ -467,8 +478,6 @@ Player* create_enemy(FILE * f) {
 		free(p->abilities[i]);
 		p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
 		strcpy(p->abilities[i], buf);
-		p->abilities[i][strlen(buf)-1] = '\0';
-
 
 		p->strength_ability[i]=atoi(fgets(buf,100,f));
 		p->endurance_ability[i]=atoi(fgets(buf,100,f));
@@ -477,22 +486,36 @@ Player* create_enemy(FILE * f) {
 		p->agility_ability[i]=atoi(fgets(buf,100,f));
 		p->luck_ability[i]=atoi(fgets(buf,100,f));
 	}
-
-	if(p->NumAbilities < 4){
-		i = p->NumAbilities;
-		sprintf(buf, "(null)");
-		while(i < 4){
-			p->abilities[i]=(char*)malloc(sizeof(char)*strlen(buf)+1);
-			strcpy(p->abilities[i], buf);
-			i++;
-		}
-	}
-
 	fgets(buf,100,f);
-	p->name = (char *)malloc(strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
 	
 
 	return p;
 }	
+
+int getNum_player(Player *p){
+	if(!p)return ERROR;
+	return p->num;
+}
+Status changeNum_player(Player *p){
+	if(!p)return ERROR;
+	p->num++;
+	return OK;
+}
+Status changeStats_player(Player *p,int num){
+	if(!p||num<0)return ERROR;
+	changeHp_player(p,num);
+        changeStrength_player(p,num);
+        changeEndurance_player(p,num);
+        changeAgility_player(p,num);
+        changeSpeed_player(p,num);
+        changeLuck_player(p,num);
+        return OK;
+}
+Status switchHP_player(Player *p,int new){
+	if(!p||new<0)return ERROR;
+	p->stats[2]=new;
+	if(p->stats[2]>p->limit_stats[2])p->stats[2]=p->limit_stats[2];
+	return OK;
+}

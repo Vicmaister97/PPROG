@@ -170,10 +170,9 @@ int cmd2(void *dummy, char *obj, char **str, int n) {
 }
 
 int use_object_game(Game *gm, Object *po){
-    if(!gm || !po || !isInInventory(po) || !isUsable_object(po)) return 0;
+    if(!gm || !po || !isInInventory(po)) return 0;
     modStats_player(getPlayer_world(gm->w), getProp_object(po));
     setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
-    use_object(po);
     return 1; 
 }
 
@@ -300,15 +299,14 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     else if (rand>=(2/3*getLuck_player(p1)+getLuck_player(p2))) critic=2;
     else critic=1;
     dmg=(int) ad*fail*critic/5;
-
     waitFor(2);
-    sprintf(buf, "Salud de %s antes del ataque: %d ",getName_player(p2), getHp_player(p2));
+    sprintf(buf, "Healthpoints of %s : %d ",getName_player(p2), getHp_player(p2));
     extra_write_lngmess_intrf(gm->ic, buf);
     changeHp_player(p2,-dmg);
     
     /*no entiendo esta funcion*/
     waitFor(2);
-    sprintf(buf, "\n\t\tDaño producido: %d \n\t\tSalud de %s: %d", dmg, getName_player(p2), getHp_player(p2));
+    sprintf(buf, "\n\t\tDamage received: %d \n\t\tHealthpoints of %s: %d", dmg, getName_player(p2), getHp_player(p2));
     extra_write_lngmess_intrf(gm->ic, buf);
 
     less_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
@@ -321,6 +319,9 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
             waitFor(10);
             return NULL;
         }
+        changeNum_player(getPlayer_world(gm->w));
+        changeStats_player(getPlayer_world(gm->w),getNum_player(getPlayer_world(gm->w)));
+        
         extra_write_message_object_intrf(gm->ic, "Well done, you did it!");
         return p2;
     }
@@ -368,21 +369,20 @@ static int fight(Game *gm, int *row, int *col){
 		ret = _read_smth(gm, c);
 
 		if(ret == -1){
-			if(!RunAway(f)){
-				delete_fight(f);
+			if(!RunAway(f))
 				return 0;
-			}
 		}
 		else
 			f = resolution(gm, ret%48, f);
 	}
-	delete_fight(f);
 	return 0;
 }
 
 
 static void moving_moving(Game *gm, int ret){
-	int new,row,col;
+	int new,*row,*col;
+	row=(int*)malloc(sizeof(int));
+	col=(int*)malloc(sizeof(int));
 	if(ret == NORTH || ret == SOUTH){
 		new = getRow_player(getPlayer_world(gm->w));
 		if(ret == NORTH)
@@ -408,8 +408,8 @@ static void moving_moving(Game *gm, int ret){
 	}
 
 	
-	if(isOnEnemy_intrf(gm->ic,&row,&col)==1)
-		fight(gm, &row, &col);
+	if(isOnEnemy_intrf(gm->ic,row,col)==1)
+		fight(gm, row, col);
 	
 }
 
@@ -503,8 +503,6 @@ void delete_game(Game *gm){
 		delete_world(gm->w);
 	if(gm->ic)
 		delete_intrf(gm->ic);
-	if(gm->cop)
-		CoP_delete(gm->cop);
 	if(gm)
 		free(gm);
 }

@@ -9,6 +9,7 @@ struct _Fight{
     Player* prefoe;
     int round;
     int finish;
+
 } ;
 
 void waitFor (unsigned int secs) {
@@ -33,12 +34,10 @@ Fight *join_fight(Player* player, Player* foe){/*mirar a ver si hay que implemen
     fight->prefoe=foe;
     fight->round=0;
     fight->finish=0;
+
+
     
     return fight;
-}
-
-void delete_fight(Fight *fight){
-    if(fight) free(fight);
 }
 
 int getRound_fight(Fight *fight){
@@ -74,7 +73,8 @@ Player *getPlayer_fight(Fight *fight){
 
 int RunAway(Fight *fight){
     if (getSpeed_player(fight->player)>= getSpeed_player(fight->foe)){
-        changeHp_player(fight->preplayer,getHp_player(fight->player));
+
+        switchHP_player(fight->preplayer,getHp_player(fight->player));
         return 0;
     }
     else 
