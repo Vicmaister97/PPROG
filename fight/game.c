@@ -279,6 +279,8 @@ static void moving_moving(Game *gm, int ret){
 	if(isOnEnemy_intrf(gm->ic,row,col)==1){
 		
 		join_fight(getPlayer_world(gm->w),getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row));
+		removeEnemy(gm->ic,*row,*col);
+
 	}
 }
 

@@ -240,7 +240,7 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 
 	/*Enemies*/
 	ic->num_enemy = num_enemy;
-	printf("\nValor de num_enemy: %d",num_enemy);
+	
 	ic->enemy = (char *) malloc(sizeof(int)*num_enemy);
 	ic->enemy_row = (int *) malloc(sizeof(int)*num_enemy);
 	ic->enemy_col = (int *) malloc(sizeof(int)*num_enemy);
@@ -290,7 +290,7 @@ int removeEnemy(intrf *ic, int row, int col){
 		if(ic->enemy_row[i] == row && ic->enemy_col[i] == col){
 			ic->enemy_col[i] *= -1;
 			ic->enemy_row[i] *= -1;
-			/*extra_write_message_object_intrf(ic, "You have found an object!");*/
+			/*extra_write_message_object_intrf(ic, "Prepare to fight!");*/
 		}
 
 	return 1;

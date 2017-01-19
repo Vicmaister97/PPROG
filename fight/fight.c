@@ -62,10 +62,10 @@ return p2;
 }
 
 
-Fight* join_fight(Player* player, Player* foe){/*mirar a ver si hay que implementar funcion copy en player.c*/
-    if (player==NULL ||foe==NULL) return NULL;
+Status join_fight(Player* player, Player* foe){/*mirar a ver si hay que implementar funcion copy en player.c*/
+    if (player==NULL ||foe==NULL) return ERROR;
     Fight* fight=(Fight*) malloc (sizeof(Fight));
-    if(fight==NULL) return NULL;
+    if(fight==NULL) return ERROR;
     fight->player=player;/*aqui no deberia llamar a create_player,para no tener problemas en cambio de datos ya que has igualado 
     directamente punteros*/
     fight->preplayer=player;
@@ -145,7 +145,7 @@ Inventory:
     printf("Nada");
     goto FightMenu; 
 
-return fight;
+/*return fight;*/
 
 RunAway:
     if (getSpeed_player(fight->player)>= getSpeed_player(fight->foe)){
@@ -175,7 +175,7 @@ Combat:
     }
 
 
-    
+    return OK;
 }
     
     
