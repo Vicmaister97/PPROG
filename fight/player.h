@@ -66,5 +66,8 @@ Player *copy_player(Player*p1);
 Player* create_enemy(FILE *f);
 int getId_player(Player *p);
 
-
+int getNum_player(Player *p);
+Status changeNum_player(Player *p);
+Status changeStats_player(Player *p,int num);
+Status switchHP_player(Player *p,int new);
 #endif
