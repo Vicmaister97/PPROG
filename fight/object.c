@@ -18,6 +18,16 @@ struct _Object{
 	Bool used;
 };
 
+struct _People{
+	int id;
+	char *name;
+	int location;
+	char picture;
+	int col;
+	int row;
+	int type;
+};
+
 Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for an object, reading from a file*/
 	Object *po = (Object *) malloc (sizeof (Object));
 	
