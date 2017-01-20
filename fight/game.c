@@ -184,7 +184,7 @@ int cmd2(void *dummy, char *obj, char **str, int n) {
 }
 
 int use_object_game(Game *gm, Object *po){
-    if(!gm || !po || !isInInventory(po)) return 0;
+    if(!gm || !po || !isInInventory(po) || !isUsable_object(po)) return 0;
     modStats_player(getPlayer_world(gm->w), getProp_object(po));
     setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
     return 1; 
@@ -534,12 +534,7 @@ void play_game(Game *gm){
 		}
 
 		else{		
-			sh = - _read_key();	
-			if(sh == -43)
-				display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
-	
-			if(sh == -126)
-				return;													
+			sh = - _read_key();														
 			
 			if(sh >= 0){
 				ret = movePlayer_intrf(gm->ic, sh);
