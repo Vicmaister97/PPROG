@@ -1,4 +1,4 @@
-4
+6
 run
 cmd1_internal
 0
@@ -15,6 +15,12 @@ cmd4_internal
 You have picked up the *
 There is no * here!
 You can’t pick up the *: you need more strength
+inventory
+cmd5_internal
+0
+exit
+cmd6_internal
+0
 error
 error_internal
 1
