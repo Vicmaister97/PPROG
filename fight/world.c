@@ -69,13 +69,13 @@ Player * getEnemy_world(World *w,Player *p,int col,int row){
 
 World *create_world(const char *filesp, const char *fileob,const char *fileplayer,const char *fileEnemy){
     char buf[100];
-    int i = 0, j = 0;
+    int i = 0, j = 0,a;
     World *w= (World *) malloc(sizeof(World));
     FILE *pfs = fopen(filesp, "r");
     FILE *pfo = fopen(fileob, "r");
     w->n_spaces = atoi(fgets(buf, 100, pfs));
     w->spaces = (Space **)malloc(sizeof(Space *)*w->n_spaces);
-    for( ; i < w->n_spaces; i++){
+    for( i=0; i < w->n_spaces; i++){
         w->spaces[i] = create_Space(pfs);
         /*if(!w->spaces[i]){
         	for( ; i >= 0; i--)
@@ -112,14 +112,23 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
         fclose(pfo);
     	return NULL;
     }*/
+        
     w->n_objects = atoi(fgets(buf, 100, pfo));
+  
     w->n_people = atoi(fgets(buf, 100, pfo));
+    /*a=atoi(fgets(buf, 100, pfo));*/
+    
     w->objects = (Object **)malloc(sizeof(Object *)*w->n_objects);
-    for( ; j < w->n_objects; j++){
+   
+    for( j=0; j < w->n_objects; j++){        
         w->objects[j] = create_object(pfo);
     }
-    for (j = 0; j < w->n_people; j++)
+
+    w->people=(People **)malloc(sizeof(People*)*1);
+    
+    for (j = 0; j < 1; j++){
         w->people[j] = create_people(pfo);
+    }
     return w;
 
 }

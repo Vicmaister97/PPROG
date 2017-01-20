@@ -43,6 +43,6 @@ int addEnemies_intrf(intrf *ic);
 int removeEnemy(intrf *ic, int row, int col);
 
 int addPeople_intrf(intrf *ic);
-int isNearPeople_intrf(intrf *ic);
+int isNearPeople_intrf(intrf *ic,int *row,int *col);
 
 #endif

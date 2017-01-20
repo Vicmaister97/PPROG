@@ -193,25 +193,13 @@ int use_object_game(Game *gm, Object *po){
 
 int cmd3(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	use_object_game(gm, getObjectByName_wordl(gm->w, obj));
-	return 1;
+	return use_object_game(gm, getObjectByName_wordl(gm->w, obj));
 }
 
 
 int cmd4(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
-	return 1;
-}
-
-int cmd5(void *dummy, char *obj, char **str, int n){
-	Game *gm = (Game *) dummy;
-	display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
-	return 1;
-}
-
-int cmd6(void *dummy, char *obj, char **str, int n){
-	return 0;
+	return drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
 }
 
 
@@ -227,10 +215,6 @@ static void asociemos_cosas(CoP *cop){
 	if (CoP_assoc(cop, "cmd3_internal", cmd3) == -1)
 		return;
 	if (CoP_assoc(cop, "cmd4_internal", cmd4) == -1)
-		return;
-	if (CoP_assoc(cop, "cmd5_internal", cmd5) == -1)
-		return;
-	if (CoP_assoc(cop, "cmd6_internal", cmd6) == -1)
 		return;
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;
@@ -446,11 +430,18 @@ static void moving_moving(Game *gm, int ret){
 		}
 		else{
 		fight(gm, row, col);
-
-	if(isNearPeople_intrf(gm->ic))
-		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w)))));
 		}
 	}
+
+
+	if(isNearPeople_intrf(gm->ic,row,col))
+		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, *row, *col, getWaI_player(getPlayer_world(gm->w)))));
+
+		
+	
+		
+	
+
 }
 
 
@@ -475,7 +466,7 @@ static void doors_al(Game *gm, int aux){
 }
 
 void play_game(Game *gm){
-	int ret = 0, aux, sh, smt;
+	int ret = 0, aux, sh;
 	
 	if(!gm) return;
 
@@ -483,6 +474,8 @@ void play_game(Game *gm){
 		prepare_to_write_cmd_intrf(gm->ic);
 		if(isOnDoor_intrf(gm->ic)){
 			aux = - _read_key();
+			if(aux == -126)
+				return;
 			if(aux >= 0){
 				if(ret == aux){
 					ret = movePlayer_world(gm->w, ret);
@@ -511,21 +504,25 @@ void play_game(Game *gm){
 			}
 			else{
 				clear_cmd_intrf(gm->ic);
-				smt = _read_smth(gm, -aux);	
-				if(!smt) return;	
+				_read_smth(gm, -aux);		
 			}
 		}
 
 		else{		
-			sh = - _read_key();											
+			sh = - _read_key();	
+			if(sh == -43)
+				display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
+	
+			if(sh == -126)
+				return;													
+			
 			if(sh >= 0){
 				ret = movePlayer_intrf(gm->ic, sh);
 				moving_moving(gm, ret);
 			}
 			else{
 				clear_cmd_intrf(gm->ic);
-				smt = _read_smth(gm, -sh);
-				if(!smt) return;
+				_read_smth(gm, -sh);
 			}
 		}
 	}	
