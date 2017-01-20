@@ -81,9 +81,9 @@ Space *create_Space(FILE *fp){
 	for(i=0; i<4; i++)
 		s->locked[i] = buf[i]-'0';
 
-	fgets(buf,100,fp);
+	
 	for(i=0; i<4; i++)
-		s->neigh[i] = buf[i]-'0';
+		s->neigh[i] = atoi(fgets(buf,100,fp));
 	
 	fgets(buf,100,fp);
 	for(i=0; i<4; i++)
