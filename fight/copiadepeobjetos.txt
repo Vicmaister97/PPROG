@@ -5,8 +5,8 @@ platanito's_sword
 It's not really strong, but it has a powerful meaning for you
 5 2 10 0 0 5
 1
-/8
-13
+/9
+15
 1
 2
 key1
@@ -25,14 +25,21 @@ o10
 5
 1
 4
+energetic_bar
+I hate the Lurunsdaluntes
+0 0 2 5 5 0
+10
++27
+59
+5
 IronMan_chest
 Feel like a fucking superhero bro
 0 15 10 -5 0 0
 11
-IX
-X
+I36
+48
 1
-5
+6
 REdbull
 Energy Asshole!
 0 0 0 2 2 0
@@ -40,14 +47,21 @@ Energy Asshole!
 o10
 6
 1
-6
+7
 potion1
 Take a breath man
 0 0 10 0 0 0
 20
-pX
-X
+p3
+110
 1
+8
+porro1
+Smokeeeeee
+2 2 2 2 2 2
+21
+L21
+47
 
 X
 raygun
@@ -73,22 +87,22 @@ Hey friend, what's up?
 17
 2
 Marta
-Wanna have a good time cuttie?
+Marta: Wanna have a good time cuttie?
 9
-&X
-X
+&20
+101
 3
 Oscanario
 I have very cheap tobacco from my islands my friend
 10
-&X
-X
+&9
+15
 4
 Victor1
 Hey man, thanks for helping me. Man, I hate platanito's oppression, let's join our forces to kick his ass! I'm a pilot
 11
-VX
-X
+V26
+45
 5
 Victor2
 I know where we should go, trust me hahaha
@@ -99,8 +113,59 @@ V11
 JointLand
 Welcome to JointLand, the only world in the hole universe made entirely of marihuana. Enjoy your stay, peace and love
 20
-TX
-X
+T5
+52
 7
 Yujian
-YuJian Hong Hang Hung: harvest the 
+YuJian Hong Hang Hung: harvest the land, smoke and have fun, plant the seed, light a spliff
+20
+&7
+44
+8
+camino
+Bill: The city, Kingston Town, capital of JointLand, is at the west(left dude, are you from teleco?)
+20
+<18
+51
+9
+obrero
+Worker: I hate doing something
+20
+W20
+100
+10
+hippie1
+Rastaman: I'm as green as a field bro :)
+20
+=22
+5
+11
+padreblanca
+Rebel: We are fed up with the Guanche Emperor, the Evil Platanito. There is a base near here... maybe you could free us
+21
+F9
+74
+12
+blanca
+Blanca: If you attempt to fight against those assholes, I will follow you
+21
+b9
+76
+13
+porreta1
+Barney: Think of me like Yoda, but instead of being little and green I wear suits and I’m awesome. I’m your bro—I’m Broda!
+21
+=18
+45
+14
+porreta2
+Ted: Im as high as King Kong climbing the Empire State broda. Wanna hit yo?
+=22
+45
+15
+15
+randommarket
+Random: I'm inside a box
+R35
+12
+
