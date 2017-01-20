@@ -361,7 +361,11 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     sprintf(buf, "Healthpoints of %s : %d ",getName_player(p2), getHp_player(p2));
     extra_write_lngmess_intrf(gm->ic, buf);
     changeHp_player(p2,-dmg);
-    
+
+    waitFor(2);
+    sprintf(buf, "%s used %s", getName_player(p1), getAbilityName_player(p1, hab-1));
+    extra_write_message_object_intrf(gm->ic, buf);
+
     /*no entiendo esta funcion*/
     waitFor(2);
     sprintf(buf, "\n\t\tDamage received: %d \n\t\tHealthpoints of %s: %d", dmg, getName_player(p2), getHp_player(p2));
