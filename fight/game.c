@@ -229,6 +229,12 @@ int cmd6(void *dummy, char *obj, char **str, int n){
 	return 0;
 }
 
+int cmd7(void *dummy, char *obj, char **str, int n){
+	Game *gm = (Game *) dummy;
+	extra_write_message_object_intrf(gm->ic, getDesc_object(getObjectByName_wordl(gm->w, obj)));
+	return 0;
+}
+
 int err(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	extra_write_message_object_intrf(gm->ic, str[0]);;
@@ -248,6 +254,8 @@ static void asociemos_cosas(CoP *cop){
 	if (CoP_assoc(cop, "cmd5_internal", cmd5) == -1)
 		return;
 	if (CoP_assoc(cop, "cmd6_internal", cmd6) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd7_internal", cmd7) == -1)
 		return;
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;

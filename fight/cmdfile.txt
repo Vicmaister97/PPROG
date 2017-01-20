@@ -1,4 +1,4 @@
-6
+7
 run
 cmd1_internal
 0
@@ -20,6 +20,9 @@ cmd5_internal
 0
 exit
 cmd6_internal
+0
+description
+cmd7_internal
 0
 error
 error_internal
