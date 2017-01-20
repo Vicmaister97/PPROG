@@ -678,6 +678,12 @@ int isOnPeople(intrf *ic, int row, int col){
 	return 0;
 }
 
+void prepare_to_write_mgextra(intrf *ic){
+	if(!ic) return;
+	fprintf(stdout, "%c[%d;%dH", 27, 100, 2);
+	fflush(stdout);
+}
+
 
 void delete_intrf(intrf *ic){
 	if(!ic) return;

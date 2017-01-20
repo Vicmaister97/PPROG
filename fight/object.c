@@ -118,6 +118,7 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	fgets(buf, 100, fp);
 	po->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->desc, buf);
+	po->desc[strlen(buf)] = '\0';
 	po->desc[strlen(po->desc)-1] = '\0';
 	fgets(buf, 100, fp);
 	
@@ -305,6 +306,7 @@ van a ser los que se puedan usar*/
 Bool isUsable_object(Object *po){
 	if(!po) return FALSE;
 	if(po->type == 1) return TRUE;
+	if(po->used == TRUE) return FALSE;
 	return FALSE;
 }
 
