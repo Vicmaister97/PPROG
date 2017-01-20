@@ -155,6 +155,9 @@ static void draw_game(Game *gm){
 	addPeople_intrf(gm->ic);
 	setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
 
+	extra_write_message_object_intrf(gm->ic, desc_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w)))));
+
+
 	fflush(stdout);
 
 }
@@ -232,12 +235,12 @@ int cmd6(void *dummy, char *obj, char **str, int n){
 int cmd7(void *dummy, char *obj, char **str, int n){
 	Game *gm = (Game *) dummy;
 	extra_write_message_object_intrf(gm->ic, getDesc_object(getObjectByName_wordl(gm->w, obj)));
-	return 0;
+	return 1;
 }
 
 int err(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	extra_write_message_object_intrf(gm->ic, str[0]);;
+	extra_write_message_object_intrf(gm->ic, str[0]);
 	
 	return 0;
 }
@@ -358,7 +361,11 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     sprintf(buf, "Healthpoints of %s : %d ",getName_player(p2), getHp_player(p2));
     extra_write_lngmess_intrf(gm->ic, buf);
     changeHp_player(p2,-dmg);
-    
+
+    waitFor(2);
+    sprintf(buf, "%s used %s", getName_player(p1), getAbilityName_player(p1, hab-1));
+    extra_write_message_object_intrf(gm->ic, buf);
+
     /*no entiendo esta funcion*/
     waitFor(2);
     sprintf(buf, "\n\t\tDamage received: %d \n\t\tHealthpoints of %s: %d", dmg, getName_player(p2), getHp_player(p2));
