@@ -163,7 +163,9 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	po->picked = FALSE;
 	po->row = atoi(fgets(buf, 100, fp));
 	po->col = atoi(fgets(buf, 100, fp));
+	
 	po->type = atoi(fgets(buf, 100, fp));
+
 	po->used = FALSE;
 
 	return po;

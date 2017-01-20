@@ -1,0 +1,49 @@
+3
+Redbull
+Energy Asshole!
+0 0 0 2 2 0
+8
+o10
+5
+1
+4
+IronMan_chest
+Feel like a fucking superhero bro
+0 15 10 -5 0 0
+11
+IX
+X
+1
+
+X
+raygun
+A powerful weapon to disintegrate your enemies
+40 0 0 0 0 0
+X
+r14
+14
+1
+X
+energy_shield
+An useful defensive weapon to deal with strong enemies
+0 30 0 -5 0 0
+X
+O19
+17
+1
+
+
+Marta
+Wanna have a good time cuttie?
+9
+&X
+X
+3
+Oscanario
+I have very cheap tobacco from my islands my friend
+10
+&X
+X
+4
+Victor1
+Hey man, thanks for helping me!

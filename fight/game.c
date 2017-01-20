@@ -193,15 +193,28 @@ int use_object_game(Game *gm, Object *po){
 
 int cmd3(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	use_object_game(gm, getObjectByName_wordl(gm->w, obj));
-	return 1;
+	int ret;
+	ret = use_object_game(gm, getObjectByName_wordl(gm->w, obj));
+	if (ret = 0){
+		extra_write_message_object_intrf(gm->ic, str[1]);
+		return ret;
+	}
+
+	extra_write_message_object_intrf(gm->ic, str[0]);
+	return ret;
 }
 
 
 int cmd4(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
-	return 1;
+	int ret = drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
+	if (ret = 0){
+		extra_write_message_object_intrf(gm->ic, str[1]);
+		return ret;
+	}
+
+	extra_write_message_object_intrf(gm->ic, str[0]);
+	return ret;
 }
 
 int cmd5(void *dummy, char *obj, char **str, int n){
@@ -212,11 +225,10 @@ int cmd5(void *dummy, char *obj, char **str, int n){
 
 int cmd6(void *dummy, char *obj, char **str, int n){
 	return 0;
-}
 
 
 int err(void *dummy, char *obj, char **str, int n) {
-	return printf("error: %s\n", str[0]);
+	return extra_write_message_object_intrf(gm->ic, str[0]);;
 }
 
 static void asociemos_cosas(CoP *cop){
@@ -446,11 +458,13 @@ static void moving_moving(Game *gm, int ret){
 		}
 		else{
 		fight(gm, row, col);
-
-	if(isNearPeople_intrf(gm->ic))
-		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w)))));
 		}
 	}
+
+
+	if(isNearPeople_intrf(gm->ic,row,col))
+		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, *row, *col, getWaI_player(getPlayer_world(gm->w)))));
+
 }
 
 
@@ -511,13 +525,19 @@ void play_game(Game *gm){
 			}
 			else{
 				clear_cmd_intrf(gm->ic);
-				smt = _read_smth(gm, -aux);	
-				if(!smt) return;	
+				smt = _read_smth(gm, -aux);
+				if(!smt) return;
 			}
 		}
 
 		else{		
-			sh = - _read_key();											
+			sh = - _read_key();	
+			if(sh == -43)
+				display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
+	
+			if(sh == -126)
+				return;													
+			
 			if(sh >= 0){
 				ret = movePlayer_intrf(gm->ic, sh);
 				moving_moving(gm, ret);
@@ -525,7 +545,7 @@ void play_game(Game *gm){
 			else{
 				clear_cmd_intrf(gm->ic);
 				smt = _read_smth(gm, -sh);
-				if(!smt) return;
+				if (!smt) return;
 			}
 		}
 	}	

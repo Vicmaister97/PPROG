@@ -546,13 +546,37 @@ void smth_useful(intrf *ic, int col){
 	fprintf(stdout, "%c[%d;%dH", 27, ic->rows-2, col+2);
 }
 
-int isNearPeople_intrf(intrf *ic){
+int isNearPeople_intrf(intrf *ic,int *row,int *col){
 	int i = 0;
 	if(!ic) return 0;
-	for( ; i < ic->num_people; i++)
-		if(ic->people_row[i] == ic->player_row+1 || ic->people_row[i] == ic->player_row-1 )
-			if(ic->people_col[i] == ic->player_col+1 || ic->people_col[i] == ic->player_col-1)
+	for( ; i < ic->num_people; i++){
+		if(ic->people_row[i] == ic->player_row+1 ){
+			if(ic->people_col[i] == ic->player_col+1){
+				*row=ic->player_row+1;
+				*col=ic->player_col+1;
+				return 1; 
+			}
+			if(ic->people_col[i] == ic->player_col-1){
+				*row=ic->player_row+1;
+				*col=ic->player_col-1;
+				return 1; 
+			}
+
+		}
+		if(ic->people_row[i] == ic->player_row-1 ){
+			if(ic->people_col[i] == ic->player_col+1){
+				*row=ic->player_row-1;
+				*col=ic->player_col+1;
 				return 1;
+			} 
+			if(ic->people_col[i] == ic->player_col-1){
+				*row=ic->player_row-1;
+				*col=ic->player_col-1;
+				return 1;
+			}
+		}
+	}
+		
 	return 0;
 
 }
