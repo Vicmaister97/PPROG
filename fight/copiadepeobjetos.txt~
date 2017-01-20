@@ -44,7 +44,7 @@ I36
 REdbull
 Energy Asshole!
 0 0 0 2 2 0
-19
+18
 o10
 6
 1
@@ -52,7 +52,7 @@ o10
 potion1
 Take a breath man
 0 0 10 0 0 0
-20
+19
 p3
 110
 1
@@ -60,7 +60,7 @@ p3
 porro1
 Smokeeeeee
 2 2 2 2 2 2
-21
+20
 L21
 47
 1
@@ -68,7 +68,7 @@ L21
 REDbull
 Energy Asshole!
 0 0 0 2 2 0
-28
+27
 o12
 15
 1
@@ -76,7 +76,7 @@ o12
 Cabana's_tears
 They are so powerful!
 10 10 20 10 0 -10
-30
+29
 u37
 11
 1
@@ -84,7 +84,7 @@ u37
 REDBull
 Energy Asshole!
 0 0 0 2 2 0
-37
+36
 o17
 27
 1
@@ -92,7 +92,7 @@ o17
 Jagger
 YEEEEAAAH BROOOOO
 -1 -1 -1 -1 -1 -1
-38
+37
 Y11
 13
 1
@@ -100,7 +100,7 @@ Y11
 Popper
 Jejejejejeje
 1 1 5 20 2 4
-39
+38
 x39
 4
 1
@@ -108,7 +108,7 @@ x39
 Rocky_proteins
 Like a monster
 5 5 10 -2 0 0  
-39
+38
 w12
 4
 1
@@ -116,7 +116,7 @@ w12
 REDBUll
 Energy Asshole!
 0 0 0 2 2 0
-46
+45
 o31
 2
 1
@@ -124,7 +124,7 @@ o31
 potion2
 Health!
 0 0 20 0 0 0
-47
+46
 P9
 8
 1
@@ -132,7 +132,7 @@ P9
 potion3
 Health!
 0 0 20 0 0 0
-47
+46
 P9
 10
 1
@@ -140,7 +140,7 @@ P9
 raygun
 A powerful weapon to disintegrate your enemies
 40 0 0 0 0 0
-48
+47
 r34
 28
 1
@@ -148,7 +148,7 @@ r34
 Rodri's_wig
 It's powerful
 0 10 0 -5 5 5
-48
+47
 m38
 4
 1
@@ -156,7 +156,7 @@ m38
 REDBULl
 Energy Asshole!
 0 0 0 2 2 0
-55
+54
 o22
 16
 1
@@ -164,7 +164,7 @@ o22
 porro2
 Smokeeeeee
 2 2 2 2 2 2
-57
+56
 L13
 95
 1
@@ -172,7 +172,7 @@ L13
 porro3
 Smokeeeeee
 2 2 2 2 2 2
-57
+56
 L16
 95
 1
@@ -180,7 +180,7 @@ L16
 porro4
 Smokeeeeee
 2 2 2 2 2 2
-57
+56
 L28
 95
 1
@@ -188,7 +188,7 @@ L28
 wid_plant
 NICEEEE
 0 0 50 0 4 10
-57
+56
 W22
 95
 1
@@ -196,14 +196,14 @@ W22
 lightsable
 CHIAAAUUUUUUM
 10 2 10 0 20 20
-63
+62
 /20
 40
 1
 26
 duck_suitcostume
 It's a duck costume
-63
+62
 G16
 40
 1
@@ -211,7 +211,7 @@ G16
 cigarette
 smoke shit
 10 3 1 0 -5 10
-63
+62
 i18
 40
 1
@@ -219,7 +219,7 @@ i18
 energy_shield
 An useful defensive weapon to deal with strong enemies
 0 30 0 -5 0 0
-63
+62
 O22
 40
 1
@@ -227,7 +227,7 @@ O22
 jaggeer
 jaaaaaaaaaaaaagggeeeeeeer
 -1 -1 -1 -1 -1 -1
-64
+63
 Y22
 3
 1
@@ -235,7 +235,7 @@ Y22
 potionnfin1
 Health!
 0 0 20 0 0 0
-66
+65
 P16
 59
 1
@@ -243,7 +243,7 @@ P16
 potionnfin2
 Health!
 0 0 20 0 0 0
-66
+65
 P18
 59
 1
@@ -251,7 +251,7 @@ P18
 rocketman
 ROCKETMAN
 10 10 40 0 10 10
-66
+65
 Q16
 66
 1
@@ -282,287 +282,288 @@ V26
 5
 Victor2
 I know where we should go, trust me hahaha
-17
+16
 V11
 95
 6
 JointLand
 Welcome to JointLand, the only world in the hole universe made entirely of marihuana. Enjoy your stay, peace and love
-20
+19
 T5
 52
 7
 Yujian
 YuJian Hong Hang Hung: harvest the land, smoke and have fun, plant the seed, light a spliff
-20
+19
 &7
 44
 8
 camino
 Bill: The city, Kingston Town, capital of JointLand, is at the west(left dude, are you from teleco?)
-20
+19
 <18
 51
 9
 obrero
 Worker: I hate doing something
-20
+19
 W20
 100
 10
 hippie1
 Rastaman: I'm as green as a field bro :)
-20
+19
 =22
 5
 11
 padreblanca
 Rebel: We are fed up with the Guanche Emperor, the Evil Platanito. There is a base near here... maybe you could free us
-21
+20
 F9
 74
 12
 blanca
 Blanca: If you attempt to fight against those assholes, I will follow you
-21
+20
 b9
 76
 13
 porreta1
 Barney: Think of me like Yoda, but instead of being little and green I wear suits and I’m awesome. I’m your bro—I’m Broda!
-21
+20
 =18
 45
 14
 porreta2
 Ted: Im as high as King Kong climbing the Empire State broda. Wanna hit yo?
+20
 =22
 45
 15
-15
 randommarket
 Random: I'm inside a box
+20
 R35
 12
 16
 Blanca3
 What's up?
-23
+22
 b18
 20
 17
 Blanca3
 Hey!
-27
+26
 b16
 46
 18
 Victor3
 Wabalabado morty
-26
+25
 V17
 80
 19
 Victor4
 Smoke weed everydaaaaay
-35
+34
 V18
 80
 20
 Blanca3
 What's up?
-31
+30
 b34
 51
 21
 Blanca3
 Hey!
-34
+35
 b33
 51
 22
 GR
 GR: taaa ta taaaaaaa tatatatataaaaaaaa taaaaaaaaaaaaaa tataaaaaaaaaaa tataatatataaaaaaaa
-38
+37
 j11
 70
 23
 Richi
 Richi: for the papitos of the dobleeeeeeeeeeee
-38
+37
 $11
 88
 24
 Nuri
 Nuria: Yuhuuuuuuuuuuuuuuu
-38
+37
 N32
 96
 25
 Tati
 Let's play some loles, I go mid adc braum jajaequisde
-38
+37
 T28
 90
 26
 Emilio
 Emiliomiamol: Os hace unos kaxopos?
-39
+38
 E37
 8
 27
 Villar
 Villar: Platanito has ilegalised marihuana. He must pay for that
-39
+38
 v7
 54
 28
 Arturo
 Arturo: OOOOOouhhhh yeeeeeaaaaaaah ajaaaaa ajaaaa
-39
+38
 A8
 54
 29
 Blanca5
 What's up?
-41
+40
 b11
 79
 30
 Arturo5
 Partyyyy
-41
+40
 A13
 79
 31
 Villar5
 Villar: Odio los Lurunsdaluntes
-41
+40
 v12
 79
 32
 Villar5
 Villar: Odio los Lurunsdaluntes
-45
+44
 v25
 28
 33
 Victor5
 Wanna sing platanito?
-44
+43
 v24
 75
 34
 Fons
 Fons: The evil Guanche Emperor has scaped, but I know someone that may help you... He's a really wise man, I will tell Victor how to go there
-48
+47
 F38
 48
 35
 Blanca6
 What's up?
-50
+49
 b30
 7
 36
 Arturo6
 Partyyyy
-53
+52
 A30
 107
 37
 Villar6
 Villar: Odio los Lurunsdaluntes
-49
+48
 v33
 66
 38
 Vicotr6
 Wanna sing platanito?
-49
+48
 V38
 65
 39
 Victor6
 Wanna sing platanito?
-54
+53
 V28
 71
 40
 signSantini
 Sign: Till the roof comes off, till the light goes out, till my legs give out, can't shout my mouth. Till the smokes clears out, am I high?...
-56
+55
 T23
 102
 41
 Santini
 Santini: Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering. Go there and find the truth
-56
+55
 S32
 18
 42
 Pato
 duck: miaaaauuuu
-56
+55
 a26
 36
 43
 pinguino
 penguin: rroooooaaaarrr
-56
+55
 Z29
 40
 44
 Blanca7
 Heey!
-58
+57
 b31
 67
 45
 Arturo7
 Partyyyy
-58
+57
 A36
 55
 46
 Villar7
 Villar: Odio los Lurunsdaluntes
-58
+57
 v38
 52
 47
 Victor7
 Wanna play platanito?
-62
+61
 V23
 101
 48
 Blancafinal
 Blanca: I bought you this duck costume, I hope you like it!
-63
+62
 b16
 45
 49
 Arturofinal
 Arturo: I give you my lightsable, so you must kill Platanito!
-63
+62
 A18
 45
 50
 Villarfinal
 Wanna smoke? But tobacco... ;)
-63
+62
 v20
 45
 51
 Victorfinal
 Protect your parts dude
-63
+62
 V22
 45
 52
 Lastsign
 Final battle: Here stays Platanito, the evil Guanche Emperor. Good luck mai friend :D
-65
+64
 T15
 57
