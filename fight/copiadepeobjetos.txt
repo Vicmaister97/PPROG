@@ -1,3 +1,21 @@
+X
+X
+1
+platanito's_sword
+It's not really strong, but it has a powerful meaning for you
+5 2 10 0 0 5
+1
+/8
+13
+1
+2
+key1
+Jey Jey MR POPPER IS IN DA HOUSE
+0 0 0 0 0 0
+1
+Y8
+16
+0
 3
 Redbull
 Energy Asshole!
@@ -31,8 +49,13 @@ X
 O19
 17
 1
-
-
+1
+text1
+Hey friend, what's up?
+1
+@8
+17
+2
 Marta
 Wanna have a good time cuttie?
 9

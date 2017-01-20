@@ -118,6 +118,7 @@ Object* create_object (FILE *fp){ /*Fuction that creates and allocs memory for a
 	fgets(buf, 100, fp);
 	po->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->desc, buf);
+	po->desc[strlen(po->desc)-1] = '\0';
 	fgets(buf, 100, fp);
 	
 	/*for (pt = buf, nsp = 0; *pt; pt++){ Podría sustituirse por poner directamente nsp = 4 si al final hay sólo 4 propiedades 

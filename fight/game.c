@@ -195,12 +195,13 @@ int cmd3(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	int ret;
 	ret = use_object_game(gm, getObjectByName_wordl(gm->w, obj));
-	if (ret = 0){
-		extra_write_message_object_intrf(gm->ic, str[1]);
+	/*if (ret == 0){
+		extra_write_message_object_intrf(gm->ic, str[0]);
 		return ret;
 	}
 
 	extra_write_message_object_intrf(gm->ic, str[0]);
+	*/
 	return ret;
 }
 
@@ -208,12 +209,13 @@ int cmd3(void *dummy, char *obj, char **str, int n) {
 int cmd4(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	int ret = drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
-	if (ret = 0){
+	/*if (ret == 0){
 		extra_write_message_object_intrf(gm->ic, str[1]);
 		return ret;
 	}
 
 	extra_write_message_object_intrf(gm->ic, str[0]);
+	*/
 	return ret;
 }
 
@@ -225,10 +227,13 @@ int cmd5(void *dummy, char *obj, char **str, int n){
 
 int cmd6(void *dummy, char *obj, char **str, int n){
 	return 0;
-
+}
 
 int err(void *dummy, char *obj, char **str, int n) {
-	return extra_write_message_object_intrf(gm->ic, str[0]);;
+	/*Game *gm = (Game *) dummy;
+	extra_write_message_object_intrf(gm->ic, str[0]);;
+	*/
+	return 0;
 }
 
 static void asociemos_cosas(CoP *cop){

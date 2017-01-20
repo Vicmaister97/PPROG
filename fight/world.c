@@ -69,7 +69,7 @@ Player * getEnemy_world(World *w,Player *p,int col,int row){
 
 World *create_world(const char *filesp, const char *fileob,const char *fileplayer,const char *fileEnemy){
     char buf[100];
-    int i = 0, j = 0,a;
+    int i = 0, j = 0;
     World *w= (World *) malloc(sizeof(World));
     FILE *pfs = fopen(filesp, "r");
     FILE *pfo = fopen(fileob, "r");
@@ -124,9 +124,9 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
         w->objects[j] = create_object(pfo);
     }
 
-    w->people=(People **)malloc(sizeof(People*)*1);
+    w->people = (People **)malloc(sizeof(People*)*w->n_people);
     
-    for (j = 0; j < 1; j++){
+    for (j = 0; j < w->n_people; j++){
         w->people[j] = create_people(pfo);
     }
     return w;
