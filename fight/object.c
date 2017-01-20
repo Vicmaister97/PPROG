@@ -31,24 +31,24 @@ struct _People{
 People* create_people (FILE *fp){ /*Fuction that creates and allocs memory for a person, reading from a file*/
 	People *po = (People *) malloc (sizeof (People));
 	
-	char buf[100];
+	char buf[300];
 	
 	if (po == NULL)
 		return NULL;
 
-	po->id = atoi(fgets(buf, 100, fp));
-	fgets(buf, 100, fp);
+	po->id = atoi(fgets(buf, 300, fp));
+	fgets(buf, 300, fp);
 	po->name = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->name, buf);
 	po->name[strlen(po->name)-1] = '\0';
-	fgets(buf, 100, fp);
+	fgets(buf, 300, fp);
 	po->text = (char *)malloc(sizeof(char)*(strlen(buf)+1));
 	strcpy(po->text, buf);
 	po->text[strlen(po->text)-1] = '\0';
-	po->location = atoi(fgets(buf, 100, fp));
+	po->location = atoi(fgets(buf, 300, fp));
 	po->picture = fgetc(fp);
-	po->row = atoi(fgets(buf, 100, fp));
-	po->col = atoi(fgets(buf, 100, fp));
+	po->row = atoi(fgets(buf, 300, fp));
+	po->col = atoi(fgets(buf, 300, fp));
 
 	return po;
 }
