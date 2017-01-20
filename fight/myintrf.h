@@ -38,11 +38,13 @@ void extra_write_lngmess_intrf(intrf *ic, char *mg);
 
 
 /*enemy functions*/
-int isOnEnemy_intrf(intrf *ic,int *row,int *col);
+int isOnEnemy_intrf(intrf *ic,int row,int col);
 int addEnemies_intrf(intrf *ic);
 int removeEnemy(intrf *ic, int row, int col);
+int isNearEnemy_intrf(intrf *ic, int *row, int *col);
 
 int addPeople_intrf(intrf *ic);
-int isNearPeople_intrf(intrf *ic,int *row,int *col);
+int isNearPeople_intrf(intrf *ic, int *row, int *col);
+int isOnPeople(intrf *ic, int row, int col);
 
 #endif

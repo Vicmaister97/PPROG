@@ -188,6 +188,7 @@ int win_fgcol(sc_rectangle *sc, int col) {
   
  */
 int win_write_line_at(sc_rectangle *sc, int r, int c, char *str) {
+    if(!str) return -1;
     char *nl_p;
     char save, av_space, ret;
     char *aux = (char *) malloc(sizeof(char)*(strlen(str)+1));

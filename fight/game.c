@@ -184,7 +184,7 @@ int cmd2(void *dummy, char *obj, char **str, int n) {
 }
 
 int use_object_game(Game *gm, Object *po){
-    if(!gm || !po || !isInInventory(po)) return 0;
+    if(!gm || !po || !isInInventory(po) || !isUsable_object(po)) return 0;
     modStats_player(getPlayer_world(gm->w), getProp_object(po));
     setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
     return 1; 
@@ -195,13 +195,13 @@ int cmd3(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	int ret;
 	ret = use_object_game(gm, getObjectByName_wordl(gm->w, obj));
-	/*if (ret == 0){
-		extra_write_message_object_intrf(gm->ic, str[0]);
+	if (ret == 0){
+		extra_write_message_object_intrf(gm->ic, str[1]);
 		return ret;
 	}
 
 	extra_write_message_object_intrf(gm->ic, str[0]);
-	*/
+	
 	return ret;
 }
 
@@ -209,13 +209,13 @@ int cmd3(void *dummy, char *obj, char **str, int n) {
 int cmd4(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	int ret = drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
-	/*if (ret == 0){
+	if (ret == 0){
 		extra_write_message_object_intrf(gm->ic, str[1]);
 		return ret;
 	}
 
 	extra_write_message_object_intrf(gm->ic, str[0]);
-	*/
+	
 	return ret;
 }
 
@@ -230,9 +230,9 @@ int cmd6(void *dummy, char *obj, char **str, int n){
 }
 
 int err(void *dummy, char *obj, char **str, int n) {
-	/*Game *gm = (Game *) dummy;
+	Game *gm = (Game *) dummy;
 	extra_write_message_object_intrf(gm->ic, str[0]);;
-	*/
+	
 	return 0;
 }
 
@@ -427,10 +427,8 @@ static int fight(Game *gm, int *row, int *col){
 
 
 static void moving_moving(Game *gm, int ret){
-	int new,*row,*col;
+	int new,row,col;
 	char buf[100];
-	row=(int*)malloc(sizeof(int));
-	col=(int*)malloc(sizeof(int));
 	if(ret == NORTH || ret == SOUTH){
 		new = getRow_player(getPlayer_world(gm->w));
 		if(ret == NORTH)
@@ -456,19 +454,19 @@ static void moving_moving(Game *gm, int ret){
 	}
 
 	
-	if(isOnEnemy_intrf(gm->ic,row,col)==1){
-		if(getHp_player(getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row))==0){
-			sprintf(buf, "Hey man , dont be a bully , you have already defeated %s ", getName_player(getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row)));
+	if(isNearEnemy_intrf(gm->ic, &row, &col)){
+		if(getHp_player(getEnemy_world(gm->w,getPlayer_world(gm->w),col,row))==0){
+			sprintf(buf, "Hey man , dont be a bully , you have already defeated %s ", getName_player(getEnemy_world(gm->w,getPlayer_world(gm->w),col,row)));
 			extra_write_lngmess_intrf(gm->ic, buf);
 		}
 		else{
-		fight(gm, row, col);
+		fight(gm, &row, &col);
 		}
 	}
 
 
-	if(isNearPeople_intrf(gm->ic,row,col))
-		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, *row, *col, getWaI_player(getPlayer_world(gm->w)))));
+	if(isNearPeople_intrf(gm->ic,&row,&col))
+		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, row, col, getWaI_player(getPlayer_world(gm->w)))));
 
 }
 
@@ -536,12 +534,7 @@ void play_game(Game *gm){
 		}
 
 		else{		
-			sh = - _read_key();	
-			if(sh == -43)
-				display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
-	
-			if(sh == -126)
-				return;													
+			sh = - _read_key();														
 			
 			if(sh >= 0){
 				ret = movePlayer_intrf(gm->ic, sh);
