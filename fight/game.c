@@ -454,7 +454,7 @@ static void moving_moving(Game *gm, int ret){
 	}
 
 	
-	if(isOnEnemy_intrf(gm->ic,&row,&col)==1){
+	if(isNearEnemy_intrf(gm->ic, &row, &col)){
 		if(getHp_player(getEnemy_world(gm->w,getPlayer_world(gm->w),col,row))==0){
 			sprintf(buf, "Hey man , dont be a bully , you have already defeated %s ", getName_player(getEnemy_world(gm->w,getPlayer_world(gm->w),col,row)));
 			extra_write_lngmess_intrf(gm->ic, buf);

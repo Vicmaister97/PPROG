@@ -326,13 +326,13 @@ int removeEnemy(intrf *ic, int row, int col){
 	return 1;
 }
 
-int isOnEnemy_intrf(intrf *ic,int *row,int *col){
+/*int isOnEnemy_intrf(intrf *ic,int *row,int *col){
 	int i = 0;
 	if(!ic) return 0;
 	for( ; i < ic->num_enemy; i++)
 		/*sprintf(buf, "%d %d %d %d ", ic->obj_row[i], ic->obj_col[i], ic->player_row, ic->player_col);
 		extra_write_message_object_intrf(ic, buf);*/
-		if(ic->enemy_row[i] == ic->player_row && ic->enemy_col[i] == ic->player_col){
+		/*if(ic->enemy_row[i] == ic->player_row && ic->enemy_col[i] == ic->player_col){
 				*row=ic->enemy_row[i];
 				*col=ic->enemy_col[i];
 				return 1;
@@ -340,6 +340,72 @@ int isOnEnemy_intrf(intrf *ic,int *row,int *col){
 			
 	
 	return 0;
+}*/
+
+int isOnEnemy_intrf(intrf *ic, int row, int col){
+	if(!ic) return 0;
+	for(int i = 0; i < ic->num_enemy; i++)
+		if(ic->enemy_col[i] == col && ic->enemy_row[i] == row)
+			return 1;
+
+	return 0;
+}
+
+int isNearEnemy_intrf(intrf *ic, int *row, int *col){
+	int i = 0;
+	if(!ic) return 0;
+	for( ; i < ic->num_enemy; i++){
+		if(ic->enemy_row[i] == ic->player_row+1 ){
+			/*if(ic->people_col[i] == ic->player_col+1){
+				*row=ic->player_row+1;
+				*col=ic->player_col+1;
+				return 1; 
+			}
+			if(ic->people_col[i] == ic->player_col-1){
+				*row=ic->player_row+1;
+				*col=ic->player_col-1;
+				return 1; 
+			}*/
+			if(ic->enemy_col[i] == ic->player_col){
+				*row = ic->player_row+1;
+				*col = ic->player_col;
+				return 1;
+			}
+
+		}
+		if(ic->enemy_row[i] == ic->player_row-1 ){
+			/*if(ic->people_col[i] == ic->player_col+1){
+				*row=ic->player_row-1;
+				*col=ic->player_col+1;
+				return 1;
+			} 
+			if(ic->people_col[i] == ic->player_col-1){
+				*row=ic->player_row-1;
+				*col=ic->player_col-1;
+				return 1;
+			}*/
+			if(ic->enemy_col[i] == ic->player_col){
+				*row = ic->player_row-1;
+				*col = ic->player_col;
+				return 1;
+			}
+		}
+		if(ic->enemy_row[i] == ic->player_row){
+			if(ic->enemy_col[i] == ic->player_col-1){
+				*row = ic->player_row;
+				*col = ic->player_col-1;
+				return 1;
+			}
+			if(ic->enemy_col[i] == ic->player_col+1){
+				*row = ic->player_row;
+				*col = ic->player_col+1;
+				return 1;
+			}
+		}
+	}
+		
+	return 0;
+
 }
 
 
@@ -422,7 +488,7 @@ int movePlayer_intrf(intrf *ic, int dir){
 		if(dir == SOUTH)
 			new_row ++;
 		
-		if(new_row >= 0 && new_row <= (ic->rows - ic->extra_rows) && ic->map[new_row - 1][ic->player_col - 1] == ' '){
+		if(new_row >= 0 && new_row <= (ic->rows - ic->extra_rows) && ic->map[new_row - 1][ic->player_col - 1] == ' ' && !isOnPeople(ic, new_row, ic->player_col) && !isOnEnemy_intrf(ic, new_row, ic->player_col)){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_row = new_row;
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
@@ -437,7 +503,7 @@ int movePlayer_intrf(intrf *ic, int dir){
 		if(dir == WEST)
 			new_col --;
 
-		if(new_col >= 0 && new_col <= (ic->cols - ic->menu_cols) && ic->map[ic->player_row - 1][new_col - 1] == ' '){
+		if(new_col >= 0 && new_col <= (ic->cols - ic->menu_cols) && ic->map[ic->player_row - 1][new_col - 1] == ' ' && !isOnPeople(ic, ic->player_row, new_col) && !isOnEnemy_intrf(ic, ic->player_row, new_col)){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_col = new_col;
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
@@ -551,7 +617,7 @@ int isNearPeople_intrf(intrf *ic,int *row,int *col){
 	if(!ic) return 0;
 	for( ; i < ic->num_people; i++){
 		if(ic->people_row[i] == ic->player_row+1 ){
-			if(ic->people_col[i] == ic->player_col+1){
+			/*if(ic->people_col[i] == ic->player_col+1){
 				*row=ic->player_row+1;
 				*col=ic->player_col+1;
 				return 1; 
@@ -560,11 +626,16 @@ int isNearPeople_intrf(intrf *ic,int *row,int *col){
 				*row=ic->player_row+1;
 				*col=ic->player_col-1;
 				return 1; 
+			}*/
+			if(ic->people_col[i] == ic->player_col){
+				*row = ic->player_row+1;
+				*col = ic->player_col;
+				return 1;
 			}
 
 		}
 		if(ic->people_row[i] == ic->player_row-1 ){
-			if(ic->people_col[i] == ic->player_col+1){
+			/*if(ic->people_col[i] == ic->player_col+1){
 				*row=ic->player_row-1;
 				*col=ic->player_col+1;
 				return 1;
@@ -573,12 +644,38 @@ int isNearPeople_intrf(intrf *ic,int *row,int *col){
 				*row=ic->player_row-1;
 				*col=ic->player_col-1;
 				return 1;
+			}*/
+			if(ic->people_col[i] == ic->player_col){
+				*row = ic->player_row-1;
+				*col = ic->player_col;
+				return 1;
+			}
+		}
+		if(ic->people_row[i] == ic->player_row){
+			if(ic->people_col[i] == ic->player_col-1){
+				*row = ic->player_row;
+				*col = ic->player_col-1;
+				return 1;
+			}
+			if(ic->people_col[i] == ic->player_col+1){
+				*row = ic->player_row;
+				*col = ic->player_col+1;
+				return 1;
 			}
 		}
 	}
 		
 	return 0;
 
+}
+
+int isOnPeople(intrf *ic, int row, int col){
+	if(!ic) return 0;
+	for(int i = 0; i < ic->num_people; i++)
+		if(ic->people_col[i] == col && ic->people_row[i] == row)
+			return 1;
+
+	return 0;
 }
 
 
