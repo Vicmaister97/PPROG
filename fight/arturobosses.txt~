@@ -1,0 +1,20 @@
+Numero de bosses: X
+Te indico con los bosses el id del espacio en el que van, sus stats y row+col
+boss1: 9
+Stats: 8 9 90 100 8 8
+39row 55col
+boss2: 30
+stats: 20 5 60 100 11 10
+21row 94col
+boss3: 30
+stats: 14 16 60 100 6 25
+10 35
+boss4: 47
+stats: 20 20 100 100 15 20
+24 77
+boss5: 47
+stats: 20 20 100 100 20 15
+25 2
+boos6: 48
+stats: 25 40 80 100 20 20
+29 69
