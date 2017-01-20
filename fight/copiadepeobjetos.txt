@@ -32,6 +32,22 @@ Feel like a fucking superhero bro
 IX
 X
 1
+5
+REdbull
+Energy Asshole!
+0 0 0 2 2 0
+19
+o10
+6
+1
+6
+potion1
+Take a breath man
+0 0 10 0 0 0
+20
+pX
+X
+1
 
 X
 raygun
@@ -69,4 +85,22 @@ I have very cheap tobacco from my islands my friend
 X
 4
 Victor1
-Hey man, thanks for helping me!
+Hey man, thanks for helping me. Man, I hate platanito's oppression, let's join our forces to kick his ass! I'm a pilot
+11
+VX
+X
+5
+Victor2
+I know where we should go, trust me hahaha
+17
+V11
+95
+6
+JointLand
+Welcome to JointLand, the only world in the hole universe made entirely of marihuana. Enjoy your stay, peace and love
+20
+TX
+X
+7
+Yujian
+YuJian Hong Hang Hung: harvest the 
