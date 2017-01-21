@@ -496,9 +496,9 @@ static void doors_al(Game *gm, int aux){
 	}
 	else if(aux == EAST || aux == WEST){
 		if(aux == WEST)
-			new_col += -2 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+			new_col += -3 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
 		else
-			new_col -= -2 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+			new_col -= -3 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
 	}
 	modRow_player(getPlayer_world(gm->w), new_row);
 	modCol_player(getPlayer_world(gm->w), new_col);
