@@ -181,7 +181,7 @@ Agility
 Luck
 100
 20
-1
+4
 broken bottle
 10
 0

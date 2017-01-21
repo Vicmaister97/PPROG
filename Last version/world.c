@@ -41,7 +41,7 @@ Player **getEnemiesSpace_world(World *w, int sp_id){
         
         return NULL;
     }
-    for( ; i < 1; i++){
+    for( ; i < _get_num_enemies_space(sp_id,w); i++){
         if(getWaI_player(w->enemies[i]) == sp_id){
             e[j] = w->enemies[i];
             j++;
