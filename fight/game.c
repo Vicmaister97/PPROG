@@ -316,6 +316,7 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 
 static int _read_smth(Game *gm, char c){
 	char buf[50];
+	char *def;
 	int i = 0;
 	char aux = c;
 	prepare_to_write_cmd_intrf(gm->ic);
@@ -332,7 +333,9 @@ static int _read_smth(Game *gm, char c){
 		aux = _read_key();
 	}
 	buf[i] = '\0';
-	return CoP_execute(gm->cop, buf, gm);
+	def = (char *)malloc(sizeof(char)*strlen(buf)+1);
+	strcpy(def, buf);
+	return CoP_execute(gm->cop, def, gm);
 }
 
 
