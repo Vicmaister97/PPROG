@@ -184,7 +184,8 @@ int cmd2(void *dummy, char *obj, char **str, int n) {
 }
 
 int use_object_game(Game *gm, Object *po){
-    if(!gm || !po || !isInInventory(po) || !isUsable_object(po)) return 0;
+    if(!gm || !po) return 0;
+    if(!isInInventory(po) || !isUsable_object(po)) return 0;
     modStats_player(getPlayer_world(gm->w), getProp_object(po));
     setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
     return 1; 

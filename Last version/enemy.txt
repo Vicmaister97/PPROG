@@ -372,7 +372,7 @@ killer look
 Serrano
 48
 14
-66
+65
 8
 e6
 Strength
@@ -425,7 +425,7 @@ Sleep
 simon
 54
 15
-66
+65
 9
 E6
 Strength
@@ -478,7 +478,7 @@ heal
 andrea
 46
 17
-66
+65
 10
 E6
 Strength

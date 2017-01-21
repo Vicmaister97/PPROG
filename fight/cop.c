@@ -207,10 +207,10 @@ static char **_unpack_all(ext_cmd *e, char *obj) {
 
 int CoP_execute(CoP *c, char *cmd, void *pt) {
 	char *verb;
-	char *obj;
+	char *obj = (char *)malloc(sizeof(char)*50);
 
 	verb = strtok(cmd," ");
-	obj = strtok(NULL, " ");
+	strcpy(obj, strtok(NULL, " "));
 
 	/* First, search the list of external commands for the right one */
 	ext_cmd *e = _ext_src(c, verb);
