@@ -191,12 +191,12 @@ int movePlayer_world(World *w, int dir) {
         if(!isInInventory(getByIdObject_world(w, ret)))
             return -ret;
     }
-    if(isDark_Space(curr_sp, dir) == TRUE){
+    /*if(isDark_Space(curr_sp, dir) == TRUE){
         ret = getUnlock_Space(curr_sp, dir);
         modWaI_player(w->player,new_id);
         if(!isInInventory(getByIdObject_world(w, ret)))
             return ret*3;
-    }
+    }*/
     if(modWaI_player(w->player,new_id)==ERROR) return 2;
     return 0;
 
@@ -361,14 +361,5 @@ Object *getObjectByName_wordl(World *w, char *name){
     return NULL;
 }
 
-Space *getSpaceByName_world(World *w, char *name){
-    int i = 0;
-    if(!w || !name)
-        return NULL;
-    for( ; i < w->n_spaces; i++)
-        if(!strcmp(name_Space(w->spaces[i]), name))
-            return w->spaces[i];
-    return NULL;
-}
 
 

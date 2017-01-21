@@ -1,4 +1,4 @@
-X
+10
 55
 39
 9
@@ -129,14 +129,14 @@ Luck
 100
 25
 4
-guanche arrow
+guanche gun
 15
 0
 0
 0
 0
 0
-guanche arrow
+guanche gun
 15
 0
 0
@@ -235,14 +235,14 @@ Luck
 100
 15
 4
-guanche arrow
+guanche gun
 15
 0
 0
 0
 0
 0
-guanche arrow
+guanche gun
 15
 0
 0
@@ -256,8 +256,8 @@ sword
 0
 0
 0
-sword
-25
+laser
+28
 0
 0
 0
@@ -288,14 +288,14 @@ Luck
 100
 20
 4
-guanche arrow
+guanche gun
 15
 0
 0
 0
 0
 0
-sword
+laser
 25
 0
 0
@@ -501,8 +501,8 @@ Luck
 96
 4
 accent
-40
-0
+10
+5
 0
 0
 0
@@ -515,14 +515,14 @@ beer
 0
 0
 guanche shout
-60
+40
 0
 0
 0
 0
 0
 total death
-100
+50
 0
 0
 0

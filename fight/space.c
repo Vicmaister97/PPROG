@@ -4,9 +4,6 @@
 
 struct _Space{
 	int id;
-	char *name;
-	char *desc;
-	char *long_desc;
 	int rows;
 	int cols;
 	
@@ -18,7 +15,6 @@ struct _Space{
 	South=2
 	West=3
 	*/
-	Bool light[4];
 	int unlock[4];
 
 	char **pict;
@@ -34,20 +30,7 @@ return s->id;
 
 
 
-char *name_Space(Space *s){
-	if(!s)return NULL;
-	return s->name;
-}
 
-char *desc_Space(Space *s){
-
-if (!s)return NULL;
-return s->desc;
-}
-char *long_desc_Space(Space *s){
-if (!s)return NULL;
-return s->long_desc;
-}
 Bool isLocked_Space(Space *s, int direction){
 	if(!s)return FALSE;
 if(s->locked[direction])return TRUE;
@@ -61,17 +44,11 @@ Space *create_Space(FILE *fp){
 	if(!s)return NULL;
 	s->id = atoi(fgets(buf, 100, fp));
 
-	fgets(buf, 100, fp);
-	s->name = (char *)malloc(sizeof(char)*(strlen(buf)+1));
-	strcpy(s->name, buf);
+	
 
-	fgets(buf, 100, fp);
-	s->desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
-	strcpy(s->desc, buf);
+	
 
-	fgets(buf, 100, fp);
-	s->long_desc = (char *)malloc(sizeof(char)*(strlen(buf)+1));
-	strcpy(s->long_desc, buf);
+	
 
 	s->rows=atoi(fgets(buf, 100, fp));
 
@@ -88,10 +65,6 @@ Space *create_Space(FILE *fp){
 	fgets(buf,100,fp);
 	for(i=0; i<4; i++)
 		s->unlock[i] = buf[i]-'0';
-
-	fgets(buf,100,fp);
-	for(i=0; i<4; i++)
-		s->light[i] = buf[i]-'0';
 	
 	s->pict = (char **)malloc(sizeof(char*)*s->rows);
 	for(i=0;i<s->rows;i++){
@@ -127,17 +100,9 @@ Space *create_Space(FILE *fp){
   	return s->unlock[dir];
   }
 
-  Bool isDark_Space(Space *s, int dir){
-  	if(!s || dir < 0 || dir > 3) return 0;
-  	return s->light[dir];
-  }
-
   void delete_Space(Space *s){
   	int i = 0;
   	if(!s) return;
-  	if(s->name) free(s->name);
-  	if(s->desc) free(s->desc);
-  	if(s->long_desc) free(s->long_desc);
   	for( ; i < s->rows; i++)
   		if(s->pict[i]) free(s->pict[i]);
   	if(s->pict) free(s->pict);

@@ -6,7 +6,7 @@ Strength
 10
 Endurance
 1000
-100
+10
 HP
 1000
 100
@@ -20,26 +20,32 @@ Luck
 1000
 10
 4
-stick
-30
+laser
+10
+5
 0
 0
-0
-0
-0
+5
+5
 smoke weed
 0
-0
-50
+10
+20
 0
 0
 0
 play mus
-45
+10
+2
+0
+0
+5
+50
+swordaso
+25
 0
 0
 0
 0
 0
-die-Platanito sword
 IM

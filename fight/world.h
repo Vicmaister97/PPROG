@@ -31,7 +31,6 @@ Object **getObjectsInventory_world(World *w);
 char **getNamesObjectsInventory_world(World *w);
 char *getPicturesObjectsInventory_world(World *w);
 Object *getObjectByName_wordl(World *w, char *name);
-Space *getSpaceByName_world(World *w, char *name);
 
 
 /*fight stuff*/

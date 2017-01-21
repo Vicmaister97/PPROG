@@ -35,7 +35,7 @@ I hate the Lurunsdaluntes
 5
 IronMan_chest
 Feel like a fucking superhero bro
-0 15 10 -5 0 0
+0 15 10 5 0 0
 11
 I36
 48
@@ -75,7 +75,7 @@ o12
 10
 Cabana's_tears
 They are so powerful!
-10 10 20 10 0 -10
+10 10 20 10 0 10
 29
 u37
 11
@@ -91,7 +91,7 @@ o17
 12
 Jagger
 YEEEEAAAH BROOOOO
--1 -1 -1 -1 -1 -1
+1 1 1 1 1 1
 37
 Y11
 13
@@ -107,7 +107,7 @@ x39
 14
 Rocky_proteins
 Like a monster
-5 5 10 -2 0 0  
+5 5 10 2 0 0
 38
 w12
 4
@@ -147,7 +147,7 @@ r34
 19
 Rodri's_wig
 It's powerful
-0 10 0 -5 5 5
+0 10 0 5 5 5
 47
 m38
 4
@@ -203,6 +203,7 @@ CHIAAAUUUUUUM
 26
 duck_suitcostume
 It's a duck costume
+50 50 50 50 50 50
 62
 G16
 40
@@ -210,7 +211,7 @@ G16
 27
 cigarette
 smoke shit
-10 3 1 0 -5 10
+10 3 1 0 5 10
 62
 i18
 40
@@ -218,7 +219,7 @@ i18
 28
 energy_shield
 An useful defensive weapon to deal with strong enemies
-0 30 0 -5 0 0
+0 30 0 5 0 0
 62
 O22
 40
@@ -226,7 +227,7 @@ O22
 29
 jaggeer
 jaaaaaaaaaaaaagggeeeeeeer
--1 -1 -1 -1 -1 -1
+1 1 1 1 1 1
 63
 Y22
 3

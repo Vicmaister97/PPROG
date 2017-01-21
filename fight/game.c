@@ -155,9 +155,6 @@ static void draw_game(Game *gm){
 	addPeople_intrf(gm->ic);
 	setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
 
-	extra_write_message_object_intrf(gm->ic, desc_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w)))));
-
-
 	fflush(stdout);
 
 }
@@ -298,7 +295,7 @@ static void write_object_missing_intrf(Game *gm, int ob_id, int flag){
 	if(flag)
 		sprintf(buf, "Locked! You need %s to unlock the space", name);
 	else
-		sprintf(buf, "Dark! You need %s to see smthing", name);
+		;
 	extra_write_message_object_intrf(gm->ic, buf);
 	free(name);
 	return;
@@ -522,13 +519,13 @@ void play_game(Game *gm){
 						write_object_missing_intrf(gm, -ret, 1);
 						ret = aux;
 					}
-					else if(ret > 2){
+					/*else if(ret > 2){
 						doors_al(gm, aux);
 						write_object_missing_intrf(gm, ret/3, 0);
 						dark_spaces_intrf(gm->ic);
 						prepare_game(gm);
 						draw_game(gm);
-					}
+					}*/
 					else{
 						doors_al(gm, aux);
 						prepare_game(gm);

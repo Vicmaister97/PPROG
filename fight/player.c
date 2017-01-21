@@ -44,12 +44,6 @@ Player* create_player(const char * file_player) {
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
-	p->name = (char *)malloc(sizeof(char)*10);
-	strcpy( p->name, "default" );
-	if( !p->name ){
-		free( p );
-		return NULL;
-	}
 	
 
 	FILE *f;
@@ -121,6 +115,7 @@ Player* create_player(const char * file_player) {
 		p->luck_ability[i]=atoi(fgets(buf,100,f));
 	}
 	fgets(buf,100,f);
+	p->name = (char *) malloc(sizeof(char)*strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
 	
@@ -420,12 +415,7 @@ Player* create_enemy(FILE * f) {
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
 	if( !p ) return NULL;
-	p->name = (char *)malloc(sizeof(char)*10);
-	strcpy( p->name, "default" );
-	if( !p->name ){
-		free( p );
-		return NULL;
-	}
+	
 	
 
 	
@@ -487,6 +477,7 @@ Player* create_enemy(FILE * f) {
 		p->luck_ability[i]=atoi(fgets(buf,100,f));
 	}
 	fgets(buf,100,f);
+	p->name = (char *)malloc(sizeof(char)*strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
 	
