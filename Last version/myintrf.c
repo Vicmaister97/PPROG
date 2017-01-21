@@ -532,11 +532,11 @@ int isOnObject_intrf(intrf *ic){
 
 int isOnDoor_intrf(intrf *ic){
 	if(!ic) return 0;
-	/*
+	
 	char buf[30];
 	sprintf(buf, "%d %d %d %d", ic->player_row, ic->player_col, ic->map_rows, ic->map_cols);
 	extra_write_message_object_intrf(ic, buf);
-	*/
+	
 	if(ic->player_col == 1 || ic->player_row == 1 || ic->player_row == ic->map_rows || ic->player_col == ic->map_cols-1) return 1;
 
 	return 0;

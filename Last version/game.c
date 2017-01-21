@@ -96,11 +96,11 @@ static void prepare_game(Game *gm){
 	char enemy[num_enemy];
 	Player **enemies = getEnemiesSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
 
-
+	/*
 	char buf[20];
 	sprintf(buf, "%d!!!!!!!!!!!", num_enemy);
 	extra_write_message_object_intrf(gm->ic, buf);
-
+	*/
 
 	for( ; i < num_enemy; i++){
 	    enemy[i] = getSymbol_player(enemies[i]);
