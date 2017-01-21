@@ -96,11 +96,11 @@ static void prepare_game(Game *gm){
 	char enemy[num_enemy];
 	Player **enemies = getEnemiesSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
 
-	/*
+	
 	char buf[20];
-	sprintf(buf, "%d!!!!!!!!!!!", num_enemy);
+	sprintf(buf, "%d!!!!!!!!!!!", getWaI_player(getPlayer_world(gm->w)));
 	extra_write_message_object_intrf(gm->ic, buf);
-	*/
+	
 
 	for( ; i < num_enemy; i++){
 	    enemy[i] = getSymbol_player(enemies[i]);
@@ -518,7 +518,7 @@ void play_game(Game *gm){
 	while(1){
 		prepare_to_write_cmd_intrf(gm->ic);
 		if(isOnDoor_intrf(gm->ic)){
-			/*extra_write_message_object_intrf(gm->ic, "sip");*/
+			extra_write_message_object_intrf(gm->ic, "sip");
 			aux = - _read_key();
 			if(aux >= 0){
 				if(ret == aux){
