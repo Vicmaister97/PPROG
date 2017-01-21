@@ -511,6 +511,7 @@ void play_game(Game *gm){
 	while(1){
 		prepare_to_write_cmd_intrf(gm->ic);
 		if(isOnDoor_intrf(gm->ic)){
+			/*extra_write_message_object_intrf(gm->ic, "sip");*/
 			aux = - _read_key();
 			if(aux >= 0){
 				if(ret == aux){
