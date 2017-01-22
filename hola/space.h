@@ -21,5 +21,6 @@ char **getPict_Space(Space *s);
 void delete_Space(Space *s);
  int getUnlock_Space(Space *s, int dir);
 Bool isDark_Space(Space *s, int dir);
+char *getDesc_space(Space *s);
 
 #endif

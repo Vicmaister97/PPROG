@@ -16,7 +16,7 @@ struct _Space{
 	West=3
 	*/
 	int unlock[4];
-
+	char *desc;
 	char **pict;
 };
 
@@ -58,6 +58,10 @@ Space *create_Space(FILE *fp){
 	for(i=0; i<4; i++)
 		s->unlock[i] = buf[i]-'0';
 	
+	fgets(buf, 100, fp);
+	s->desc = (char *) malloc(sizeof(char)*strlen(buf)+1);
+	strcpy(s->desc, buf);
+
 	s->pict = (char **)malloc(sizeof(char*)*s->rows);
 	for(i=0;i<s->rows;i++){
 		fgets(buf, 150, fp);
@@ -75,6 +79,11 @@ Space *create_Space(FILE *fp){
    int pictCols_Space(Space *s){
   	if(!s) return 0;
   	return s->cols;
+  }
+
+  char *getDesc_space(Space *s){
+  	if(!s) return NULL;
+  	return s->desc;
   }
 
   int getNeigh_Space(Space *s, int dir){
