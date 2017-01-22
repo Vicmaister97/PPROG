@@ -98,7 +98,7 @@ static void prepare_game(Game *gm){
 
 	
 	char buf[20];
-	sprintf(buf, "%d!!!!!!!!!!!", getWaI_player(getPlayer_world(gm->w)));
+	sprintf(buf, "%d!!!!!!!!!!!", num_enemy);
 	extra_write_message_object_intrf(gm->ic, buf);
 	
 
@@ -242,6 +242,14 @@ int cmd7(void *dummy, char *obj, char **str, int n){
 	return 1;
 }
 
+int cmd8(void *dummy, char *obj, char **str, int n){
+	Game *gm = (Game *) dummy;
+	movePlayerTo_world(gm->w, atoi(obj));
+	prepare_game(gm);
+	draw_game(gm);
+	return 1;
+}
+
 int err(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	extra_write_message_object_intrf(gm->ic, str[0]);
@@ -263,6 +271,8 @@ static void asociemos_cosas(CoP *cop){
 	if (CoP_assoc(cop, "cmd6_internal", cmd6) == -1)
 		return;
 	if (CoP_assoc(cop, "cmd7_internal", cmd7) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd8_internal", cmd8) == -1)
 		return;
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;

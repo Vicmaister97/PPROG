@@ -44,12 +44,6 @@ Space *create_Space(FILE *fp){
 	if(!s)return NULL;
 	s->id = atoi(fgets(buf, 100, fp));
 
-	
-
-	
-
-	
-
 	s->rows=atoi(fgets(buf, 100, fp));
 
 	s->cols=atoi(fgets(buf, 100, fp));

@@ -17,6 +17,7 @@ void delete_world(World *w);
 Player *getPlayer_world(World *w);
 Space *getByID_world(World *w, int id);
 int movePlayer_world(World *w, int dir);
+int movePlayerTo_world(World *w, int sp_id);
 
 Object **getObjectsSpace_world(World *w, int sp_id);
 People **getPeopleSpace_world(World *w, int sp_id);

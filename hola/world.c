@@ -202,6 +202,12 @@ int movePlayer_world(World *w, int dir) {
 
 }
 
+int movePlayerTo_world(World *w, int sp_id){
+    if(!w || sp_id <= 0) return 0;
+    modWaI_player(w->player, sp_id);
+    return 1;
+}
+
 
 int _get_num_objects_space(int sp_id, World *w){
     int i = 0, cont = 0;
