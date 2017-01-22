@@ -6,7 +6,7 @@ struct _Fight{
     Player* player;
     Player* foe;
     Player* preplayer;
-    Player* prefoe;
+    Player* prefoe; 
     int round;
     int finish;
 

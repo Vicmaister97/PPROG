@@ -158,8 +158,8 @@ guanche blade
 0
 0
 guanche lieutenant
-77
-24
+57
+18
 47
 4
 E6
@@ -212,7 +212,7 @@ drink vodka
 0
 drunk commodore
 22
-25
+28
 47
 5
 E6
@@ -317,8 +317,8 @@ concentrate
 0
 0
 guanche jedi
-57
-3
+46
+9
 65
 7
 E6
@@ -370,11 +370,11 @@ killer look
 0
 0
 Serrano
-48
-34
+49
+8
 65
 8
-e6
+E6
 Strength
 100
 40
@@ -423,8 +423,8 @@ Sleep
 0
 0
 simon
-54
-25
+49
+9
 65
 9
 E6
@@ -476,11 +476,11 @@ heal
 0
 0
 andrea
-46
-27
+56
+8
 65
 10
-E6
+M6
 Strength
 100
 69

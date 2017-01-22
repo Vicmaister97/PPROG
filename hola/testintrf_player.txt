@@ -1,6 +1,6 @@
 8
 9
-l6
+K6
 Strength
 999
 10
@@ -48,4 +48,4 @@ swordaso
 0
 0
 0
-IM
+I
