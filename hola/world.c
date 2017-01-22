@@ -41,7 +41,7 @@ Player **getEnemiesSpace_world(World *w, int sp_id){
         
         return NULL;
     }
-    for( ; i < _get_num_enemies_space(sp_id,w); i++){
+    for( ; i < w->n_enemies; i++){
         if(getWaI_player(w->enemies[i]) == sp_id){
             e[j] = w->enemies[i];
             j++;
@@ -98,6 +98,9 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
     w->enemies = (Player **)malloc(sizeof(Player *)*w->n_enemies);
     for (i=0;i<w->n_enemies;i++){
             w->enemies[i] = create_enemy(pfe); 
+            /*printf("%c", getSymbol_player(w->enemies[i]));
+            printf("%d %d", getCol_player(w->enemies[i]), getRow_player(w->enemies[i]));
+            printf(" %d", getWaI_player(w->enemies[i]));*/
     }
     /*fclose(pfe);*/
 
