@@ -237,7 +237,7 @@ potionnfin1
 Health!
 0 0 20 0 0 0
 65
-P16
+P36
 59
 1
 31
@@ -245,7 +245,7 @@ potionnfin2
 Health!
 0 0 20 0 0 0
 65
-P18
+P38
 59
 1
 32
@@ -253,7 +253,7 @@ rocketman
 ROCKETMAN
 10 10 40 0 10 10
 65
-Q16
+Q36
 66
 1
 

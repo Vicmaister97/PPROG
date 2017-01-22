@@ -371,7 +371,7 @@ killer look
 0
 Serrano
 48
-14
+34
 65
 8
 e6
