@@ -85,7 +85,7 @@ struct _Game{
 	CoP *cop;
 };
 
-/*no dibuja nada, solo asigna datos de la interfaz*/
+
 static void prepare_game(Game *gm){
 	if(!gm) return;
 	int i = 0, col, row, num_obj;
@@ -111,7 +111,7 @@ static void prepare_game(Game *gm){
 	free(enemies);
 
 
-
+	/*objects*/
 	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	char obj[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	Object **obs = getObjectsSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
@@ -149,7 +149,7 @@ static void prepare_game(Game *gm){
   	free(obs);
 }
 
-/*dibuja la interfaz, objetos y demás*/
+
 static void draw_game(Game *gm){
 
 	if(!gm) return;
@@ -157,7 +157,6 @@ static void draw_game(Game *gm){
 	setMenu_intrf(gm->ic, "Hey", getStats_player(getPlayer_world(gm->w)), 12, 2, getNameStats_player(getPlayer_world(gm->w)), getNumStats_player(getPlayer_world(gm->w)), getLimitStats_player(getPlayer_world(gm->w)));
 	drawField_intrf(gm->ic, 1);
 	addObjects_intrf(gm->ic);
-	/*new stuff*/
 	addEnemies_intrf(gm->ic);
 	addPeople_intrf(gm->ic);
 	setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
@@ -363,7 +362,7 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     int rand;
     char buf[100];
     
-    add_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0!*/
+    add_player_stats(p1 ,hab);
     ad=getStrength_player(p1)*getStrength_player(p1)/getEndurance_player(p2);
     rand=aleat_num(0,(getAgility_player(p1)+getAgility_player(p2)));
     if(rand<=(getAgility_player(p2)/2)) fail=0;
@@ -382,12 +381,11 @@ Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){
     sprintf(buf, "%s used %s", getName_player(p1), getAbilityName_player(p1, hab-1));
     extra_write_message_object_intrf(gm->ic, buf);
 
-    /*no entiendo esta funcion*/
     waitFor(2);
     sprintf(buf, "\n\t\tDamage received: %d \n\t\tHealthpoints of %s: %d", dmg, getName_player(p2), getHp_player(p2));
     extra_write_lngmess_intrf(gm->ic, buf);
 
-    less_player_stats(p1 ,hab);/*CUIDADO QUE NO DE MENOS DE 0! a arreglar*/
+    less_player_stats(p1 ,hab);
     setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
     prepare_to_write_cmd_intrf(gm->ic);
     if (getHp_player(p2)<=0){
@@ -504,7 +502,6 @@ static void moving_moving(Game *gm, int ret){
 }
 
 
-/*Para que el jugador entre por la puerta del otro espacio*/
 static void doors_al(Game *gm, int aux){
 	int new_row = getRow_player(getPlayer_world(gm->w));
 	int new_col = getCol_player(getPlayer_world(gm->w));
@@ -541,19 +538,14 @@ void play_game(Game *gm){
 						write_object_missing_intrf(gm, -ret, 1);
 						ret = aux;
 					}
-					/*else if(ret > 2){
-						doors_al(gm, aux);
-						write_object_missing_intrf(gm, ret/3, 0);
-						dark_spaces_intrf(gm->ic);
-						prepare_game(gm);
-						draw_game(gm);
-					}*/
-					else{
+					else if(!ret){
 						doors_al(gm, aux);
 						delete_internal_intrf(gm->ic);
 						prepare_game(gm);
 						draw_game(gm);
 					}
+					else
+						;
 				}
 				else if(aux != ret && (aux + ret)%2 == 0){
 					ret = movePlayer_intrf(gm->ic, aux);

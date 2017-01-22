@@ -3,7 +3,7 @@
 
 struct _Player{
 	char* name;
-	int wai; /*Where he is*/
+	int wai; 
 	int *stats;  /* [0]: Strength; [1]: Endurance; [2]: HP; [3]: Speed; [4]: Agility;  [5]: Luck */
 	int *limit_stats;
 	char **name_stats;
@@ -39,7 +39,6 @@ int* setDefStats( Player *p ){
 
 /*Public functions*/
 Player* create_player(const char * file_player) { 
-/*No muy claro qué necesito para crear un jugador*/
 	int i = 0;
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));
@@ -69,32 +68,25 @@ Player* create_player(const char * file_player) {
 	}
 
 
-	/*nuevo para el fight*/
-	/*para leer el fichero del player, en la linea siguiente a la fila(row) debe aparecer un numero que corrsponde al numero
-	de abilidades, Maximo 4*/
 	p->NumAbilities = atoi(fgets(buf,100,f));
 	if(p->NumAbilities>4){
 		printf("ERROR no puede haber tantas habilidades");
 		return NULL;
 	}
-	/*en la siguiente linea va el nombre de la habilidad y en la de debajo el daño que provoca*/
-	/*cuando se llame en la funcion getAbilityName_player(Player *p,int n) n es 1,2,3 y 4*/
 	
-
-	/*esto NO SE PUTO TOCA!!!!!! a no ser que cambiemos la implementación del juego*/
 	p->abilities=(char**)malloc(sizeof(char*)*4);
 
 	for(i=0;i<4;i++){
-	p->abilities[i]=(char*)malloc(sizeof(char)*20);
-	strcpy (p->abilities[i], "vacio");
+		p->abilities[i]=(char*)malloc(sizeof(char)*20);
+		strcpy (p->abilities[i], "vacio");
 
 
-	p->strength_ability[i]=0;
-	p->endurance_ability[i]=0;
-	p->hp_ability[i]=0;
-	p->speed_ability[i]=0;
-	p->agility_ability[i]=0;
-	p->luck_ability[i]=0;
+		p->strength_ability[i]=0;
+		p->endurance_ability[i]=0;
+		p->hp_ability[i]=0;
+		p->speed_ability[i]=0;
+		p->agility_ability[i]=0;
+		p->luck_ability[i]=0;
 	}
 
 
@@ -212,7 +204,6 @@ char getSymbol_player(Player *p){
 }
 
 
-/*funciones del fight*/
 int getStrength_player(Player *p){
 	if(!p)return ERROR;
 	return p->stats[0];
@@ -350,8 +341,6 @@ Status less_player_stats(Player* p,int n){
 
 
 
-
-/*Esta funcion está solo en caso de que haya problemas en el fight y entonces usamos esto*/ 
 Player *copy_player(Player*p1){
 	if(!p1)return NULL;
 	int i = 0;
@@ -410,7 +399,6 @@ Player *copy_player(Player*p1){
 
 
 Player* create_enemy(FILE * f) { 
-/*No muy claro qué necesito para crear un jugador*/
 	int i = 0;
 	char buf[100];
 	Player* p = ( Player *) malloc( sizeof( Player ));

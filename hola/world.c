@@ -9,21 +9,23 @@
 #include "world.h"
 
 struct _World{
-    /*char *name;*/
     Player* player;
+    
     Space **spaces;
     int n_spaces;
+    
     Object **objects;
     int n_objects;
+    
     People **people;
     int n_people;
     
-    /*new stuff*/
+    
     Player **enemies;
     int n_enemies;
 };
 
-/*fight stuff*/
+
 int _get_num_enemies_space(int sp_id, World *w){
     int i = 0, cont = 0;
     if(sp_id < 0) return 0;
@@ -73,65 +75,32 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
     World *w= (World *) malloc(sizeof(World));
     FILE *pfs = fopen(filesp, "r");
     FILE *pfo = fopen(fileob, "r");
+    
     w->n_spaces = atoi(fgets(buf, 100, pfs));
     w->spaces = (Space **)malloc(sizeof(Space *)*w->n_spaces);
-    for( i=0; i < w->n_spaces; i++){
+    for( i=0; i < w->n_spaces; i++)
         w->spaces[i] = create_Space(pfs);
-        /*if(!w->spaces[i]){
-        	for( ; i >= 0; i--)
-        		delete_Space( w->spaces[i] );
-            free(w->spaces);
-        	free( w );
-            fclose(pfs);
-            fclose(pfo);
-        	return NULL;
-        }*/
-    }
+
     w->player = create_player(fileplayer); 
     
-
-    /*this is new*/
-    FILE *pfe=fopen(fileEnemy,"r");
-    if(pfe==NULL)printf("\nERRRORRR\n");
-    
+    FILE *pfe=fopen(fileEnemy,"r");    
     w->n_enemies=atoi(fgets(buf, 100, pfe));
     w->enemies = (Player **)malloc(sizeof(Player *)*w->n_enemies);
-    for (i=0;i<w->n_enemies;i++){
+    for (i=0;i<w->n_enemies;i++)
             w->enemies[i] = create_enemy(pfe); 
-            /*printf("%c", getSymbol_player(w->enemies[i]));
-            printf("%d %d", getCol_player(w->enemies[i]), getRow_player(w->enemies[i]));
-            printf(" %d", getWaI_player(w->enemies[i]));*/
-    }
-    /*fclose(pfe);*/
-
-    
-    
-    /*if(!w->player){
-    	for( ; i >= 0; i--)
-    		delete_Space( w->spaces[i] );
-        free(w->spaces);
-    	free(w);
-        fclose(pfs);
-        fclose(pfo);
-    	return NULL;
-    }*/
         
     w->n_objects = atoi(fgets(buf, 100, pfo));
-  
     w->n_people = atoi(fgets(buf, 100, pfo));
-    /*a=atoi(fgets(buf, 100, pfo));*/
-    
     w->objects = (Object **)malloc(sizeof(Object *)*w->n_objects);
-   
     for( j=0; j < w->n_objects; j++){        
         w->objects[j] = create_object(pfo);
     }
     fgets(buf,100,pfo);
     w->people = (People **)malloc(sizeof(People*)*w->n_people);
-    
     for (j = 0; j < w->n_people; j++){
         w->people[j] = create_people(pfo);
     }
+
     return w;
 
 }
@@ -139,20 +108,25 @@ World *create_world(const char *filesp, const char *fileob,const char *fileplaye
 void delete_world(World *w){
     int i=0;
 	if(!w) return;
+
 	for( ; i < w->n_spaces; i++)
 		delete_Space(w->spaces[i]);
     free(w->spaces);
+
     for( i = 0; i < w->n_objects; i++){
         delete_object(w->objects[i]);
     }
+    free(w->objects);
+
     for( i = 0; i < w->n_people; i++){
         delete_people(w->people[i]);
     }
-    free(w->objects);
     free(w->people);
+
     for(i = 0; i < w->n_enemies; i++)
         delete_player(w->enemies[i]);
     free(w->enemies);
+    
 	delete_player(w->player);
 	free(w);
 }
@@ -186,21 +160,23 @@ int movePlayer_world(World *w, int dir) {
     int ret = 0;
     int curr_id = getWaI_player(w->player);
     Space *curr_sp = getByID_world(w, curr_id);
-    int new_id = getNeigh_Space(curr_sp, dir);/*Dudas sobre la implementación de la función*/
-    if(!getByID_world(w,new_id)) return curr_id;
-    if (!curr_sp) return 1;
+    int new_id = getNeigh_Space(curr_sp, dir);
+    
+    if(!getByID_world(w,new_id)) 
+        return curr_id;
+    
+    if (!curr_sp) 
+        return 1;
+
     if(isLocked_Space(curr_sp,dir)==TRUE){
         ret = getUnlock_Space(curr_sp, dir);
         if(!isInInventory(getByIdObject_world(w, ret)))
             return -ret;
     }
-    /*if(isDark_Space(curr_sp, dir) == TRUE){
-        ret = getUnlock_Space(curr_sp, dir);
-        modWaI_player(w->player,new_id);
-        if(!isInInventory(getByIdObject_world(w, ret)))
-            return ret*3;
-    }*/
-    if(modWaI_player(w->player,new_id)==ERROR) return 2;
+   
+    if(modWaI_player(w->player,new_id)==ERROR) 
+        return 2;
+
     return 0;
 
 }
@@ -248,7 +224,7 @@ Object **getObjectsSpace_world(World *w, int sp_id){ /*CUIDADO PORQUE HAY QUE LI
     return obs;
 }
 
-People **getPeopleSpace_world(World *w, int sp_id){ /*CUIDADO PORQUE HAY QUE LIBERAR LA MEMORIA FUERA AL LLAMAR A ESTA FUNCION*/
+People **getPeopleSpace_world(World *w, int sp_id){ 
     int i = 0, j = 0;
     People **peo = (People **)malloc(sizeof(People *)*_get_num_people_space(sp_id,w));
     if(!w || sp_id <= 0){
@@ -264,7 +240,7 @@ People **getPeopleSpace_world(World *w, int sp_id){ /*CUIDADO PORQUE HAY QUE LIB
     return peo;
 }
 
-Object *getByIdObject_world(World *w, int id){ /*Lo mismo del CUIDADO, en todas las de + adelante igual, hay que tener cuidado con esa memoria*/
+Object *getByIdObject_world(World *w, int id){ 
     int i = 0;
     for( ; i < w->n_objects; i++){
         if(getId_object(w->objects[i]) == id){

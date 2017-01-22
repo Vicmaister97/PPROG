@@ -3,7 +3,7 @@
 
 
 struct _intrf{
-	/*Para que todo sea de colorines*/
+	
 	sc_rectangle *total;
 	/*General info*/
 	int rows; /*Total rows, only rows-2 usasble*/
@@ -41,13 +41,13 @@ struct _intrf{
 
 	/*Captions info*/
 	char *menu_cap, *extra_cap; /*Captions*/
-	int menucap_col, extracap_row, extracap_col; /*Situation for the captions*/
+	int menucap_col, extracap_row, extracap_col; 
 	/*Menu info*/
 	int *stats; 
 	char **name_stats;
 	int num_stats;
 	int *limit_stats;
-	int stats_col; /*Calculamos a ojo y es la columna en la que van a estar todas ordenadas*/
+	int stats_col; 
 };
 
 
@@ -155,8 +155,7 @@ void _cap_redraw(intrf *ic){
 	}
 
 	setStats_intrf(ic, ic->stats);
-	win_write_line_at(ic->menu, 10, ic->menucap_col, ic->menu_cap);/*menucap_col ahora 9 porque si 
-	no se mete en mierda y peta en esta funcion*/
+	win_write_line_at(ic->menu, 10, ic->menucap_col, ic->menu_cap);
 	
 	fflush(stdout);
 	return;
@@ -193,7 +192,7 @@ intrf *create_intrf(const char* file_intrfc){
 	ic->num_obj = 0;
 	ic->num_enemy=0;
 	ic->num_people = 0;
-	ic->menu_cap=(char*)malloc(sizeof(char)*10);/*reservado para uso posterior que no pete*/
+	ic->menu_cap=(char*)malloc(sizeof(char)*10);
 
 	fprintf(stdout, "%c[2J", 27);
 	win_cls(ic->total, 1);
@@ -216,7 +215,7 @@ int setMenu_intrf(intrf *ic, char *menu_cap, int *stats, int stats_col, int cap_
 
 	_cap_redraw(ic);
 	win_cls(ic->menu, 0);
-  	fflush(stdout); /*obliga al buffer a vaciarse e imprimirlo todo*/
+  	fflush(stdout); 
 	return 1;
 }
 
@@ -239,10 +238,6 @@ int setPlayData_intrf(intrf *ic, char player, char *obj, int num_obj, int player
 		ic->obj_row[i] = obj_row[i];
 		ic->obj_col[i] = obj_col[i];
 	}
-	/*if(num_obj == 3){
-		sprintf(buf, "%d %d %d %d %d %d", ic->obj_row[0], ic->obj_col[0], ic->obj_row[1], ic->obj_col[1], ic->obj_row[2], ic->obj_col[2]);
-		extra_write_message_object_intrf(ic, buf);
-	}*/
 
 	/*Enemies*/
 	ic->num_enemy = num_enemy;
@@ -285,10 +280,6 @@ int setField_intrf(intrf *ic, int map_rows, int map_cols, char **map){
 }
 
 
-
-
-/*new enemy Stuff*/
-
 int addEnemies_intrf(intrf *ic){
 	int i = 0;
 
@@ -320,27 +311,10 @@ int removeEnemy(intrf *ic, int row, int col){
 		if(ic->enemy_row[i] == row && ic->enemy_col[i] == col){
 			ic->enemy_col[i] *= -1;
 			ic->enemy_row[i] *= -1;
-			/*extra_write_message_object_intrf(ic, "Prepare to fight!");*/
 		}
 
 	return 1;
 }
-
-/*int isOnEnemy_intrf(intrf *ic,int *row,int *col){
-	int i = 0;
-	if(!ic) return 0;
-	for( ; i < ic->num_enemy; i++)
-		/*sprintf(buf, "%d %d %d %d ", ic->obj_row[i], ic->obj_col[i], ic->player_row, ic->player_col);
-		extra_write_message_object_intrf(ic, buf);*/
-		/*if(ic->enemy_row[i] == ic->player_row && ic->enemy_col[i] == ic->player_col){
-				*row=ic->enemy_row[i];
-				*col=ic->enemy_col[i];
-				return 1;
-		}
-			
-	
-	return 0;
-}*/
 
 int isOnEnemy_intrf(intrf *ic, int row, int col){
 	if(!ic) return 0;
@@ -355,41 +329,20 @@ int isNearEnemy_intrf(intrf *ic, int *row, int *col){
 	int i = 0;
 	if(!ic) return 0;
 	for( ; i < ic->num_enemy; i++){
-		if(ic->enemy_row[i] == ic->player_row+1 ){
-			/*if(ic->people_col[i] == ic->player_col+1){
-				*row=ic->player_row+1;
-				*col=ic->player_col+1;
-				return 1; 
-			}
-			if(ic->people_col[i] == ic->player_col-1){
-				*row=ic->player_row+1;
-				*col=ic->player_col-1;
-				return 1; 
-			}*/
+		if(ic->enemy_row[i] == ic->player_row+1 )
 			if(ic->enemy_col[i] == ic->player_col){
 				*row = ic->player_row+1;
 				*col = ic->player_col;
 				return 1;
 			}
 
-		}
-		if(ic->enemy_row[i] == ic->player_row-1 ){
-			/*if(ic->people_col[i] == ic->player_col+1){
-				*row=ic->player_row-1;
-				*col=ic->player_col+1;
-				return 1;
-			} 
-			if(ic->people_col[i] == ic->player_col-1){
-				*row=ic->player_row-1;
-				*col=ic->player_col-1;
-				return 1;
-			}*/
+		if(ic->enemy_row[i] == ic->player_row-1 )
 			if(ic->enemy_col[i] == ic->player_col){
 				*row = ic->player_row-1;
 				*col = ic->player_col;
 				return 1;
 			}
-		}
+		
 		if(ic->enemy_row[i] == ic->player_row){
 			if(ic->enemy_col[i] == ic->player_col-1){
 				*row = ic->player_row;
@@ -432,7 +385,6 @@ int removeObject(intrf *ic, int row, int col){
 		if(ic->obj_row[i] == row && ic->obj_col[i] == col){
 			ic->obj_row[i] *= -1;
 			ic->obj_col[i] *= -1;
-			/*extra_write_message_object_intrf(ic, "You have found an object!");*/
 		}
 
 	return 1;
@@ -446,8 +398,12 @@ int drawField_intrf(intrf *ic, int clear){
 	if(!ic) return 0;
 
 	if(clear)
-		win_cls(ic->field, 0);
+		win_cls(ic->field, 1);
 	
+	/*char buf[10];
+	sprintf(buf, "%d", ic->map_rows);
+	extra_write_message_object_intrf(ic, buf);*/
+
 	for( ; i < ic->map_rows; i++)
 		win_write_line_at(ic->field, i+1, 1, ic->map[i]);
 	addObjects_intrf(ic);
@@ -476,13 +432,11 @@ int setStats_intrf(intrf *ic, int *stats){
 
 
 /*Moves the player and redraws it*/
-/*El -1 viene de la diferencia entre field_rows/cols y map_rows/cols*/
 int movePlayer_intrf(intrf *ic, int dir){
 	if(!ic || dir < 0 || dir > 4) return -1;
 	
 	if(dir == NORTH || dir == SOUTH){
 		int new_row = ic->player_row;
-		/*printf("%d", ic->player_row);*/
 		if(dir == NORTH)
 			new_row --;
 		if(dir == SOUTH)
@@ -492,7 +446,6 @@ int movePlayer_intrf(intrf *ic, int dir){
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ' ');
 			ic->player_row = new_row;
 			win_write_char_at(ic->field, ic->player_row, ic->player_col, ic->player);
-			/*printf("%d", ic->player_row);*/
 			return dir;
 		}
 	}
@@ -522,8 +475,6 @@ int isOnObject_intrf(intrf *ic){
 	int i = 0;
 	if(!ic) return 0;
 	for( ; i < ic->num_obj; i++)
-		/*sprintf(buf, "%d %d %d %d ", ic->obj_row[i], ic->obj_col[i], ic->player_row, ic->player_col);
-		extra_write_message_object_intrf(ic, buf);*/
 		if(ic->obj_row[i] == ic->player_row && ic->obj_col[i] == ic->player_col)
 			return 1;
 	
@@ -532,11 +483,7 @@ int isOnObject_intrf(intrf *ic){
 
 int isOnDoor_intrf(intrf *ic){
 	if(!ic) return 0;
-	/*
-	char buf[30];
-	sprintf(buf, "%d %d %d %d", ic->player_row, ic->player_col, ic->map_rows, ic->map_cols);
-	extra_write_message_object_intrf(ic, buf);
-	*/
+	
 	if(ic->player_col == 1 || ic->player_row == 1 || ic->player_row == ic->map_rows || ic->player_col == ic->map_cols-1) return 1;
 
 	return 0;
@@ -635,41 +582,20 @@ int isNearPeople_intrf(intrf *ic,int *row,int *col){
 	int i = 0;
 	if(!ic) return 0;
 	for( ; i < ic->num_people; i++){
-		if(ic->people_row[i] == ic->player_row+1 ){
-			/*if(ic->people_col[i] == ic->player_col+1){
-				*row=ic->player_row+1;
-				*col=ic->player_col+1;
-				return 1; 
-			}
-			if(ic->people_col[i] == ic->player_col-1){
-				*row=ic->player_row+1;
-				*col=ic->player_col-1;
-				return 1; 
-			}*/
+		if(ic->people_row[i] == ic->player_row+1 )
 			if(ic->people_col[i] == ic->player_col){
 				*row = ic->player_row+1;
 				*col = ic->player_col;
 				return 1;
 			}
 
-		}
-		if(ic->people_row[i] == ic->player_row-1 ){
-			/*if(ic->people_col[i] == ic->player_col+1){
-				*row=ic->player_row-1;
-				*col=ic->player_col+1;
-				return 1;
-			} 
-			if(ic->people_col[i] == ic->player_col-1){
-				*row=ic->player_row-1;
-				*col=ic->player_col-1;
-				return 1;
-			}*/
+		if(ic->people_row[i] == ic->player_row-1 )
 			if(ic->people_col[i] == ic->player_col){
 				*row = ic->player_row-1;
 				*col = ic->player_col;
 				return 1;
 			}
-		}
+		
 		if(ic->people_row[i] == ic->player_row){
 			if(ic->people_col[i] == ic->player_col-1){
 				*row = ic->player_row;

@@ -119,38 +119,21 @@ static cmdfun_type _assoc_search(CoP *c, char *i_name) {
 int CoP_assoc(CoP *c, char *int_name, cmdfun_type cfun) {
 	if (_assoc_search(c, int_name) != NULL) return -1;  /*the internal command already existed */
 
-	/*if (c->int_no >= c->int_max - 1) {     list full: get more space
-		c->int_max += 10;
-		c->i_lst = (int_cmd **)realloc(c->i_lst, c->int_max);
-	}*/
-
 	if (c->int_no >= c->int_max) { /* list full: get more space */
 		c->int_max += 10;
 		c->i_list = (int_cmd **)realloc(c->i_list, c->int_max);
 	}
 
 	int_cmd *new_a = (int_cmd *)malloc(sizeof(int_cmd));
-	/*new_a->i_name = strdup(int_name);*/
+
 	new_a->i_name = (char *) malloc(sizeof(char)*strlen(int_name)+1);
 	strcpy(new_a->i_name, int_name);
 	new_a->fct = cfun;
 
-	/*c->i_lst[c->int_no++] = new_a;
-	  return c->int_no;*/
 	c->i_list[c->int_no] = new_a;
 	c->int_no++;
 	return c->int_no;
 }
-
-
-/*int _assoc_search(CoP *c, char* int_name){
-	int i;
-	for (i = 0; i<c->int_no; i++){
-		if (strcmp(int_name, c->i_lst[i]->i_name) == 0) return 1;
-	}
-	return NULL;
-}*/
-
 
 static ext_cmd *_ext_src(CoP *c, char *name) {
 	if(!name) return NULL;

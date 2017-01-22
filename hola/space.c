@@ -18,8 +18,6 @@ struct _Space{
 	int unlock[4];
 
 	char **pict;
-	/*Object *o;*/
-	/*two different options in order to store objects from a space*/
 };
 
 int getID_Space(Space *s){
@@ -43,12 +41,6 @@ Space *create_Space(FILE *fp){
 	char buf[150];
 	if(!s)return NULL;
 	s->id = atoi(fgets(buf, 100, fp));
-
-	
-
-	
-
-	
 
 	s->rows=atoi(fgets(buf, 100, fp));
 
