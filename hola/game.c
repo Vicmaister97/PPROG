@@ -201,15 +201,18 @@ int use_object_game(Game *gm, Object *po){
 int cmd3(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	int ret;
+	char buf[100];
 	ret = use_object_game(gm, getObjectByName_wordl(gm->w, obj));
 	if (ret == 0){
-		extra_write_message_object_intrf(gm->ic, str[1]);
-		return ret;
+		sprintf(buf, "You couldn't use %s, sorry bro", obj);
+		extra_write_message_object_intrf(gm->ic, buf);
+		return 1;
 	}
 
-	extra_write_message_object_intrf(gm->ic, str[0]);
+	sprintf(buf, "You used %s!", obj);
+	extra_write_message_object_intrf(gm->ic, buf);
 	
-	return ret;
+	return 1;
 }
 
 
@@ -333,8 +336,8 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 
 
 static int _read_smth(Game *gm, char c){
-	char buf[50];
-	int i = 0;
+	char *buf = (char *) malloc(sizeof(char)*50);
+	int i = 0, ret;
 	char aux = c;
 	prepare_to_write_cmd_intrf(gm->ic);
 	while(aux != 10){
@@ -350,7 +353,10 @@ static int _read_smth(Game *gm, char c){
 		aux = _read_key();
 	}
 	buf[i] = '\0';
-	return CoP_execute(gm->cop, buf, gm);
+	extra_write_message_object_intrf(gm->ic, buf);
+	ret = CoP_execute(gm->cop, buf, gm);
+	free(buf);
+	return ret;
 }
 
 
