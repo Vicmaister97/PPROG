@@ -214,14 +214,17 @@ int cmd3(void *dummy, char *obj, char **str, int n) {
 int cmd4(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	int ret = drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
-	if (ret == 0){
-		extra_write_message_object_intrf(gm->ic, str[1]);
-		return ret;
+	char buf[100];
+	if (!ret){
+		sprintf(buf, "You can’t drop up the %s, are you crazy man?", obj);
+		extra_write_message_object_intrf(gm->ic, buf);
+		return 1;
 	}
 
-	extra_write_message_object_intrf(gm->ic, str[0]);
+	sprintf(buf, "You have dropped %s", obj);
+	extra_write_message_object_intrf(gm->ic, buf);
 	
-	return ret;
+	return 1;
 }
 
 int cmd5(void *dummy, char *obj, char **str, int n){

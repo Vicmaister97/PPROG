@@ -207,7 +207,7 @@ Object* pick_object (Object *po){ /*Function that moves a given object to the In
 }
 
 Status drop_object(Object *po){
-	if(!po || !isInInventory(po)) return ERROR;
+	if(!po || !isInInventory(po) || po->type == 0) return ERROR;
 	
 	po->picked = FALSE;
 	
