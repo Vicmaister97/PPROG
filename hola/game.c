@@ -87,6 +87,7 @@ struct _Game{
 
 /*no dibuja nada, solo asigna datos de la interfaz*/
 static void prepare_game(Game *gm){
+	if(!gm) return;
 	int i = 0, col, row, num_obj;
 	/*enemy stuff*/
 	int num_enemy;
@@ -107,14 +108,13 @@ static void prepare_game(Game *gm){
 	    enemy_row[i] = getRow_player(enemies[i]);
 	    enemy_col[i] = getCol_player(enemies[i]);
 	}
+	free(enemies);
 
 
 
 	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	char obj[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	Object **obs = getObjectsSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
-
-	if(!gm) return;
 
 	col = getCol_player(getPlayer_world(gm->w));
 	row = getRow_player(getPlayer_world(gm->w));
@@ -137,6 +137,7 @@ static void prepare_game(Game *gm){
 		people_row[i] = getRow_people(people[i]);
 		people_col[i] = getCol_People(people[i]);
 	}
+	free(people);
 
 
   	setPlayData_intrf(gm->ic, getSymbol_player(getPlayer_world(gm->w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w), row ,col , obj_col, obj_row/*enemy*/,enemy,num_enemy,enemy_col,enemy_row, num_people, people_col, people_row, ppl);
@@ -245,6 +246,7 @@ int cmd7(void *dummy, char *obj, char **str, int n){
 int cmd8(void *dummy, char *obj, char **str, int n){
 	Game *gm = (Game *) dummy;
 	movePlayerTo_world(gm->w, atoi(obj));
+	delete_internal_intrf(gm->ic);
 	prepare_game(gm);
 	draw_game(gm);
 	return 1;
@@ -548,6 +550,7 @@ void play_game(Game *gm){
 					}*/
 					else{
 						doors_al(gm, aux);
+						delete_internal_intrf(gm->ic);
 						prepare_game(gm);
 						draw_game(gm);
 					}
@@ -587,6 +590,8 @@ void delete_game(Game *gm){
 		delete_world(gm->w);
 	if(gm->ic)
 		delete_intrf(gm->ic);
+	if(gm->cop)
+		CoP_delete(gm->cop);
 	if(gm)
 		free(gm);
 }

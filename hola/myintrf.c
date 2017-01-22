@@ -688,18 +688,42 @@ void prepare_to_write_mgextra(intrf *ic){
 	fflush(stdout);
 }
 
+void delete_internal_intrf(intrf *ic){
+	free(ic->obj);
+	free(ic->obj_row);
+	free(ic->obj_col);
+
+	free(ic->enemy);
+	free(ic->enemy_row);
+	free(ic->enemy_col);
+
+	free(ic->people);
+	free(ic->people_row);
+	free(ic->people_col);	
+}
 
 void delete_intrf(intrf *ic){
 	if(!ic) return;
 	free(ic->obj);
 	free(ic->obj_row);
 	free(ic->obj_col);
+
+	free(ic->enemy);
+	free(ic->enemy_row);
+	free(ic->enemy_col);
+
+	free(ic->people);
+	free(ic->people_row);
+	free(ic->people_col);
+
 	free(ic->menu_cap);
+
 	win_delete(ic->field);
 	win_delete(ic->menu);
 	win_delete(ic->extra);
 	win_delete(ic->cmd);
 	win_delete(ic->total);
+
 	free(ic);
 }
 

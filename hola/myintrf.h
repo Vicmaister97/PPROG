@@ -48,4 +48,6 @@ int addPeople_intrf(intrf *ic);
 int isNearPeople_intrf(intrf *ic, int *row, int *col);
 int isOnPeople(intrf *ic, int row, int col);
 
+void delete_internal_intrf(intrf *ic);
+
 #endif
