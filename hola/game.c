@@ -99,7 +99,7 @@ static void prepare_game(Game *gm){
 
 	
 	char buf[20];
-	sprintf(buf, "%d!!!!!!!!!!!", num_enemy);
+	sprintf(buf, "%d!!!!!!!!!!!", getWaI_player(getPlayer_world(gm->w)));
 	extra_write_message_object_intrf(gm->ic, buf);
 	
 

@@ -277,7 +277,7 @@ Oscanario: I have very cheap tobacco from my islands my friend
 15
 4
 Victor1
-Victor: Hey man, thanks for helping me. Man, I hate platanito's oppression, let's join our forces to kick his ass! I'm a pilot
+Victor: Hey man, thanks for helping me. Man, I hate platanito's oppression, |let's join our forces to kick his ass! I'm a pilot
 11
 V26
 45
@@ -289,7 +289,7 @@ V11
 95
 6
 JointLand
-Welcome to JointLand, the only world in the hole universe made entirely of marihuana. Enjoy your stay, peace and love
+Welcome to JointLand, the only world in the hole universe made entirely of marihuana. |Enjoy your stay, peace and love
 19
 T5
 52
@@ -319,7 +319,7 @@ Rastaman: I'm as green as a field bro :)
 5
 11
 padreblanca
-Rebel: We are fed up with the Guanche Emperor, the Evil Platanito. There is a base near here... maybe you could free us
+Rebel: We are fed up with the Guanche Emperor, the Evil Platanito. |There is a base near here... maybe you could free us
 20
 F9
 74
@@ -331,7 +331,7 @@ b9
 76
 13
 porreta1
-Barney: Think of me like Yoda, but instead of being little and green I wear suits and I’m awesome. I’m your bro—I’m Broda!
+Barney: Think of me like Yoda, but instead of being little and green I wear suits and I’m awesome. |I’m your bro—I’m Broda!
 20
 =18
 45
@@ -457,7 +457,7 @@ v24
 75
 34
 Fons
-Fons: The evil Guanche Emperor has scaped, but I know someone that may help you... He's a really wise man, I will tell Victor how to go there
+Fons: The evil Guanche Emperor has scaped, but I know someone that may help you... |He's a really wise man, I will tell Victor how to go there
 47
 F38
 48
@@ -493,13 +493,13 @@ V28
 71
 40
 signSantini
-Sign: Till the roof comes off, till the light goes out, till my legs give out, can't shout my mouth. Till the smokes clears out, am I high?...
+Sign: Till the roof comes off, till the light goes out, till my legs give out, can't shout my mouth.|Till the smokes clears out, am I high?...
 55
 T23
 98
 41
 Santini
-Santini: Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering. Go there and find the truth
+Santini: Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. |Hate leads to suffering. Go there and find the truth
 55
 S32
 18
