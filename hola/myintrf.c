@@ -544,8 +544,39 @@ int isOnDoor_intrf(intrf *ic){
 
 void extra_write_message_object_intrf(intrf *ic, char * mg){
 	if(!ic) return;
+	/*int len = strlen(mg);
+	int i = 0, j = 0, h = 0;
+	int col = ic->cols - ic->menu_cols;
+	int row = 2;*/
 	win_cls(ic->extra, 1);
-	win_write_line_at(ic->extra, 2, 2, mg);
+	/*if(len > col-10){
+		char aux[col-10];
+		while(j != strlen(mg)){
+			j = i + col - 11;
+			if(j > strlen(mg))
+				j = strlen(mg);
+			for(h = 0; h <= j; h++, i++)
+				if(i < strlen(mg))
+					aux[h] = mg[i];
+			if(aux[0])
+				win_write_line_at(ic->extra, row, 2, aux);
+			row++;
+			i = j+1;
+		}
+	}*/
+
+	if(strlen(mg) > ic->cols - ic->menu_cols -10){
+		char *aux;
+		int row = 1;
+		aux = strtok(mg, ".");
+		while(aux){
+			win_write_line_at(ic->extra, row, 2, aux);
+			aux = strtok(NULL, ".");
+			row++;
+		}
+	}
+	else
+		win_write_line_at(ic->extra, 2, 2, mg);
 	/*fprintf(stdout, "%c[%d;%dH", 27, ic->player_row, ic->player_col);*/
 }
 
