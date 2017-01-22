@@ -256,9 +256,11 @@ int cmd8(void *dummy, char *obj, char **str, int n){
 
 int err(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	extra_write_message_object_intrf(gm->ic, str[0]);
+	char buf[100];
+	sprintf(buf, "Sorry... I don't know what %s is", obj);
+	extra_write_message_object_intrf(gm->ic, buf);
 	
-	return 0;
+	return 1;
 }
 
 static void asociemos_cosas(CoP *cop){
@@ -353,7 +355,6 @@ static int _read_smth(Game *gm, char c){
 		aux = _read_key();
 	}
 	buf[i] = '\0';
-	extra_write_message_object_intrf(gm->ic, buf);
 	ret = CoP_execute(gm->cop, buf, gm);
 	free(buf);
 	return ret;
