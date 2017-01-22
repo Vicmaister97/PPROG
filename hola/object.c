@@ -184,7 +184,7 @@ void delete_object (Object *po){ /*Fuction that receives an object and deletes i
 }
 
 Bool isInInventory (Object *po){ /*Function that returns wether an object is in the Inventory of the player or not*/
-	if(po && po->picked) return TRUE;
+	if(po && po->picked && !po->used) return TRUE;
 	return FALSE;
 }
 
