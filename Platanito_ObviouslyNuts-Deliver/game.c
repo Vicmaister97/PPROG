@@ -85,8 +85,9 @@ struct _Game{
 	CoP *cop;
 };
 
-/*no dibuja nada, solo asigna datos de la interfaz*/
+
 static void prepare_game(Game *gm){
+	if(!gm) return;
 	int i = 0, col, row, num_obj;
 	/*enemy stuff*/
 	int num_enemy;
@@ -101,26 +102,39 @@ static void prepare_game(Game *gm){
 	    enemy_row[i] = getRow_player(enemies[i]);
 	    enemy_col[i] = getCol_player(enemies[i]);
 	}
+	free(enemies);
 
 
-
+	/*objects*/
 	int obj_row[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)], obj_col[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	char obj[_get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w)];
 	Object **obs = getObjectsSpace_world(gm->w,getWaI_player(getPlayer_world(gm->w)));
-
-	if(!gm) return;
 
 	col = getCol_player(getPlayer_world(gm->w));
 	row = getRow_player(getPlayer_world(gm->w));
 	num_obj = _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)),gm->w);
 	
-	for( ; i < num_obj; i++){
+	for(i=0 ; i < num_obj; i++){
 	    obj[i] = getPicture_object(obs[i]);
 	    obj_row[i] = getRow_object(obs[i]);
 	    obj_col[i] = getCol_object(obs[i]);
 	}
+
+	/*People*/
+	int num_people = _get_num_people_space(getWaI_player(getPlayer_world(gm->w)),gm->w);
+	int people_row[num_people], people_col[num_people];
+	char ppl[num_people];
+	People **people = getPeopleSpace_world(gm->w, getWaI_player(getPlayer_world(gm->w)));
 	
-  	setPlayData_intrf(gm->ic, getSymbol_player(getPlayer_world(gm->w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w), row ,col , obj_col, obj_row/*enemy*/,enemy,num_enemy,enemy_col,enemy_row);
+	for(i = 0; i < num_people; i++){
+		ppl[i] = getPicture_people(people[i]);
+		people_row[i] = getRow_people(people[i]);
+		people_col[i] = getCol_People(people[i]);
+	}
+	free(people);
+
+
+  	setPlayData_intrf(gm->ic, getSymbol_player(getPlayer_world(gm->w)), obj, _get_num_objects_space(getWaI_player(getPlayer_world(gm->w)), gm->w), row ,col , obj_col, obj_row/*enemy*/,enemy,num_enemy,enemy_col,enemy_row, num_people, people_col, people_row, ppl);
   	
   	row = pictRows_Space(getByID_world(gm->w,getWaI_player(getPlayer_world(gm->w))));
   	col = pictCols_Space(getByID_world(gm->w,getWaI_player(getPlayer_world(gm->w))));
@@ -129,7 +143,7 @@ static void prepare_game(Game *gm){
   	free(obs);
 }
 
-/*dibuja la interfaz, objetos y demás*/
+
 static void draw_game(Game *gm){
 
 	if(!gm) return;
@@ -137,48 +151,115 @@ static void draw_game(Game *gm){
 	setMenu_intrf(gm->ic, "Hey", getStats_player(getPlayer_world(gm->w)), 12, 2, getNameStats_player(getPlayer_world(gm->w)), getNumStats_player(getPlayer_world(gm->w)), getLimitStats_player(getPlayer_world(gm->w)));
 	drawField_intrf(gm->ic, 1);
 	addObjects_intrf(gm->ic);
-	/*new stuff*/
 	addEnemies_intrf(gm->ic);
+	addPeople_intrf(gm->ic);
 	setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
 
+	extra_write_message_object_intrf(gm->ic, getDesc_space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w)))));
 	fflush(stdout);
 
 }
 
 int cmd1(void *dummy, char *obj, char **str, int n) {
-	return printf("cmd1: %s\n", str[0]);
+	return -1;
 }
 
 
 int cmd2(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	Player *p = create_player("enemy1.txt");
-	join_fight(getPlayer_world(gm->w), p);
-	return 1;
+	char buf[100];
+	int opt;
+	sprintf(buf, "Choose one of your abilities.\n\t1. %s\n\t2. %s\n\t3. %s\n\t4. %s", 
+		getAbilityName_player(getPlayer_world(gm->w), 0), getAbilityName_player(getPlayer_world(gm->w), 1),
+		getAbilityName_player(getPlayer_world(gm->w), 2), getAbilityName_player(getPlayer_world(gm->w), 3));
+	extra_write_lngmess_intrf(gm->ic, buf);
+	clear_cmd_intrf(gm->ic);
+	prepare_to_write_cmd_intrf(gm->ic);
+	opt = _read_key();
+	if(opt < 48 || opt > 57){
+		sprintf(buf, "Did you smoke too many joints? Please choose a real option.\n\t%s", buf);
+		extra_write_lngmess_intrf(gm->ic, buf);
+		opt = -_read_key();
+	}
+	return opt;
 }
 
 int use_object_game(Game *gm, Object *po){
-    if(!gm || !po || !isInInventory(po)) return 0;
+    if(!gm || !po) return 0;
+    if(!isInInventory(po) || !isUsable_object(po)) return 0;
     modStats_player(getPlayer_world(gm->w), getProp_object(po));
     setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
+    use_object(po);
     return 1; 
 }
 
 
 int cmd3(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	return use_object_game(gm, getObjectByName_wordl(gm->w, obj));
+	int ret;
+	char buf[100];
+	ret = use_object_game(gm, getObjectByName_wordl(gm->w, obj));
+	if (ret == 0){
+		sprintf(buf, "You couldn't use %s, sorry bro", obj);
+		extra_write_message_object_intrf(gm->ic, buf);
+		return 1;
+	}
+
+	sprintf(buf, "You used %s!", obj);
+	extra_write_message_object_intrf(gm->ic, buf);
+	
+	return 1;
 }
 
 
 int cmd4(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
-	return drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
+	int ret = drop_object(getByIdObject_world(gm->w, getId_object(getObjectByName_wordl(gm->w, obj))));
+	char buf[100];
+	if (!ret){
+		sprintf(buf, "You can’t drop up the %s, are you crazy man?", obj);
+		extra_write_message_object_intrf(gm->ic, buf);
+		return 1;
+	}
+
+	sprintf(buf, "You have dropped %s", obj);
+	extra_write_message_object_intrf(gm->ic, buf);
+	
+	return 1;
 }
 
+int cmd5(void *dummy, char *obj, char **str, int n){
+	Game *gm = (Game *) dummy;
+	display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
+	return 1;
+}
+
+int cmd6(void *dummy, char *obj, char **str, int n){
+	return 0;
+}
+
+int cmd7(void *dummy, char *obj, char **str, int n){
+	Game *gm = (Game *) dummy;
+	extra_write_message_object_intrf(gm->ic, getDesc_object(getObjectByName_wordl(gm->w, obj)));
+	return 1;
+}
+
+int cmd8(void *dummy, char *obj, char **str, int n){
+	Game *gm = (Game *) dummy;
+	movePlayerTo_world(gm->w, atoi(obj));
+	delete_internal_intrf(gm->ic);
+	prepare_game(gm);
+	draw_game(gm);
+	return 1;
+}
 
 int err(void *dummy, char *obj, char **str, int n) {
-	return printf("error: %s\n", str[0]);
+	Game *gm = (Game *) dummy;
+	char buf[100];
+	sprintf(buf, "Sorry... I don't know what %s is", obj);
+	extra_write_message_object_intrf(gm->ic, buf);
+	
+	return 1;
 }
 
 static void asociemos_cosas(CoP *cop){
@@ -189,6 +270,14 @@ static void asociemos_cosas(CoP *cop){
 	if (CoP_assoc(cop, "cmd3_internal", cmd3) == -1)
 		return;
 	if (CoP_assoc(cop, "cmd4_internal", cmd4) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd5_internal", cmd5) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd6_internal", cmd6) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd7_internal", cmd7) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd8_internal", cmd8) == -1)
 		return;
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;
@@ -213,7 +302,7 @@ Game *create_game(char *filesp, char *fileob, char *filepl, char *fileic, char *
 	asociemos_cosas(gm->cop);
 	prepare_game(gm);
 	draw_game(gm);
-	printf("\n\n\nHola 6\n");
+	
 
 	fclose(cmdfile);
 	return gm;
@@ -228,7 +317,7 @@ static void write_object_missing_intrf(Game *gm, int ob_id, int flag){
 	if(flag)
 		sprintf(buf, "Locked! You need %s to unlock the space", name);
 	else
-		sprintf(buf, "Dark! You need %s to see smthing", name);
+		;
 	extra_write_message_object_intrf(gm->ic, buf);
 	free(name);
 	return;
@@ -247,8 +336,136 @@ static void extra_write_message_found_object_intrf(Game *gm, Object *ob){
 }
 
 
+static int _read_smth(Game *gm, char c){
+	char *buf = (char *) malloc(sizeof(char)*50);
+	int i = 0, ret;
+	char aux = c;
+	prepare_to_write_cmd_intrf(gm->ic);
+	while(aux != 10){
+		if(aux == 127 && i > 0){
+			i--;
+			smth_useful(gm->ic, i+3);
+		}
+		else{
+			buf[i] = aux;
+			printf("%c", aux);
+			i++;
+		}
+		aux = _read_key();
+	}
+	buf[i] = '\0';
+	ret = CoP_execute(gm->cop, buf, gm);
+	free(buf);
+	return ret;
+}
+
+
+Player* resolve(Game *gm, Player* p1,Player* p2, int hab,Fight *fight){ 
+    int ad;
+    int fail;
+    double critic;
+    int dmg;
+    int rand;
+    char buf[100];
+    
+    add_player_stats(p1 ,hab);
+    ad=getStrength_player(p1)*getStrength_player(p1)/getEndurance_player(p2);
+    rand=aleat_num(0,(getAgility_player(p1)+getAgility_player(p2)));
+    if(rand<=(getAgility_player(p2)/2)) fail=0;
+    else fail=1;
+    rand=aleat_num(0,(getLuck_player(p1)+getLuck_player(p2)));
+    if(rand<=(getLuck_player(p2)/3)) critic=0.5;
+    else if (rand>=(2/3*getLuck_player(p1)+getLuck_player(p2))) critic=2;
+    else critic=1;
+    dmg=(int) ad*fail*critic/5;
+    waitFor(2);
+    sprintf(buf, "Healthpoints of %s : %d ",getName_player(p2), getHp_player(p2));
+    extra_write_lngmess_intrf(gm->ic, buf);
+    changeHp_player(p2,-dmg);
+
+    waitFor(2);
+    sprintf(buf, "%s used %s", getName_player(p1), getAbilityName_player(p1, hab-1));
+    extra_write_message_object_intrf(gm->ic, buf);
+
+    waitFor(2);
+    sprintf(buf, "\n\t\tDamage received: %d \n\t\tHealthpoints of %s: %d", dmg, getName_player(p2), getHp_player(p2));
+    extra_write_lngmess_intrf(gm->ic, buf);
+
+    less_player_stats(p1 ,hab);
+    setStats_intrf(gm->ic, getStats_player(getPlayer_world(gm->w)));
+    prepare_to_write_cmd_intrf(gm->ic);
+    if (getHp_player(p2)<=0){
+        finish_fight(fight);
+        if (getHp_player(getPlayer_fight(fight))<=0){
+            extra_write_message_object_intrf(gm->ic, "You failed in your adventure, better luck next time");
+            waitFor(10);
+            return NULL;
+        }
+        changeNum_player(getPlayer_world(gm->w));
+        changeStats_player(getPlayer_world(gm->w),getNum_player(getPlayer_world(gm->w)));
+        
+        extra_write_message_object_intrf(gm->ic, "Well done, you did it!");
+        return p2;
+    }
+    return p1;
+
+}
+
+
+
+Fight *resolution(Game *gm, int whatoption, Fight *f){
+    if(getSpeed_player(getPlayer_fight(f))>=getSpeed_player(getFoe_fight(f))){
+        if(isFinished_fight(f)) 
+            resolve(gm, getPlayer_fight(f), getFoe_fight(f), whatoption, f);
+        if(isFinished_fight(f)) 
+            resolve(gm, getFoe_fight(f), getPlayer_fight(f), aleat_num(1,4),f);
+    }
+    else{
+        if(isFinished_fight(f)) 
+            resolve(gm, getFoe_fight(f), getPlayer_fight(f), aleat_num(1,4),f);
+        if(isFinished_fight(f)) 
+            resolve(gm, getPlayer_fight(f), getFoe_fight(f), whatoption,f);
+    }
+    return f;
+
+}
+
+
+
+static int fight(Game *gm, int *row, int *col){
+	char buf[100];
+	int c, ret;
+	Fight *f = join_fight(getPlayer_world(gm->w),getEnemy_world(gm->w,getPlayer_world(gm->w),*col,*row));
+	
+	while(isFinished_fight(f)){
+		nextRound_fight(f);
+		waitFor(5);
+		sprintf(buf, "Round %d \n\tWhat are you going to do?\n\t\t-Fight\n\t\t-Run away\n", getRound_fight(f));
+		extra_write_lngmess_intrf(gm->ic, buf);
+		
+
+		clear_cmd_intrf(gm->ic);
+		prepare_to_write_cmd_intrf(gm->ic);
+
+		c = _read_key();
+		ret = _read_smth(gm, c);
+
+		if(ret == -1){
+			
+			if(RunAway(f))
+				return 0;
+		}
+		else
+
+			f = resolution(gm, ret%48, f);
+	}
+	return 0;
+}
+
+
 static void moving_moving(Game *gm, int ret){
-	int new;
+	int new,row,col;
+	char buf[100];
 	if(ret == NORTH || ret == SOUTH){
 		new = getRow_player(getPlayer_world(gm->w));
 		if(ret == NORTH)
@@ -272,12 +489,25 @@ static void moving_moving(Game *gm, int ret){
 		extra_write_message_found_object_intrf(gm, getObjectByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w))));
 		pick_object(getObjectByCoordinates_world(gm->w, getRow_player(getPlayer_world(gm->w)), getCol_player(getPlayer_world(gm->w)), getWaI_player(getPlayer_world(gm->w))));
 	}
-	if(isOnEnemy_intrf(gm->ic)){
-		
+
+	
+	if(isNearEnemy_intrf(gm->ic, &row, &col)){
+		if(getHp_player(getEnemy_world(gm->w,getPlayer_world(gm->w),col,row))==0){
+			sprintf(buf, "Hey man , dont be a bully , you have already defeated %s ", getName_player(getEnemy_world(gm->w,getPlayer_world(gm->w),col,row)));
+			extra_write_lngmess_intrf(gm->ic, buf);
+		}
+		else{
+		fight(gm, &row, &col);
+		}
 	}
+
+
+	if(isNearPeople_intrf(gm->ic,&row,&col))
+		extra_write_message_object_intrf(gm->ic, getText_people(getPeopleByCoordinates_world(gm->w, row, col, getWaI_player(getPlayer_world(gm->w)))));
+
 }
 
-/*Para que el jugador entre por la puerta del otro espacio*/
+
 static void doors_al(Game *gm, int aux){
 	int new_row = getRow_player(getPlayer_world(gm->w));
 	int new_col = getCol_player(getPlayer_world(gm->w));
@@ -289,39 +519,16 @@ static void doors_al(Game *gm, int aux){
 	}
 	else if(aux == EAST || aux == WEST){
 		if(aux == WEST)
-			new_col += -2 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+			new_col += -3 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
 		else
-			new_col -= -2 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
+			new_col -= -3 + pictCols_Space(getByID_world(gm->w, getWaI_player(getPlayer_world(gm->w))));
 	}
 	modRow_player(getPlayer_world(gm->w), new_row);
 	modCol_player(getPlayer_world(gm->w), new_col);
 }
 
-static void _read_smth(Game *gm, char c){
-	char buf[50];
-	int i = 0;
-	char aux = c;
-	prepare_to_write_cmd_intrf(gm->ic);
-	while(aux != 10){
-		if(aux == 127 && i > 0){
-			i--;
-			smth_useful(gm->ic, i+3);
-		}
-		else{
-			buf[i] = aux;
-			printf("%c", aux);
-			i++;
-		}
-		aux = _read_key();
-	}
-	buf[i] = '\0';
-	extra_write_message_object_intrf(gm->ic, buf);
-	CoP_execute(gm->cop, buf, gm);
-}
-
-
 void play_game(Game *gm){
-	int ret = 0, aux, sh;
+	int ret = 0, aux, sh, smt;
 	
 	if(!gm) return;
 
@@ -329,8 +536,6 @@ void play_game(Game *gm){
 		prepare_to_write_cmd_intrf(gm->ic);
 		if(isOnDoor_intrf(gm->ic)){
 			aux = - _read_key();
-			if(aux == -126)
-				return;
 			if(aux >= 0){
 				if(ret == aux){
 					ret = movePlayer_world(gm->w, ret);
@@ -338,18 +543,14 @@ void play_game(Game *gm){
 						write_object_missing_intrf(gm, -ret, 1);
 						ret = aux;
 					}
-					else if(ret > 2){
+					else if(!ret){
 						doors_al(gm, aux);
-						write_object_missing_intrf(gm, ret/3, 0);
-						dark_spaces_intrf(gm->ic);
+						delete_internal_intrf(gm->ic);
 						prepare_game(gm);
 						draw_game(gm);
 					}
-					else{
-						doors_al(gm, aux);
-						prepare_game(gm);
-						draw_game(gm);
-					}
+					else
+						;
 				}
 				else if(aux != ret && (aux + ret)%2 == 0){
 					ret = movePlayer_intrf(gm->ic, aux);
@@ -359,17 +560,13 @@ void play_game(Game *gm){
 			}
 			else{
 				clear_cmd_intrf(gm->ic);
-				_read_smth(gm, -aux);		
+				smt = _read_smth(gm, -aux);
+				if(!smt) return;
 			}
 		}
 
 		else{		
-			sh = - _read_key();	
-			if(sh == -43)
-				display_inventory(gm->ic, getPicturesObjectsInventory_world(gm->w), getNamesObjectsInventory_world(gm->w), _get_num_objects_inventory(gm->w));
-	
-			if(sh == -126)
-				return;													
+			sh = - _read_key();														
 			
 			if(sh >= 0){
 				ret = movePlayer_intrf(gm->ic, sh);
@@ -377,7 +574,8 @@ void play_game(Game *gm){
 			}
 			else{
 				clear_cmd_intrf(gm->ic);
-				_read_smth(gm, -sh);
+				smt = _read_smth(gm, -sh);
+				if (!smt) return;
 			}
 		}
 	}	
@@ -389,6 +587,8 @@ void delete_game(Game *gm){
 		delete_world(gm->w);
 	if(gm->ic)
 		delete_intrf(gm->ic);
+	if(gm->cop)
+		CoP_delete(gm->cop);
 	if(gm)
 		free(gm);
 }
