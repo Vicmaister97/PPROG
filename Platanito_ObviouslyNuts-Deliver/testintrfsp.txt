@@ -30,7 +30,7 @@ Welcome to our game, RocketMan! hope you'll enjoy it
 |                       ....      .... ..          .. ......      ..                            ----->       |
 |                       ..  ..  ..  .. ..          .. ..  ..      ..                                          
 |                       ..  ......  .. ..          .. ..  ..      ..                                          
-|                       ..    ..    .. ..          .. ..  ....    ..  HINT-get the key ftom the first space  |
+|                       ..    ..    .. ..          .. ..  ....    ..  HINT-get the key from the first space  |
 |                       ..          .. .............. ..    ..    ..                                         |
 |                       ..          .. ..          .. ..    ....  ..  First some piece of advice:            |
 |                       ..          .. ..          .. ..    ....  .. -Write inventory to know what objects   |
