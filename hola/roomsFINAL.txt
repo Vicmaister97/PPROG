@@ -308,7 +308,7 @@ Let's travel far away
 9
 6
 0000
-We finaly found a little planet, let's see what's up!
+We finally found an asteroid, let's see what's up!
     *                                 +--------------    -------------+                                      
                               *       |                               |                     *                
            *                          |                               |      *                               
@@ -458,7 +458,7 @@ Oh a fuel station
 0
 9
 0000
-Nice shop, but i dont have money I'll steal something x
+Nice shop, but i don't have money so I'll steal something xD
 +------------------------------------------------------------------------------------------------------------+
 |                                              |                               | |                           |
 |  _                                           |_______________________________| |______________________     |
@@ -1393,7 +1393,7 @@ Hmmm nothing
 0
 0
 0000
-Kill all teh enemies fast
+Kill all the enemies fast
 +----------------------------------+-----------------    ------+---------------------------------------------+
 |                                  |                           |                                             |
 |     +-----------+                |                           |                                             |
@@ -2394,7 +2394,7 @@ Fuck, he run away, what we should do!?
 47
 52
 0000
-Let's go to Santinis home
+Let's go to Santini's home
     *                                 +--------------    -------------+                                       
                               *       |                               |                     *                 
            *                          |                               |      *                                 
@@ -2844,7 +2844,7 @@ Not anymore D.R.E
 56
 61
 0000
-Let's go to finish Platanito the Guache's Emperor
+Let's go to finish Platanito, the Guache's Emperor
     *                                 +--------------    -------------+                                       
                               *       |                               |                     *                 
            *                          |                               |      *                                 
@@ -3294,7 +3294,7 @@ Welcome to our game, RocketMan hope you'll enjoy it
 0
 65
 0000
-Welcome to our game, RocketMan hope you'll enjoy it
+You passed the game, well done
 +------------------------------------------------------------------------------------------------------------+
 |                                                                                                            |
 |                                                                                                            |
