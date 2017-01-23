@@ -6,6 +6,7 @@ Space 8:
 Red bull 2A 2S 10Row 5Col
 Space gasolinera 9:
 Marta P
+used condom 12 35
 Space tienda 10:
 Dependiente P
 1 base 11:
@@ -121,7 +122,7 @@ JAGGER 22 3 ++++++++++++++
 Space 64 LIBERTAAAAD:
 SERRANO --------------------
 signult 15 57 ---------
-Space 65PLATANITOOO:
+Space 65PLATANITOOO:           32 104      
 SIMON -------------
 ANDREA ---------------
 PLATANITO ------------

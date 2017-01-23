@@ -1,7 +1,7 @@
-32
+33
 52
 1
-platanito's_sword
+Platanito's_sword
 It's not really strong, but it has a powerful meaning for you
 5 2 10 0 0 5
 1
@@ -9,11 +9,11 @@ It's not really strong, but it has a powerful meaning for you
 15
 1
 2
-key1
-Jey Jey MR POPPER IS IN DA HOUSE
+Key1
+Jey Jey MR POPPER IS IN DA HOUSE. Ok, this is just a key, but for what?
 0 0 0 0 0 0
 1
-y8
+k8
 16
 0
 3
@@ -21,35 +21,35 @@ Redbull
 Energy Asshole!
 0 0 0 2 2 0
 8
-o10
+*10
 5
 1
 4
-energetic_bar
-I hate the Lurunsdaluntes
+Energetic_bar
+Yumi Yumi!
 0 0 2 5 5 0
 10
 +27
 59
 1
 5
-IronMan_chest
+IronMan_Chest
 Feel like a fucking superhero bro
-0 15 10 5 0 0
+0 15 10 -5 -1 0
 11
 I36
 48
 1
 6
-REdbull
+Redbull
 Energy Asshole!
 0 0 0 2 2 0
 18
-o10
+*10
 6
 1
 7
-potion1
+Potion
 Take a breath man
 0 0 10 0 0 0
 19
@@ -57,7 +57,7 @@ p3
 107
 1
 8
-porro1
+Spliff
 Smokeeeeee
 2 2 2 2 2 2
 20
@@ -65,15 +65,15 @@ L21
 47
 1
 9
-REDbull
+Redbull
 Energy Asshole!
 0 0 0 2 2 0
 27
-o12
+*12
 15
 1
 10
-Cabana's_tears
+Cabana's_Tears
 They are so powerful!
 10 10 20 10 0 10
 29
@@ -81,31 +81,31 @@ u37
 11
 1
 11
-REDBull
+Redbull
 Energy Asshole!
 0 0 0 2 2 0
 36
-o17
+*18
 27
 1
 12
 Jagger
 YEEEEAAAH BROOOOO
-1 1 1 1 1 1
+4 -1 -1 -1 -1 -1
 37
 Y11
 13
 1
 13
 Popper
-Jejejejejeje
+Hehehehehehehe
 1 1 5 20 2 4
 38
 x39
 4
 1
 14
-Rocky_proteins
+Rocky_Proteins
 Like a monster
 5 5 10 2 0 0
 38
@@ -153,7 +153,7 @@ m38
 4
 1
 20
-REDBULl
+Redbull
 Energy Asshole!
 0 0 0 2 2 0
 54
@@ -161,7 +161,7 @@ o22
 16
 1
 21
-porro2
+mega_spliff
 Smokeeeeee
 2 2 2 2 2 2
 56
@@ -169,7 +169,7 @@ L13
 95
 1
 22
-porro3
+spliff3
 Smokeeeeee
 2 2 2 2 2 2
 56
@@ -177,7 +177,7 @@ L16
 95
 1
 23
-porro4
+spliff4
 Smokeeeeee
 2 2 2 2 2 2
 56
@@ -186,7 +186,7 @@ L28
 1
 24
 wid_plant
-NICEEEE
+It comes from the fardest mountains of marihuana
 0 0 50 0 4 10
 56
 W22
@@ -226,14 +226,14 @@ O22
 1
 29
 jaggeer
-jaaaaaaaaaaaaagggeeeeeeer
+NICEEEEE
 1 1 1 1 1 1
 63
 Y22
 3
 1
 30
-potionnfin1
+Final_potion
 Health!
 0 0 20 0 0 0
 65
@@ -241,7 +241,7 @@ P36
 59
 1
 31
-potionnfin2
+Final_potion2
 Health!
 0 0 20 0 0 0
 65
@@ -256,10 +256,18 @@ ROCKETMAN
 Q36
 66
 1
+33
+Used_wheel
+It doesn't seem to be useful
+0 0 0 0 0 0
+9
+O12
+35
+1
 
 1
 text1
-AQUIVACOMOQUEUNACARTAMAZOTRISTESABES
+By G.E Platanito's order, this family of rebels must die
 1
 @8
 17
@@ -277,19 +285,19 @@ Oscanario: I have very cheap tobacco from my islands my friend
 15
 4
 Victor1
-Victor: Hey man, thanks for helping me. Man, I hate platanito's oppression, |let's join our forces to kick his ass! I'm a pilot
+Victor: Hey man, thanks for helping me. Man, I hate platanito's oppression, let's join our forces to kick his ass! I'm a pilot.
 11
 V26
 45
 5
 Victor2
-I know where we should go, trust me hahaha
+Victor: I know where we should go, trust me hahaha
 16
 V11
 95
 6
 JointLand
-Welcome to JointLand, the only world in the hole universe made entirely of marihuana. |Enjoy your stay, peace and love
+Welcome to JointLand, the only world in the hole universe made entirely of marihuana. Enjoy your stay, peace and love
 19
 T5
 52
@@ -301,9 +309,9 @@ YuJian Hong Hang Hung: harvest the land, smoke and have fun, plant the seed, lig
 44
 8
 camino
-Bill: The city, Kingston Town, capital of JointLand, is at the west(left dude, are you from teleco?)
+Bill: The city, Kingston Town, capital of JointLand, is at the west (left dude, are you from teleco?)
 19
-<18
+&18
 51
 9
 obrero
@@ -315,7 +323,7 @@ W20
 hippie1
 Rastaman: I'm as green as a field bro :)
 19
-=22
+&22
 5
 11
 padreblanca
@@ -333,13 +341,13 @@ b9
 porreta1
 Barney: Think of me like Yoda, but instead of being little and green I wear suits and I’m awesome. |I’m your bro—I’m Broda!
 20
-=18
+&18
 45
 14
 porreta2
 Ted: Im as high as King Kong climbing the Empire State broda. Wanna hit yo?
 20
-=22
+&22
 45
 15
 randommarket
@@ -349,25 +357,25 @@ R35
 12
 16
 Blanca3
-What's up?
+Blanca: What's up?
 22
 b18
 20
 17
 Blanca3
-Hey!
+Blanca: Hey!
 26
 b16
 46
 18
 Victor3
-Wabalabado morty
+Victor: Waladabdab morty
 25
 V17
 80
 19
 Victor4
-Smoke weed everydaaaaay
+Victor: Smoke weed everydaaaaay
 34
 V18
 80
@@ -403,13 +411,13 @@ N32
 96
 25
 Tati
-Let's play some loles, I go mid adc braum jajaequisde
+Tatiana: Let's play some loles, I go mid adc braum xD
 37
 T28
 90
 26
 Emilio
-Emiliomiamol: Os hace unos kaxopos?
+Emilio: Os hace unos kaxopos?
 38
 E37
 8
@@ -421,7 +429,7 @@ v7
 54
 28
 Arturo
-Arturo: OOOOOouhhhh yeeeeeaaaaaaah ajaaaaa ajaaaa
+Arturo: I will fight for justice
 38
 A8
 54
@@ -433,19 +441,19 @@ b11
 79
 30
 Arturo5
-Partyyyy
+Wasssaaaaaaaa
 40
 A13
 79
 31
 Villar5
-Villar: Odio los Lurunsdaluntes
+Villar: I hate the Lurunsdaluntes
 40
 v12
 79
 32
 Villar5
-Villar: Odio los Lurunsdaluntes
+I hate the Lurunsdaluntes
 44
 v25
 28
@@ -469,13 +477,13 @@ b30
 7
 36
 Arturo6
-Partyyyy
+Wassaaaaaa
 52
 A30
 107
 37
 Villar6
-Villar: Odio los Lurunsdaluntes
+I hate the Lurunsdaluntes
 48
 v33
 66
@@ -493,7 +501,7 @@ V28
 71
 40
 signSantini
-Sign: Till the roof comes off, till the light goes out, till my legs give out, can't shout my mouth.|Till the smokes clears out, am I high?...
+Sign: Till the roof comes off, till the light goes out, till my legs give out, can't shout my mouth. Till the smokes clears out, am I high?...
 55
 T23
 98
@@ -529,7 +537,7 @@ A36
 55
 46
 Villar7
-Villar: Odio los Lurunsdaluntes
+I hate the Lurunsdaluntes
 57
 v38
 52
@@ -553,13 +561,13 @@ A18
 45
 50
 Villarfinal
-Wanna smoke? But tobacco... ;)
+Villar: Wanna smoke? But tobacco... ;)
 62
 v20
 45
 51
 Victorfinal
-Protect your parts dude
+Victor: Protect your parts dude
 62
 V22
 45
