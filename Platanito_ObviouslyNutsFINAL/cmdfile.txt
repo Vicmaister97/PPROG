@@ -1,0 +1,33 @@
+8
+run
+cmd1_internal
+0
+fight
+cmd2_internal
+0
+use
+cmd3_internal
+2
+You used *!
+You couldn't use *, sorry bro
+drop
+cmd4_internal
+2
+You have dropped *
+You can’t drop up the *, are you crazy man?
+inventory
+cmd5_internal
+0
+exit
+cmd6_internal
+0
+description
+cmd7_internal
+0
+jump
+cmd8_internal
+0
+error
+error_internal
+1
+Sorry... I don’t know what * is
