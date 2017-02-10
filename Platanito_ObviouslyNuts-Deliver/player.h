@@ -49,6 +49,10 @@ int getHp_player(Player *p);
 int getSpeed_player(Player *p);
 int getAgility_player(Player *p);
 int getLuck_player(Player *p);
+
+int getPlatanito_player(Player *p);
+Status changePlatanito_player(Player*p);
+
 Status changeStrength_player(Player*p,int strength);
 Status changeEndurance_player(Player*p,int endurance);
 Status changeHp_player(Player*p,int hp);

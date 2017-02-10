@@ -185,7 +185,7 @@ L28
 95
 1
 24
-Purpe_Brain_Pillow
+Purple_Brain_Pillow
 Comes from the distant lands of Machu Porro, at 30.000 feets high
 0 0 50 0 4 10
 56

@@ -253,6 +253,33 @@ int cmd8(void *dummy, char *obj, char **str, int n){
 	return 1;
 }
 
+int cmd9(void *dummy, char *obj, char **str, int n){
+	Game *gm = (Game *) dummy;
+	char buf[100];
+	int cheat;
+	int ID;
+
+	ID = getWaI_player(getPlayer_world(gm->w));
+
+	if (ID == 67){
+		changePlatanito_player(getPlayer_world(gm->w));
+	}
+
+	cheat = getPlatanito_player(getPlayer_world(gm->w));
+
+	if (cheat == 0){
+		sprintf(buf, "You can't play %s yet", obj);
+		extra_write_message_object_intrf(gm->ic, buf);
+		return 1;
+	}
+
+	system("aplay platanito.wav -q &");
+	sprintf(buf, "You are listening PLTANITOOOO!");
+	extra_write_message_object_intrf(gm->ic, buf);
+
+	return 1;
+}
+
 int err(void *dummy, char *obj, char **str, int n) {
 	Game *gm = (Game *) dummy;
 	char buf[100];
@@ -278,6 +305,8 @@ static void asociemos_cosas(CoP *cop){
 	if (CoP_assoc(cop, "cmd7_internal", cmd7) == -1)
 		return;
 	if (CoP_assoc(cop, "cmd8_internal", cmd8) == -1)
+		return;
+	if (CoP_assoc(cop, "cmd9_internal", cmd9) == -1)
 		return;
 	if (CoP_assoc(cop, "error_internal", err) == -1)
 		return;

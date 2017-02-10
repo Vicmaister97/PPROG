@@ -1,4 +1,4 @@
-8
+9
 run
 cmd1_internal
 0
@@ -26,6 +26,9 @@ cmd7_internal
 0
 jump
 cmd8_internal
+0
+play
+cmd9_internal
 0
 error
 error_internal

@@ -22,6 +22,7 @@ struct _Player{
 	int speed_ability[4];
 	int agility_ability[4];
 	int luck_ability[4];
+	int platanito_cheat;
 	
 };
 
@@ -110,6 +111,7 @@ Player* create_player(const char * file_player) {
 	p->name = (char *) malloc(sizeof(char)*strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
+	p->platanito_cheat = 0;
 	
 
 	fclose(f);
@@ -228,6 +230,10 @@ int getLuck_player(Player *p){
 	if(!p)return ERROR;
 	return p->stats[5];
 }
+int getPlatanito_player(Player *p){
+	if(!p)return ERROR;
+	return p->platanito_cheat;
+}
 
 
 Status changeStrength_player(Player*p,int strength){
@@ -275,6 +281,12 @@ Status changeLuck_player(Player*p,int luck){
 	p->stats[5]=p->stats[5]+luck;
 	if(p->stats[5]<=0)p->stats[5]=1;
 	if(p->stats[5]>p->limit_stats[5])p->stats[5]=p->limit_stats[5];
+	return OK;
+}
+
+Status changePlatanito_player(Player*p){
+	if(!p)return ERROR;
+	p->platanito_cheat = 1;
 	return OK;
 }
 
@@ -393,6 +405,7 @@ Player *copy_player(Player*p1){
 	p->luck_ability[i]=p1->luck_ability[i];
 	}
 	strcpy(p->name,p1->name);
+	p->platanito_cheat = p1->platanito_cheat;
 	return p;
 	
 }
@@ -468,6 +481,7 @@ Player* create_enemy(FILE * f) {
 	p->name = (char *)malloc(sizeof(char)*strlen(buf)+1);
 	strcpy(p->name,buf);
 	p->name[strlen(buf)-1] = '\0';
+	p->platanito_cheat = 0;
 	
 
 	return p;
